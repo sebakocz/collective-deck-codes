@@ -72,7 +72,8 @@ export async function getStaticPaths(){
                 id: deck.id
             }
         })),
-        fallback: false
+        fallback: false,
+        revalidate: 60
     }
 }
 
