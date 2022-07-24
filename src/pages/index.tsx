@@ -10,6 +10,7 @@ const Home: NextPage = () => {
     <>
       <Head>
         <title>Collective Decks</title>
+        <meta name="description" content="The best place to view, build and analyse your Collective decks!" />
       </Head>
 
         <div className={"w-full p-5 flex flex-col justify-start items-center"}>

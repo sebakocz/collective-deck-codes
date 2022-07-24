@@ -131,9 +131,14 @@ const DeckProfile = ( props: InferGetStaticPropsType<typeof getStaticProps>) => 
     return(
         <>
             <Head>
-                <title>Collective Deck - {deck.name} - by {deck.user.name}</title>
+                <title>{deck.name} - by {deck.user.name}</title>
                 <meta name="description" content={deck.description || "No Description."} />
+                <meta name="theme-color" content="#E4D6C1" />
                 <meta property="og:image" content={`https://www.collective.gg/emotes/${slugify(deck?.hero?.name || "", {replacement: '', lower: true})}_thumb.png`}/>
+                <meta name="og:title" content={`${deck.name} - by ${deck.user.name}`} />
+                <meta name="og:description" content={deck.description || "No Description."} />
+                <meta property="og:type" content="article" />
+
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
