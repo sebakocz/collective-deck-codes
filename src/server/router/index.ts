@@ -4,11 +4,18 @@ import superjson from "superjson";
 
 import { exampleRouter } from "./example";
 import { authRouter } from "./auth";
+import {merge} from "next-auth/utils/merge";
+import {cardsRouter} from "./cards";
+import {herosRouter} from "./heros";
+import {decksRouter} from "./decks";
 
 export const appRouter = createRouter()
-  .transformer(superjson)
-  .merge("example.", exampleRouter)
-  .merge("auth.", authRouter);
+    .transformer(superjson)
+    .merge("example.", exampleRouter)
+    .merge("auth.", authRouter)
+    .merge("cards.", cardsRouter)
+    .merge("heros.", herosRouter)
+    .merge("decks.", decksRouter)
 
 // export type definition of API
 export type AppRouter = typeof appRouter;

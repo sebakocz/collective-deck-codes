@@ -1,35 +1,93 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
+import DiscordProvider from "next-auth/providers/discord";
 import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcrypt"
 
 // Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "../../../server/db/client";
 
+// const confirmPasswordHash = (plainPassword: string, hashedPassword: string) => {
+//   return new Promise(resolve => {
+//     bcrypt.compare(plainPassword, hashedPassword, function(err, res) {
+//       resolve(res);
+//     });
+//   })
+// }
+
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-    }),
+      DiscordProvider({
+        clientId: process.env.DISCORD_CLIENT_ID || "",
+        clientSecret: process.env.DISCORD_CLIENT_SECRET || ""
+      }),
+    // GithubProvider({
+    //   clientId: process.env.GITHUB_ID,
+    //   clientSecret: process.env.GITHUB_SECRET,
+    // }),
     // ...add more providers here
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        name: {
-          label: "Name",
-          type: "text",
-          placeholder: "Enter your name",
-        },
-      },
-      async authorize(credentials, _req) {
-        const user = { id: 1, name: credentials?.name ?? "J Smith" };
-        return user;
-      },
-    }),
+  //   CredentialsProvider({
+  //     name: "Credentials",
+  //     credentials: {
+  //       email: {
+  //         label: "Email",
+  //         type: "text",
+  //         placeholder: "Email pls"
+  //       },
+  //       password: {
+  //         label: "Password",
+  //         type: "password"
+  //       }
+  //     },
+  //     async authorize(credentials, _req) {
+  //
+  //       if(typeof credentials == 'undefined'){
+  //         console.log("No Credentials? "+credentials)
+  //         return
+  //       }
+  //       try
+  //       {
+  //         const user = await prisma.user.findFirst({
+  //           where: {
+  //             email: credentials.email
+  //           }
+  //         });
+  //
+  //         if (user !== null)
+  //         {
+  //           //Compare the hash
+  //           const res = await confirmPasswordHash(credentials.password, user.password);
+  //           if (res === true)
+  //           {
+  //             const userAccount:any = {
+  //               id: user.id,
+  //               email: user.email
+  //             };
+  //             return {...userAccount};
+  //           }
+  //           else
+  //           {
+  //             console.log("Hash not matched logging in");
+  //             return null;
+  //           }
+  //         }
+  //         else {
+  //           return null;
+  //         }
+  //       }
+  //       catch (err)
+  //       {
+  //         console.log("Authorize error:", err);
+  //       }
+  //     },
+  //   }),
   ],
+  // secret: "asdasd",
+  // important if we want to use CredentialsProvider
+  // session: {strategy: 'jwt'},
 };
 
 export default NextAuth(authOptions);

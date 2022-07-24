@@ -9,7 +9,7 @@ export const exampleRouter = createRouter()
       })
       .nullish(),
     resolve({ input }) {
-      return {
+        return {
         greeting: `Hello ${input?.text ?? "world"}`,
       };
     },

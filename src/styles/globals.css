@@ -1,3 +1,243 @@
+@import 'react-tippy/dist/tippy.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* TODO: do something with scroll bar taking up space*/
+/* https://stackoverflow.com/questions/18548465/prevent-scroll-bar-from-adding-up-to-the-width-of-page-on-chrome */
+
+html, body {
+    background-color: #FCFCFA;
+}
+
+body {
+    --main-100: #FFFCF2;
+    --main-200: #FEF8E8;
+    --main-300: #F7EDD9;
+    --main-400: #E4D6C1;
+    --main-500: #BFAF9B;
+    --main-600: #99816A;
+    --main-700: #735B49;
+    --main-800: #4D3A2F;
+    --main-900: #261C17;
+}
+
+@layer utilities {
+
+    .circle {
+        clip-path: circle(50% at 50% 50%);
+    }
+
+    .card-cost-ring {
+        background: url("../../public/builder/tickring.png");
+        background-size: cover;
+        background-position: center center;
+    }
+
+    .card-display-text-stats {
+        font-family: 'Laila';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 32px;
+        line-height: 47px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        -webkit-text-stroke: 2px black;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .card-display-text-normal {
+        font-family: 'Laila', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 8px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .card-display-text-name {
+        font-family: 'Laila', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .card-display-text-ability {
+        font-family: 'Acme', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .filter-input:hover {
+        box-shadow: 0 0 10px lightblue;
+    }
+
+    .background-none {
+        background: none;
+    }
+
+    .filterToggle {
+        width: 18rem;
+        height: 2.5rem;
+        margin: 30px auto;
+        background-color: var(--main-400);
+        filter: drop-shadow(0px 4px 20px rgba(0, 0, 0, 0.13));
+        border-radius: 38px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .filterToggleText {
+        font-family: 'Laila';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 1.2rem;
+        line-height: 33px;
+        text-align: center;
+
+        /*padding: 7px;*/
+        width: 29%;
+    }
+
+    .filterToggleText input {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    .filterToggleText label {
+        opacity: .5;
+        padding: 5px;
+    }
+
+    .filterToggleText label:hover {
+        cursor: pointer;
+        opacity: 1;
+    }
+
+    .filterToggleText input:checked+label {
+        transition: .6s;
+        opacity: 1;
+
+    }
+
+    .filterToggleSwitchIndicator {
+        position: absolute;
+        width: 29%;
+        height: 30px;
+        background-color: var(--main-500);
+        pointer-events: none;
+        z-index: -4;
+        box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.13);
+        border-radius: 30px;
+        transition: .6s;
+    }
+
+    .no-select {
+        user-select: none;
+    }
+
+    @keyframes rollout {
+        0% { transform: scaleX(0) translateX(-50%); }
+        100% { transform: none; }
+    }
+
+    .rollout {
+        animation: rollout 0.4s;
+        transition: .2s ease-in-out;
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+
+    .miniCardImage {
+        float: right;
+        height: inherit;
+        width: 63%;
+        background: left center no-repeat;
+        background-size: cover;
+    }
+
+    .card-cost-off-affinity {
+        color: #ED556D;
+    }
+
+    .popup {
+        animation: popup 0.4s;
+    }
+
+    @keyframes popup {
+        0% { transform: scale(1.1)}
+        100% { transform: scale(1) }
+    }
+
+    .fade-in {
+        animation: fade-in 0.4s;
+    }
+
+    @keyframes fade-in {
+        0% { opacity: 0 }
+        100% { opacity: 1 }
+    }
+
+    @keyframes rollout {
+        0% { transform: translateX(30%); }
+        100% { transform: none; }
+    }
+
+    .testDrawCardAnimationWrapper {
+        animation: rollout 0.4s;
+    }
+
+    .fade-up {
+        animation: fadeUp 1s;
+        animation-fill-mode: both;
+    }
+
+    @keyframes fadeUp {
+        0% {
+            opacity: 0;
+            transform: scale(.1);
+        }
+
+        85% {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .deck-slot-hero-circle {
+        clip-path: circle(45% at 50% 50%)
+    }
+
+    .opaque {
+        opacity: 1 !important;
+    }
+
+}
