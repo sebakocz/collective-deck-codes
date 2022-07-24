@@ -15,13 +15,13 @@ const SidenavIcon = ({children, label, link}: SidenavIconProps) => {
     return(
         <Link href={link}>
             <div className={"group w-10 h-10 p-2 flex items-center justify-center relative cursor-pointer"}>
-                <div className={"bg-main-400 w-10 h-10 absolute z-0 group-hover:rounded-l group-hover:scale-x-[2.9] group-hover:translate-x-10 duration-300"}>
+                <div className={"bg-main-400 w-10 h-10 absolute z-0 group-hover:rounded-l md:group-hover:scale-x-[2.9] md:group-hover:translate-x-10 duration-300"}>
 
                 </div>
                 <div className={"z-10 text-main-800 group-hover:text-blue-500 duration-200"}>
                     {children}
                 </div>
-                <div className={"z-10 text-main-900 absolute -right-14 opacity-0 scale-x-0 group-hover:scale-x-100 group-hover:opacity-100 duration-300"}>
+                <div className={"z-10 text-main-900 absolute -right-14 opacity-0 scale-x-0 md:group-hover:scale-x-100 md:group-hover:opacity-100 duration-300"}>
                     {label}
                 </div>
             </div>
@@ -36,7 +36,7 @@ export default function Sidenav(){
     const [isOpen, setIsOpen] = useState(false);
 
     return(
-        <div className={"fixed md:relative z-10 h-full"}>
+        <div className={"fixed md:relative z-10 h-full"} onClick={() => setIsOpen(false)}>
             <div className={`bg-main-700 flex-shrink-0 w-16 p-2.5 drop-shadow-xl shadow-2xl h-screen ${isOpen ? "translate-x-0" : "-translate-x-20"} duration-300 md:translate-x-0`}>
                 <Image className={"circle"} src={parrot_img} alt={"Parrot Logo"} width={200} height={200}/>
 
@@ -81,7 +81,10 @@ export default function Sidenav(){
 
             <div
                 className={`block md:hidden text-main-400 hover:text-main-200 absolute bottom-5 left-4 bg-main-600 rounded-2xl ${isOpen ? "rotate-180" : ""}`}
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={(e) => {
+                    setIsOpen(!isOpen)
+                    e.stopPropagation()
+                }}
             >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
