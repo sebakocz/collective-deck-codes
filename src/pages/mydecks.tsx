@@ -77,7 +77,7 @@ const Mydecks: NextPage = () => {
             <Head>
                 <title>Collective Decks - My Decks</title>
             </Head>
-            <div className={"w-full p-8 flex justify-center flex-wrap"}>
+            <div className={"w-full p-8 flex justify-center flex-wrap h-screen overflow-hidden overflow-y-scroll will-change-transform"}>
                 {userDecksImport.isLoading ?
                     <div className={"flex items-center text-lg"}>
                         <BeatLoader

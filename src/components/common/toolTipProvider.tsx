@@ -20,15 +20,17 @@ const ToolTipProvider = ({children, link, tooltipOffset}: ToolTipProviderProps) 
             position={'right'}
             distance={tooltipOffset || 10}
             html={
-                <Image
-                    src={link}
-                    alt={"Card Full Image"}
-                    width={450}
-                    height={450}
-                    objectFit={"contain"}
-                    placeholder={'blur'}
-                    blurDataURL={collectiveIcon.src}
-                />
+                <div className={"w-64 md:w-96"}>
+                    <Image
+                        src={link}
+                        alt={"Card Full Image"}
+                        width={450}
+                        height={450}
+                        objectFit={"contain"}
+                        placeholder={'blur'}
+                        blurDataURL={collectiveIcon.src}
+                    />
+                </div>
             }
         >
             {children}

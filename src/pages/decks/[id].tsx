@@ -1,19 +1,14 @@
 import Image from "next/image"
 import React from "react";
-import {trpc} from "../../utils/trpc";
 import CardDisplayMini from "../../components/common/carddisplaymini";
 import {Deck, DeckCard} from "../../lib/types";
 import {prisma} from "../../server/db/client";
 import {GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType} from "next";
-import {createSSGHelpers} from "@trpc/react/ssg";
-import superjson from "superjson";
-import {appRouter} from "../../server/router";
 import slugify from "slugify";
 import Button from "../../components/common/button";
 import {exportDeckToClipboard, noHero} from "../../lib/utils";
 import {Affinity, Type} from "@prisma/client";
 import {Tooltip} from "react-tippy";
-import cubeImg from "*.png";
 import Head from "next/head";
 
 // // https://trpc.io/docs/ssg

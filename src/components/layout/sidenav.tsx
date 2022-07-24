@@ -36,7 +36,7 @@ export default function Sidenav(){
     const [isOpen, setIsOpen] = useState(false);
 
     return(
-        <div className={"fixed md:relative z-10"}>
+        <div className={"fixed md:relative z-10 h-full"}>
             <div className={`bg-main-700 flex-shrink-0 w-16 p-2.5 drop-shadow-xl shadow-2xl h-screen ${isOpen ? "translate-x-0" : "-translate-x-20"} duration-300 md:translate-x-0`}>
                 <Image className={"circle"} src={parrot_img} alt={"Parrot Logo"} width={200} height={200}/>
 
