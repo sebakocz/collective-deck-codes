@@ -137,7 +137,10 @@ const DeckProfile = ( props: InferGetStaticPropsType<typeof getStaticProps>) => 
                 <meta property="og:image" content={`https://www.collective.gg/emotes/${slugify(deck?.hero?.name || "", {replacement: '', lower: true})}_thumb.png`}/>
                 <meta name="og:title" content={`${deck.name} - by ${deck.user.name}`} />
                 <meta name="og:description" content={deck.description || "No Description."} />
+                <meta property={"og:"} />
                 <meta property="og:type" content="article" />
+
+                <meta name="twitter:card" content="https://s3.us-east-2.amazonaws.com/files.collective.gg/p/canvas-images/2e793520-ed64-11eb-89bb-8d69998314a9.png"/>
 
                 <link rel="icon" href="/favicon.ico" />
             </Head>
