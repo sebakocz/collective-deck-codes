@@ -72,8 +72,7 @@ export async function getStaticPaths(){
                 id: deck.id
             }
         })),
-        fallback: false,
-        revalidate: 60
+        fallback: false
     }
 }
 
@@ -108,8 +107,9 @@ export async function getStaticProps({params}: any){
 
     return({
         props: {
-            deck: JSON.parse(JSON.stringify(deck))
-        }
+            deck: JSON.parse(JSON.stringify(deck)),
+        },
+        revalidate: 60
     })
 }
 
