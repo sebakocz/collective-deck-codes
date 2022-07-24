@@ -64,7 +64,7 @@ export default function Options({heros, hero, userDeckCards, addCardsToDeck, rem
 
         if(lines[0]?.startsWith('#')){
             //@ts-ignore
-            heroName = lines.splice(0,1)[0].slice(1).trim()
+            heroName = lines.splice(0,1)[0].slice(8).trim().toLowerCase()
             setHeroByName(heroName)
         }
 

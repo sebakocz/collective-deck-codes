@@ -14,6 +14,7 @@ export default function useHero(){
 
     const setHeroByName = (name: string) => {
         // console.log("setHeroByName", name)
+        console.log(name)
         let newHero = herosImport.data?.find((h: Hero) => h.name.toLowerCase() == name)
         if(!newHero)
             newHero = noHero
