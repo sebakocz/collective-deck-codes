@@ -1,6 +1,7 @@
 import Sidenav from "./sidenav";
 import Head from "next/head";
 import ReactTooltip from "react-tooltip";
+import NextNProgress from "nextjs-progressbar";
 
 
 export default function Layout({children}: any){
@@ -13,6 +14,7 @@ export default function Layout({children}: any){
 
             </Head>
             <div className={'bg-white relative flex'}>
+                <NextNProgress color={"#2A7BDE"}/>
                 <Sidenav/>
                 {children}
             </div>

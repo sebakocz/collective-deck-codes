@@ -4,51 +4,14 @@ import { unstable_getServerSession as getServerSession } from "next-auth";
 import { authOptions as nextAuthOptions } from "../auth/[...nextauth]";
 import {prisma} from "../../../server/db/client";
 import {Prisma, Role, Affinity, Rarity, Type} from "@prisma/client"
-import {findProperty, getPublicCards, getSingleCard} from "../../../utils/collactiveapi";
+import {
+    AffinityToPrismaConverter,
+    findProperty,
+    getPublicCards,
+    getSingleCard, RarityToPrismaConverter,
+    TypeToPrismaConverter
+} from "../../../utils/collactiveapi";
 
-
-function AffinityToPrismaConverter(affinity: string): Affinity{
-    switch (affinity){
-        case "None":
-            return Affinity.NEUTRAL
-        case "Mind":
-            return Affinity.MIND
-        case "Strength":
-            return Affinity.STRENGTH
-        case "Spirit":
-            return Affinity.SPIRIT
-        default:
-            return Affinity.NEUTRAL
-    }
-}
-
-function RarityToPrismaConverter(rarity: string): Rarity{
-    switch(rarity){
-        case "Common":
-            return Rarity.COMMON
-        case "Uncommon":
-            return Rarity.UNCOMMON
-        case "Rare":
-            return Rarity.RARE
-        case "Legendary":
-            return Rarity.LEGENDARY
-        case "Undraftable":
-            return Rarity.TOKEN
-        default:
-            return Rarity.TOKEN
-    }
-}
-
-function TypeToPrismaConverter(type: string): Type{
-    switch (type){
-        case "Unit":
-            return Type.UNIT
-        case "Action":
-            return Type.ACTION
-        default:
-            return Type.ACTION
-    }
-}
 
 const updatedb = async (req: NextApiRequest, res: NextApiResponse) => {
     const session = await getServerSession(req, res, nextAuthOptions);

@@ -20,7 +20,7 @@ const ToolTipProvider = ({children, link, tooltipOffset}: ToolTipProviderProps) 
             position={'right'}
             distance={tooltipOffset || 10}
             html={
-                <div className={"w-64 md:w-96"}>
+                <div className={"w-2/3 md:w-96"}>
                     <Image
                         src={link}
                         alt={"Card Full Image"}

@@ -1,11 +1,11 @@
-import {Hero, Rarity} from "@prisma/client";
+import {Affinity, Hero, Rarity} from "@prisma/client";
 import HeroDropdown from "./herodropdown";
 import {DeckCard} from "../../lib/types";
 import CardDisplayMini from "../common/carddisplaymini";
 
 import Image from "next/image";
 import amberImg from "../../../public/amber.png"
-import {useState} from "react";
+import React, {useState} from "react";
 import {exportDeckToClipboard, getOffAffPenalty} from "../../lib/utils";
 import {SessionContextValue} from "next-auth/react";
 import {Session} from "next-auth";
@@ -13,6 +13,8 @@ import {trpc} from "../../utils/trpc";
 import {reporter} from "next/dist/trace/report";
 import {PulseLoader} from "react-spinners";
 import Button from "../common/button";
+import slugify from "slugify";
+import EditDeckModal from "../common/editDeckModal";
 
 const getDeckCost = (deck: DeckCard[]) => {
     let amberSum = 0
@@ -43,11 +45,15 @@ type OptionProps = {
     toggleBrewing: () => void,
     isBrewing: boolean,
     session: Session | null,
+    isParamLoading: boolean,
+    deckDescription: string,
+    deckId: string,
+    deckName: string,
+    setDeckName: (name: string) => void,
 }
 
-export default function Options({heros, hero, userDeckCards, addCardsToDeck, removeCardFromDeck, setDeck, setHeroByName, importCardsFromString, toggleBrewing, isBrewing, session}: OptionProps) {
+export default function Options({heros, hero, userDeckCards, addCardsToDeck, removeCardFromDeck, setDeck, setHeroByName, importCardsFromString, toggleBrewing, isBrewing, session, isParamLoading, deckDescription, deckId, deckName, setDeckName}: OptionProps) {
 
-    const [deckName, setDeckName] = useState("")
 
     const importDeckFromClipboard = async () => {
         const clipboard = await navigator.clipboard.readText()
@@ -68,40 +74,31 @@ export default function Options({heros, hero, userDeckCards, addCardsToDeck, rem
             setHeroByName(heroName)
         }
 
-        importCardsFromString(lines)
+        await importCardsFromString(lines)
     }
 
-    const saveDeckMutation = trpc.useMutation(["decks.save"], {
-        async onSuccess() {
-            // TODO: lead to deck list page
-            console.log("Saved deck")
-        }}
-    )
 
-    const saveDeck = async () => {
-        if(!session?.user || session.user.email == null){
-            return
-        }
-
-        const response = await saveDeckMutation.mutateAsync({
-            // TODO: figure frontCard
-            frontCard: "",
-            userEmail: session.user.email,
-            name: deckName,
-            heroId: hero.id,
-            cards: userDeckCards.map(c => {
-                return {
-                    cardId: c.card.id,
-                    count: c.count,
-                    affinityBasedCost: c.affinityBasedCost,
-                }
-            })
-        })
+    const [isEditDeckModalOpen, setIsEditDeckModalOpen] = useState(false)
+    const toggleEditDeckModal = () => {
+        setIsEditDeckModalOpen(!isEditDeckModalOpen)
     }
 
     return (
         <div className={"w-full md:w-60 h-screen bg-main-500 shadow-2xl"}>
             <div className={"flex flex-col gap-3 m-3 h-[96%]"}>
+
+                {isEditDeckModalOpen &&
+                    <EditDeckModal
+                        cards={userDeckCards}
+                        hero={hero}
+                        deckName={deckName}
+                        toggleModal={toggleEditDeckModal}
+                        description={deckDescription}
+                        session={session}
+                        id={deckId}
+                    />
+                }
+
                 {/* Analyse */}
                 {isBrewing ?
                     <Button onClick={toggleBrewing}>
@@ -144,16 +141,23 @@ export default function Options({heros, hero, userDeckCards, addCardsToDeck, rem
                     className={"bg-main-300 grow p-1 rounded shadow max-h-[55%] relative"}
                 >
                     {/* Call to Action on empty list */}
-                    {userDeckCards.length <= 0 &&
+                    {userDeckCards.length <= 0 ?
+                        isParamLoading ?
+                        <div className={"text-center italic text-main-700 p-10"}>
+                            Loading...
+                        </div>
+                        :
                         <div className={"text-center italic text-main-700 p-10"}>
                             Import cards from your clipboard or click on images to add them!
                         </div>
+                        :
+                        <></>
                     }
 
                     {/* List of cards */}
                     {userDeckCards.length > 0 &&
                         <div className={"overflow-y-scroll no-scrollbar h-full will-change-transform"}>
-                            <div className={"mb-5 mt-3"}>
+                            <div className={"mb-5 mt-3 w-full"}>
                                 {userDeckCards.map(dc => {
                                     return (
                                         <CardDisplayMini
@@ -161,7 +165,7 @@ export default function Options({heros, hero, userDeckCards, addCardsToDeck, rem
                                             deckCard={dc}
                                             onLeftClick={() => removeCardFromDeck(dc)}
                                             onRightClick={() => addCardsToDeck([dc])}
-                                            tooltipOffset={-150}
+                                            tooltipOffset={-210}
                                         />
                                     )
                                 })}
@@ -212,14 +216,15 @@ export default function Options({heros, hero, userDeckCards, addCardsToDeck, rem
                 </Button>
 
                 {/* Save */}
-                <Button disabled={!session || saveDeckMutation.isLoading || userDeckCards.length <= 0 } onClick={saveDeck}>
+                <Button
+                    disabled={!session || userDeckCards.length <= 0 }
+                    // onClick={saveDeck}
+                    onClick={toggleEditDeckModal}
+                >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
                     </svg>
                     Save
-                    {saveDeckMutation.isLoading &&
-                        <PulseLoader size={5} color={'#99816A'}/>
-                    }
                 </Button>
 
                 {/* Export */}

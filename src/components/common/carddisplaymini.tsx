@@ -9,27 +9,8 @@ import manaCircle_neutral from "../../../public/builder/greymanacircle.png";
 import {useState} from "react";
 import ReactTooltip from "react-tooltip";
 import ToolTipProvider from "./toolTipProvider";
+import {get_rgba} from "../../lib/utils";
 
-const get_rgba = (affinity: Affinity) => {
-    let rgba
-    switch (affinity) {
-        case Affinity.NEUTRAL:
-            rgba = "rgb(191,187,182, 1)"
-            break
-        case Affinity.MIND:
-            rgba = "rgb(42,123,222, 1)"
-            break
-        case Affinity.STRENGTH:
-            rgba = "rgb(212,34,72, 1)"
-            break
-        case Affinity.SPIRIT:
-            rgba = "rgb(34,186,41, 1)"
-            break
-        default:
-            rgba = "rgba(1,1,1,1)"
-    }
-    return rgba
-}
 
 type CardDisplayMiniProps = {
     deckCard: DeckCard,
@@ -43,7 +24,7 @@ export default function CardDisplayMini({deckCard, onLeftClick, onRightClick, to
     return(
         <ToolTipProvider link={deckCard.card.link} tooltipOffset={tooltipOffset}>
             <div
-                className={"max-w-sm w-full h-[35px] my-1 bg-main-400 no-select rollout hover:scale-y-110 relative cursor-pointer"}
+                className={"w-full h-[35px] my-1 bg-main-400 no-select rollout hover:scale-y-110 relative cursor-pointer"}
                 onContextMenu={(e) => {
                     e.preventDefault()
                     onRightClick ? onRightClick() : null

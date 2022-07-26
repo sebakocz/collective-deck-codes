@@ -61,3 +61,24 @@ export const exportDeckToClipboard = (deckName: string, deck: DeckCard[], hero: 
 
     navigator.clipboard.writeText(deckExportText)
 }
+
+export const get_rgba = (affinity: Affinity) => {
+    let rgba
+    switch (affinity) {
+        case Affinity.NEUTRAL:
+            rgba = "rgb(191,187,182, 1)"
+            break
+        case Affinity.MIND:
+            rgba = "rgb(42,123,222, 1)"
+            break
+        case Affinity.STRENGTH:
+            rgba = "rgb(212,34,72, 1)"
+            break
+        case Affinity.SPIRIT:
+            rgba = "rgb(34,186,41, 1)"
+            break
+        default:
+            rgba = "rgba(1,1,1,1)"
+    }
+    return rgba
+}

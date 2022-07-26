@@ -19,10 +19,38 @@ import {useSession} from "next-auth/react";
 // const ToolTipProvider = React.lazy(() => import("../components/toolTipProvider"));
 import ToolTipProvider from "../components/common/toolTipProvider";
 import ReactTooltip from "react-tooltip";
+import {useRouter} from "next/router";
+import {getCustomCardById} from "../utils/collactiveapi";
 
 const Brew: NextPage = () => {
 
     const { data: session } = useSession()
+
+    const [deckDescription, setDeckDescription] = useState("");
+
+    const [deckName, setDeckName] = useState("")
+
+    // TODO: make sure you can't edit other's decks!!
+    const router = useRouter()
+    let {id} = router.query
+
+    if(typeof id !== "string"){
+        id = ""
+    }
+
+    const deckParamImport = trpc.useQuery(["decks.getById", {id}], {
+        refetchOnReconnect: false,
+        // has to be commented out in order for deck to load when just browsing the app
+        // refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        async onSuccess(data) {
+            const deck = data?.cards || []
+            addCardsToDeck(deck)
+            setDeckDescription(data?.description || "")
+            setHero(data?.hero || noHero)
+            setDeckName(data?.name || "")
+        }
+    })
 
     const standardCardsImport = trpc.useQuery(["cards.getStandard"], {
         refetchOnReconnect: false,
@@ -35,6 +63,13 @@ const Brew: NextPage = () => {
         refetchOnMount: false,
         refetchOnWindowFocus: false,
     })
+
+    const customCardsImport = trpc.useQuery(["cards.getCustom"], {
+        refetchOnReconnect: false,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+    })
+
 
     const [currentCardsImport, setCurrentCardsImport] = useState("standard")
     const changeFormat = (format: string) => {
@@ -50,7 +85,7 @@ const Brew: NextPage = () => {
         deckId: ""
     }))
 
-    const {hero, heros, setHeroByName} = useHero()
+    const {hero, setHero, heros, setHeroByName} = useHero()
 
     useEffect(() =>{
         const newDeckCards = deck.map(card => {
@@ -93,7 +128,13 @@ const Brew: NextPage = () => {
         setIsBrewing(!isBrewing)
     }
 
-    const importCardsFromString = (cardsString: string[]) => {
+    const addCardToDatabaseMutation = trpc.useMutation(["cards.create"])
+
+    const importCardsFromString = async (cardsString: string[]) => {
+
+        console.log("importing cards")
+        console.log(cardsString)
+
         let newCards: DeckCard[] = []
         for(let i=0; i < cardsString.length; i++){
             const line = cardsString[i]
@@ -107,6 +148,7 @@ const Brew: NextPage = () => {
                 return
             }
 
+            // find via id
             const card_uid = /([a-z]|[0-9]){8}-([a-z]|[0-9]){4}-([a-z]|[0-9]){4}-([a-z]|[0-9]){4}-([a-z]|[0-9]){12}/.exec(name)
             if(card_uid && typeof card_uid != 'undefined') {
                 const card = legacyCardsImport.data?.find(c => c.id == card_uid[0])
@@ -118,9 +160,11 @@ const Brew: NextPage = () => {
                         cardId: card.id,
                         deckId: ""
                     })
+                    continue
                 }
-                continue
             }
+
+            // find via name
             const card = legacyCardsImport.data?.find(c => c.name == name)
             if(card){
                 newCards.push({
@@ -130,16 +174,56 @@ const Brew: NextPage = () => {
                     cardId: card.id,
                     deckId: ""
                 })
+                continue
+            }
+
+            // find custom same custom card in db
+            if(card_uid && typeof card_uid != 'undefined') {
+                const card = customCardsImport.data?.find(c => c.id == card_uid[0])
+                if(card){
+                    newCards.push({
+                        card: card,
+                        count: Number(count),
+                        affinityBasedCost: getOffAffPenalty(card, hero),
+                        cardId: card.id,
+                        deckId: ""
+                    })
+                    continue
+                }
+
+
+                // if not found in db but a valid card id, add to db and push to decklist
+                if(card_uid[0]) {
+                    // get Card via fetching from Collective API
+                    const customCard = await getCustomCardById(card_uid[0])
+
+                    // store card in db
+                    if(customCard){
+                        addCardToDatabaseMutation.mutate({
+                            card: {
+                                ...customCard
+                            }
+                        })
+
+                        // push to newCards
+                        newCards.push({
+                            card: customCard,
+                            count: Number(count),
+                            affinityBasedCost: getOffAffPenalty(customCard, hero),
+                            cardId: customCard.id,
+                            deckId: ""
+                        })
+                    }
             }
         }
-
+    }
         addCardsToDeck(newCards)
     }
 
     return (
         <>
             <Head>
-                <title>Collective Decks - Brew</title>
+                <title>Brew</title>
             </Head>
             <div className={"flex flex-wrap w-full h-screen"}>
                 <Options
@@ -154,6 +238,11 @@ const Brew: NextPage = () => {
                     toggleBrewing={toggleBrewing}
                     isBrewing={isBrewing}
                     session={session}
+                    isParamLoading={deckParamImport.isLoading}
+                    deckDescription={deckDescription}
+                    deckId={id}
+                    deckName={deckName}
+                    setDeckName={setDeckName}
                 />
                 <main className={"p-1 md:p-8 flex-1 h-full"}>
                     {isBrewing ?

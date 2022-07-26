@@ -8,7 +8,6 @@ import 'rc-dropdown/assets/index.css';
 import FormatDropdown from "./formatdropdown";
 import {quickSearchFilter} from "../../lib/utils";
 
-// TODO: use this
 import { useDebounce } from 'use-debounce';
 import {DeckCard} from "../../lib/types";
 import CardPoolView from "./cardpoolview";
@@ -21,7 +20,6 @@ const QuickSearchBar = ({filter}: any) => {
     const [debouncedSearch] = useDebounce(search, 500);
     const onInput = () => (e: any) => {
         setSearch(e.target.value);
-        console.log(e.target.value);
     }
 
     useEffect(() => {

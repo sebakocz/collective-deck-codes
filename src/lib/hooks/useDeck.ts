@@ -21,6 +21,7 @@ export function useDeck(){
                 new_deckCards.push(cards[i]!)
             }
         }
+
         setDeck(sortCards([
             ...deck,
             ...new_deckCards
