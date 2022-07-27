@@ -52,7 +52,7 @@ _Odious Studios LLC, Collective: The Community Created Card Game, and their logo
 
 ## :coffee: Support
 
-To ensure that I can keep devoting my sweat, blood and tears into projects like this please consider tossing me a coffee or two. IT's ok if it arrives late, I drink mine usually cold anyways.
+To ensure that I can keep devoting my sweat, blood and tears into projects like this please consider tossing me a coffee or two.
  
 <a href="https://www.buymeacoffee.com/sevas" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
