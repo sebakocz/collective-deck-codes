@@ -6,7 +6,7 @@ import {prisma} from "../../server/db/client";
 import {GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType} from "next";
 import slugify from "slugify";
 import Button from "../../components/common/button";
-import {exportDeckToClipboard, get_rgba, getHeroIcon, noHero} from "../../lib/utils";
+import {exportDeckToClipboard, get_rgb, getHeroIcon, noHero} from "../../lib/utils";
 import {Affinity, Type} from "@prisma/client";
 import {Tooltip} from "react-tippy";
 import Head from "next/head";
@@ -139,7 +139,7 @@ const DeckProfile = ( props: InferGetStaticPropsType<typeof getStaticProps>) => 
             <Head>
                 <title>{deck.name}</title>
                 <meta name="description" content={(deck.description || "No Description.") + `\n~ by ${deck.user.name}`} />
-                <meta name="theme-color" content={get_rgba(deck.hero?.affinity || Affinity.NEUTRAL)} />
+                <meta name="theme-color" content={get_rgb(deck.hero?.affinity || Affinity.NEUTRAL)} />
                 <meta property="og:image" content={getHeroIcon(deck.hero?.name)}/>
                 <meta name="og:title" content={`${deck.name}`} />
                 <meta name="og:description" content={(deck.description || "No Description.") + `\n~ by ${deck.user.name}`} />

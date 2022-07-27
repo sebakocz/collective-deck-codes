@@ -9,7 +9,7 @@ import manaCircle_neutral from "../../../public/builder/greymanacircle.png";
 import {useState} from "react";
 import ReactTooltip from "react-tooltip";
 import ToolTipProvider from "./toolTipProvider";
-import {get_rgba} from "../../lib/utils";
+import {get_rgb} from "../../lib/utils";
 
 
 type CardDisplayMiniProps = {
@@ -34,7 +34,7 @@ export default function CardDisplayMini({deckCard, onLeftClick, onRightClick, to
 
                 {/* Card Background */}
                 <div className={"h-full relative"}>
-                    <div className={"w-full absolute h-full"} style={{background: `linear-gradient(90deg, ${get_rgba(deckCard.card.affinity)} 40%, rgba(196, 196, 196, 0) 80%)`}}/>
+                    <div className={"w-full absolute h-full"} style={{background: `linear-gradient(90deg, ${get_rgb(deckCard.card.affinity)} 40%, rgba(196, 196, 196, 0) 80%)`}}/>
                     <div className={"miniCardImage"} style={{backgroundImage: `url(${deckCard.card.image})`}}/>
                 </div>
 

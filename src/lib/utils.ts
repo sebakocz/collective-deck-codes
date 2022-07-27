@@ -64,25 +64,25 @@ export const exportDeckToClipboard = (deckName: string, deck: DeckCard[], hero: 
     navigator.clipboard.writeText(deckExportText)
 }
 
-export const get_rgba = (affinity: Affinity) => {
-    let rgba
+export const get_rgb = (affinity: Affinity) => {
+    let rgb
     switch (affinity) {
         case Affinity.NEUTRAL:
-            rgba = "rgb(191,187,182, 1)"
+            rgb = "rgb(191,187,182)"
             break
         case Affinity.MIND:
-            rgba = "rgb(42,123,222, 1)"
+            rgb = "rgb(42,123,222)"
             break
         case Affinity.STRENGTH:
-            rgba = "rgb(212,34,72, 1)"
+            rgb = "rgb(212,34,72)"
             break
         case Affinity.SPIRIT:
-            rgba = "rgb(34,186,41, 1)"
+            rgb = "rgb(34,186,41)"
             break
         default:
-            rgba = "rgba(1,1,1,1)"
+            rgb = "rgba(1,1,1)"
     }
-    return rgba
+    return rgb
 }
 
 export function getHeroIcon(heroName: string | undefined){
