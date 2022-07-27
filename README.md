@@ -50,7 +50,7 @@ _Odious Studios LLC, Collective: The Community Created Card Game, and their logo
 * I didn't work on this project _alone_, my loyal friend [Copilot](https://github.com/features/copilot) was helping out too
 * I might start dev-blogging soon™
 
-## 💰 Support
+## :coffee: Support
 
 To ensure that I can keep devoting my sweat, blood and tears into projects like this please consider tossing me a coffee or two.
 
