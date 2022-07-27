@@ -29,9 +29,6 @@
 * More complex filters
 * Uploading custom formats
 * Full deck image in discord embeds
-* Private Deck
-* Deck articles support
-* Dark mode
 
 ## ⚖️ Legal
 
