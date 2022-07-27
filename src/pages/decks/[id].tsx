@@ -6,7 +6,7 @@ import {prisma} from "../../server/db/client";
 import {GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType} from "next";
 import slugify from "slugify";
 import Button from "../../components/common/button";
-import {exportDeckToClipboard, get_rgba, noHero} from "../../lib/utils";
+import {exportDeckToClipboard, get_rgba, getHeroIcon, noHero} from "../../lib/utils";
 import {Affinity, Type} from "@prisma/client";
 import {Tooltip} from "react-tippy";
 import Head from "next/head";
@@ -140,12 +140,13 @@ const DeckProfile = ( props: InferGetStaticPropsType<typeof getStaticProps>) => 
                 <title>{deck.name}</title>
                 <meta name="description" content={(deck.description || "No Description.") + `\n~ by ${deck.user.name}`} />
                 <meta name="theme-color" content={get_rgba(deck.hero?.affinity || Affinity.NEUTRAL)} />
-                <meta property="og:image" content={`https://www.collective.gg/emotes/${slugify(deck?.hero?.name || "", {replacement: '', lower: true})}_thumb.png`}/>
-                <meta name="og:title" content={`${deck.name} - by ${deck.user.name}`} />
+                <meta property="og:image" content={getHeroIcon(deck.hero?.name)}/>
+                <meta name="og:title" content={`${deck.name}`} />
                 <meta name="og:description" content={(deck.description || "No Description.") + `\n~ by ${deck.user.name}`} />
                 <meta property="og:type" content="article" />
 
-                <meta name="twitter:card" content="https://s3.us-east-2.amazonaws.com/files.collective.gg/p/canvas-images/2e793520-ed64-11eb-89bb-8d69998314a9.png"/>
+                {/* TODO - this doesn't work */}
+                {/*<meta name="twitter:card" content="https://s3.us-east-2.amazonaws.com/files.collective.gg/p/canvas-images/2e793520-ed64-11eb-89bb-8d69998314a9.png"/>*/}
 
                 <link rel="icon" href="/favicon.ico" />
             </Head>
@@ -169,7 +170,7 @@ const DeckProfile = ( props: InferGetStaticPropsType<typeof getStaticProps>) => 
 
                     {/* Hero Icon */}
                     <div className={"w-40 h-40 circle"}>
-                        <Image src={`https://www.collective.gg/emotes/${slugify(deck?.hero?.name || "", {replacement: '', lower: true})}_thumb.png`}
+                        <Image src={getHeroIcon(deck.hero?.name)}
                                width={250}
                                height={250}
                                alt={deck.hero?.name}

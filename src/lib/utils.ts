@@ -1,5 +1,7 @@
 import {Affinity, Card, Hero, Rarity} from "@prisma/client";
 import {DeckCard} from "./types";
+import slugify from "slugify";
+import noHeroImg from "../../public/nohero_icon.png"
 
 export const nameFilter = (f:DeckCard, input:string) => f.card.name.toLowerCase().includes(input)
 export const tribeFilter = (f:DeckCard, input:string) => f.card.tribe?.toLowerCase().includes(input)
@@ -81,4 +83,12 @@ export const get_rgba = (affinity: Affinity) => {
             rgba = "rgba(1,1,1,1)"
     }
     return rgba
+}
+
+export function getHeroIcon(heroName: string | undefined){
+    if (heroName == "No Hero" || heroName == "" || typeof heroName == "undefined"){
+        return noHeroImg.src
+    }
+
+    return `https://www.collective.gg/emotes/${slugify(heroName, {replacement: '', lower: true})}_thumb.png`
 }

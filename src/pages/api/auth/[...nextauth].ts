@@ -8,6 +8,8 @@ import bcrypt from "bcrypt"
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "../../../server/db/client";
 
+import parrotImg from "/public/Parroting_Parrot.png";
+
 // const confirmPasswordHash = (plainPassword: string, hashedPassword: string) => {
 //   return new Promise(resolve => {
 //     bcrypt.compare(plainPassword, hashedPassword, function(err, res) {
@@ -88,6 +90,11 @@ export const authOptions: NextAuthOptions = {
   // secret: "asdasd",
   // important if we want to use CredentialsProvider
   // session: {strategy: 'jwt'},
+    theme: {
+        colorScheme: 'auto', // "auto" | "dark" | "light"
+        brandColor: '#E4D6C1', // Hex color code #33FF5D
+        logo: parrotImg.src, // Absolute URL to image
+    }
 };
 
 export default NextAuth(authOptions);

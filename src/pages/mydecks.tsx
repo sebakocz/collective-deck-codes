@@ -7,6 +7,7 @@ import Image from "next/image";
 import slugify from "slugify";
 import Button from "../components/common/button";
 import {BeatLoader} from "react-spinners";
+import {getHeroIcon} from "../lib/utils";
 
 type DeckSlotProps = {
     index: number,
@@ -35,7 +36,7 @@ const DeckSlot = ({deck, index, onDelete}: DeckSlotProps) => {
                         {/* Hero Circle */}
                         <div className={"absolute -bottom-24 w-44 bg-main-400 mx-auto rounded-full drop-shadow-xl"}>
                             <div className={"deck-slot-hero-circle w-40 mx-auto"}>
-                                <Image src={`https://www.collective.gg/emotes/${slugify(deck.hero?.name || "", {replacement: '', lower: true})}_thumb.png`}
+                                <Image src={getHeroIcon(deck.hero?.name)}
                                        width={180}
                                        height={180}
                                        alt={deck.hero?.name}

@@ -1,6 +1,6 @@
 import parrot_img from "../../../public/Parroting_Parrot.png"
 import Image from "next/image";
-import {useSession} from "next-auth/react";
+import {useSession, signOut, signIn} from "next-auth/react";
 import Link from "next/link";
 import {useState} from "react";
 
@@ -61,21 +61,34 @@ export default function Sidenav(){
                         </SidenavIcon>
                     }
 
+                    {/*<SidenavIcon label={"Credits"} link={"/credits"}>*/}
+                    {/*    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>*/}
+                    {/*        <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />*/}
+                    {/*    </svg>*/}
+                    {/*</SidenavIcon>*/}
+
                     {!session &&
-                        <SidenavIcon link={"/api/auth/signin"} label={"Sign In"}>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                        </SidenavIcon>
+                        <div onClick={() => signIn('discord')}>
+                            <SidenavIcon link={"#"} label={"Sign In"}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                            </SidenavIcon>
+                        </div>
                     }
 
                     {session &&
-                        <SidenavIcon link={"/api/auth/signout"} label={"Sign out"}>
+                    <div onClick={() => signOut()}>
+                        <SidenavIcon
+                            link={"#"}
+                            // link={"/api/auth/signout"}
+                            label={"Sign out"}
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
                             </svg>
                         </SidenavIcon>
-                    }
+                    </div>                    }
                 </nav>
             </div>
 

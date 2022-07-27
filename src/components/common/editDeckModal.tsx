@@ -8,6 +8,7 @@ import {trpc} from "../../utils/trpc";
 import {Session} from "next-auth";
 import {PulseLoader} from "react-spinners";
 import {useRouter} from "next/router";
+import {getHeroIcon} from "../../lib/utils";
 
 type EditDeckModalProps = {
     cards: DeckCard[],
@@ -121,7 +122,7 @@ const EditDeckModal = ({cards, hero, deckName, description, toggleModal, session
                     {/* Hero Icon */}
                     <div className={"row-span-3 col-span-3 flex justify-center items-center"}>
                         <div className={"w-36 h-36 circle"}>
-                            <Image src={`https://www.collective.gg/emotes/${slugify(hero.name, {replacement: '', lower: true})}_thumb.png`}
+                            <Image src={getHeroIcon(hero.name)}
                                    width={150}
                                    height={150}
                                    alt={hero.name}
