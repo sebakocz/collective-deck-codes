@@ -8,11 +8,15 @@
 
 #### ⭐ Browsing the Standard and Legacy cardpools to build your deck!
 
+![demo](https://media1.giphy.com/media/J3lVhHhZmK5BwLZE09/giphy.gif?cid=790b7611019eb0bf4473d141f2b0b2a19f1e628162a0b071&rid=giphy.gif)
+
 #### ⭐ Complex card filters!
 
-#### ⭐ Importing from and exporting to the clipboard to use in-game!
+<img src="https://i.imgur.com/4e4M8Er.png" width=400/>
 
-#### ⭐ Sharing deck profiles with others via social media!
+#### ⭐ Sharing deck profiles with others via import/export or social media!
+
+<img src="https://i.imgur.com/sNFZyIz.png" width=400 />
 
 ### 🍀 Others
 
@@ -44,8 +48,7 @@ _Odious Studios LLC, Collective: The Community Created Card Game, and their logo
 ### 🤓 Info for nerds
 
 * This is an app bootstrapped according to the [init.tips](https://init.tips) stack, also known as the T3-Stack
-* I dind't work on this project _alone_, my loyal friend [Copilot](https://github.com/features/copilot) was helping out too
-* Icons are from [Hero Icons](https://heroicons.com/)
+* I didn't work on this project _alone_, my loyal friend [Copilot](https://github.com/features/copilot) was helping out too
 * I might start dev-blogging soon™
 
 ## 💰 Support
