@@ -10,7 +10,7 @@ export const abilityFilter = (f:DeckCard, input:string) => f.card.ability?.toLow
 export const artistFilter = (f:DeckCard, input:string) => f.card.artist?.toLowerCase().includes(input)
 export const creatorFilter = (f:DeckCard, input:string) => f.card.creator?.toLowerCase().includes(input)
 export const exclusiveFilter = (f:DeckCard) => !f.card.exclusive
-export const costFilter = (f:DeckCard, input: number) => f.card.cost === Number(input)
+export const costFilter = (f:DeckCard, input: number) => f.affinityBasedCost === Number(input)
 export const atkFilter = (f:DeckCard, input: number) => f.card.atk === Number(input)
 export const hpFilter = (f:DeckCard, input: number) => f.card.hp === Number(input)
 export const affinityMindFilter = (f:DeckCard) => f.card.affinity == Affinity.MIND
