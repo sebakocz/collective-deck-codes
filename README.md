@@ -2,7 +2,7 @@
 
 >_The best place to view, build and analyse your [Collective](https://www.collective.gg/) decks!_
 
-## Features
+## :gear: Features
 
 ### 🥇 Core
 
@@ -32,6 +32,8 @@
 
 ## ⚖️ Legal
 
+The code base undergoes the [MIT License](https://github.com/sebakocz/collective-deck-codes/blob/main/LICENCE.md)
+
 _Odious Studios LLC, Collective: The Community Created Card Game, and their logos are trademarks of Odious Studios LLC in the United States and other countries. © 2022 Odious Studios LLC. All Rights Reserved. This web site is not affiliated with, endorsed, sponsored, or specifically approved by Odious Studios LLC. This web site may use the trademarks and other intellectual property of © 2022 Odious Studios LLC._
 
 ## :heart: Credits
@@ -50,4 +52,8 @@ _Odious Studios LLC, Collective: The Community Created Card Game, and their logo
 
 ## 💰 Support
 
-To ensure that I can keep devoting my hours to projects like this please consider tossing me a coin.
+To ensure that I can keep devoting my sweat, blood and tears into projects like this please consider tossing me a coffee or two.
+
+<a href="https://www.buymeacoffee.com/sevas" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+
+[![Support via PayPal](https://cdn.rawgit.com/twolfson/paypal-github-button/1.0.0/dist/button.svg)](https://www.paypal.me/sebascripts/)
