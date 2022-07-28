@@ -68,19 +68,19 @@ export const get_rgb = (affinity: Affinity) => {
     let rgb
     switch (affinity) {
         case Affinity.NEUTRAL:
-            rgb = "#BFBBB6FF"
+            rgb = "#BFBBB6"
             break
         case Affinity.MIND:
-            rgb = "#2A7BDEFF"
+            rgb = "#2A7BDE"
             break
         case Affinity.STRENGTH:
-            rgb = "#D42248FF"
+            rgb = "#D42248"
             break
         case Affinity.SPIRIT:
-            rgb = "#22BA29FF"
+            rgb = "#22BA29"
             break
         default:
-            rgb = "#010101FF"
+            rgb = "#010101"
     }
     return rgb
 }
