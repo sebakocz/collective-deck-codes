@@ -1,0 +1,36 @@
+# Helper Action to add cards manually on the go when needed
+
+name: add new card
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+    
+      # card input via name (if public!), link or uid
+      card:
+        description: "Card Input: name/link/uid"
+        required: true
+        default: "Parroting Parrot"
+        
+      # 0 - standard, 2 - legacy, 9 - custom (default)
+      state:
+        description: "Card State: 0 - standard, 2 - legacy, 9 - custom (default)"
+        required: false
+        default: "9"
+
+jobs:
+  add:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo ${{ github.event.inputs.card }} ${{ github.event.inputs.state }}
+
