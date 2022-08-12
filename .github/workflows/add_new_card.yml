@@ -17,7 +17,7 @@ on:
       # 0 - standard, 2 - legacy, 9 - custom (default)
       state:
         description: "Card State: 0 - standard, 2 - legacy, 9 - custom (default)"
-        required: false
+        required: true
         default: "9"
 
 jobs:
@@ -32,5 +32,9 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo ${{ github.event.inputs.card }} ${{ github.event.inputs.state }}
+        run: |
+           curl -X POST https://collectivedeck.codes/api/admin/cards/add 
+           -H "Content-Type: application/json"
+           -d '{"cards": {"id": "${{github.inputs.card}}", "state": "${{github.inputs.state}}" } }' 
+           --header 'Authorization: Bearer ${{ secrets.ACTION_KEY_ADD_CARD }}'
 
