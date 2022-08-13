@@ -10,7 +10,7 @@ export async function getSingleCard(card_id: string){
     return await (await fetch("https://server.collective.gg/api/card/" + card_id)).json()
 }
 
-export async function getCustomCardById(card_id: string){
+export async function getCustomCardById(card_id: string, card_state: number = 9){
     // TODO: you could write tests for this function
 
     const card_api: any = await getSingleCard(card_id)
@@ -47,13 +47,14 @@ export async function getCustomCardById(card_id: string){
         release:    new Date(card_api.card.dtReleased),
         week:       card_api.card.releaseGroup,
         image:      findProperty(card_api.card.Text.Properties, 'PortraitUrl').Expression.Value,
-        state:      9
+        state:      [card_state]
     }
 
     return card
 }
 
 export function findProperty(parent_node: any, symbol_name: String){
+
     // const card_img = findProperty(card_data.card.Text.Properties, 'PortraitUrl').Expression.Value;
     // find correct Property index
     for(let i = 0; i < parent_node.length; i++){
@@ -61,6 +62,8 @@ export function findProperty(parent_node: any, symbol_name: String){
             return parent_node[i];
         }
     }
+
+
     return {Expression: {Value: null}};
 }
 
@@ -72,8 +75,11 @@ function getAbilityText(card_api: any){
         ability_text += findProperty(json.Text.PlayAbility.Properties, 'AbilityText').Expression.Value + "\n"
     }
 
+
     json.Text.Abilities.forEach((ability: any) => {
-        ability_text += findProperty(ability.Properties, 'AbilityText').Expression.Value + "\n"
+        if (ability.Properties) {
+            ability_text += findProperty(ability.Properties, 'AbilityText').Expression.Value + "\n"
+        }
     })
 
     return ability_text

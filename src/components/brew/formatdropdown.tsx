@@ -7,7 +7,7 @@ type FormatDropdownProps = {
 }
 
 export default function FormatDropdown({changeFormat}: FormatDropdownProps){
-    const format_options = ["Standard", "Legacy", "Custom Format..."]
+    const format_options = ["Standard", "Legacy", "New Standard"]
     const [format, setFormat] = useState(format_options[0])
     const menu = (
         <Menu

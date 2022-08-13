@@ -58,6 +58,12 @@ const Brew: NextPage = () => {
         refetchOnWindowFocus: false,
     })
 
+    const newStandardCardsImport = trpc.useQuery(["cards.getNewStandard"], {
+        refetchOnReconnect: false,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+    })
+
     const legacyCardsImport = trpc.useQuery(["cards.getLegacy"], {
         refetchOnReconnect: false,
         refetchOnMount: false,
@@ -121,7 +127,7 @@ const Brew: NextPage = () => {
     const {deck, setDeck, addCardsToDeck, removeCardFromDeck} = useDeck()
 
     // TODO: doing this on each render is highly inefficient, maybe use memo or something
-    const poolDeckCards = sortCards(getPoolDeckCards((currentCardsImport == "standard" ? standardCardsImport.data : currentCardsImport == "legacy" ? legacyCardsImport.data : [] ) || []))
+    const poolDeckCards = sortCards(getPoolDeckCards((currentCardsImport == "standard" ? standardCardsImport.data : currentCardsImport == "legacy" ? legacyCardsImport.data : currentCardsImport == "new standard" ? newStandardCardsImport.data : [] ) || []))
 
     const [isBrewing, setIsBrewing] = useState(true)
     const toggleBrewing = () => {
@@ -247,7 +253,7 @@ const Brew: NextPage = () => {
                 <main className={"p-1 md:p-8 flex-1 h-full"}>
                     {isBrewing ?
                         <Cardlibrary
-                            isLoadingImport={currentCardsImport == "standard" ? standardCardsImport.isLoading : currentCardsImport == "legacy" ? legacyCardsImport.isLoading : false}
+                            isLoadingImport={currentCardsImport == "standard" ? standardCardsImport.isLoading : currentCardsImport == "legacy" ? legacyCardsImport.isLoading : currentCardsImport == "new standard" ? newStandardCardsImport.isLoading : false}
                             addCardsToDeck={addCardsToDeck}
                             maxCards={poolDeckCards.length}
                             deckCards={applyFilters(poolDeckCards)}

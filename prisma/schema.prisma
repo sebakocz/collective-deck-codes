@@ -8,7 +8,7 @@ generator client {
 datasource db {
   provider = "postgres"
   url      = env("DATABASE_URL")
-  // TODO: add shadow db
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model Example {
@@ -82,7 +82,7 @@ model Card {
   release   DateTime?
   week      String?
   image     String
-  state     Int?
+  state     Int[]
   decks     CardsOnDecks[]
 }
 

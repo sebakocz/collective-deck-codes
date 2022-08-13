@@ -16,15 +16,26 @@ export default function ManaCurve({deck}: ManaCurveProps){
             deckData[offAff].cost = offAff
             deckData[offAff][dc.card.affinity] = (deckData[offAff][dc.card.affinity] || 0) + dc.count
         })
+
+        // fixing empty values in array that lead to errors
+        for (let i = 0; i < deckData.length; i++) {
+            if (!deckData[i]) {
+                deckData[i] = {
+                    cost: i
+                }
+            }
+        }
     }
     fillDeckData()
+
+    console.log(deckData)
 
     return(
         <ResponsiveContainer width="100%" height="100%">
             <BarChart
                 width={500}
                 height={300}
-                data={deckData}
+                data={deckData.flat()}
                 margin={{
                     top: 20,
                     right: 20,
