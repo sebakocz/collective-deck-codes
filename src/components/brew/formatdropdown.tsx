@@ -1,13 +1,17 @@
 import Menu, {Item as MenuItem} from "rc-menu";
 import Dropdown from "rc-dropdown";
 import {useState} from "react";
+import {useRouter} from "next/router";
 
 type FormatDropdownProps = {
     changeFormat: Function
 }
 
 export default function FormatDropdown({changeFormat}: FormatDropdownProps){
-    const format_options = ["Standard", "Legacy", "New Standard"]
+    const router = useRouter()
+    let {secretpool} = router.query
+
+    const format_options = secretpool == "true" ? ["Standard", "Legacy", "New Standard"] : ["Standard", "Legacy"]
     const [format, setFormat] = useState(format_options[0])
     const menu = (
         <Menu
