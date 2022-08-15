@@ -8,6 +8,8 @@ type FormatDropdownProps = {
 }
 
 export default function FormatDropdown({changeFormat}: FormatDropdownProps){
+
+    // ?secretpool=true for testing purposes of the new standard set
     const router = useRouter()
     let {secretpool} = router.query
 
