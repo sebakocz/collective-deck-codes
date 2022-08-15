@@ -77,6 +77,10 @@ function getAbilityText(card_api: any){
 
 
     json.Text.Abilities.forEach((ability: any) => {
+        if(ability.$type?.startsWith("Predefines.")){
+            ability_text += ability.$type.substring(11) + " "
+        }
+
         if (ability.Properties) {
             ability_text += findProperty(ability.Properties, 'AbilityText').Expression.Value + "\n"
         }
