@@ -138,7 +138,7 @@ export default function Options({heros, hero, userDeckCards, addCardsToDeck, rem
 
                 {/*  Deck List Section */}
                 <div
-                    className={"bg-main-300 grow p-1 rounded shadow max-h-[55%] relative"}
+                    className={"bg-main-300 grow p-1 rounded shadow max-h-full relative"}
                 >
                     {/* Call to Action on empty list */}
                     {userDeckCards.length <= 0 ?
