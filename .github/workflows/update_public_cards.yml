@@ -6,9 +6,12 @@ name: update public cards
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  
+  schedule:
+    - cron: '0 5 * * *'
 
 jobs:
-  add:
+  update:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -19,7 +22,6 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
+        timeout-minutes: 1
         run: |
-           curl -X POST https://collectivedeck.codes/api/admin/updatedb 
-           -H "Content-Type: application/json"
-           --header 'Authorization: Bearer ${{ secrets.ACTION_KEY_DB_UPDATE }}'
+           curl -X POST https://collectivedeck.codes/api/admin/updatedb --header 'Authorization: Bearer ${{ secrets.ACTION_KEY_DB_UPDATE }}'
