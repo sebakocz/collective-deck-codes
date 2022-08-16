@@ -1,0 +1,25 @@
+# Helper Action to add cards manually on the go when needed
+
+name: update public cards
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  add:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: |
+           curl -X POST https://collectivedeck.codes/api/admin/updatedb 
+           -H "Content-Type: application/json"
+           --header 'Authorization: Bearer ${{ secrets.ACTION_KEY_DB_UPDATE }}'
