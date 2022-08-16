@@ -103,6 +103,8 @@ const updatedb = async (req: NextApiRequest, res: NextApiResponse) => {
                 }
             )))
 
+            console.log("FINISHED: Cards updated.")
+
             res.status(200).json({ success: 'true' })
             return
         } else {
