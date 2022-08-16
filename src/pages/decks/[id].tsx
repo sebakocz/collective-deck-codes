@@ -166,25 +166,25 @@ const DeckProfile = ( props: InferGetStaticPropsType<typeof getStaticProps>) => 
             <div className={"flex flex-col justify-start items-center w-full p-5 gap-5"}>
 
                 {/* Header */}
-                <div className={"min-w-[300px] h-40 flex gap-2"}>
+                <div className={"min-w-[300px] flex gap-2 flex-wrap justify-center"}>
 
                     {/* Hero Icon */}
-                    <div className={"w-40 h-40 circle"}>
+                    <div className={"w-40 circle"}>
                         <Image src={getHeroIcon(deck.hero?.name)}
                                width={250}
                                height={250}
                                alt={deck.hero?.name}
-                            // objectFit={"fill"}
+                            // objectFit={"contain"}
                             // layout={"fill"}
                         />
                     </div>
 
                     {/* Deck Info */}
-                    <div className={"grow p-2"}>
+                    <div className={"p-2"}>
                         <div className={"text-2xl font-bold"}>{deck.name}</div>
                         <div className={"text-sm"}>by {deck.user.name}</div>
 
-                        <p className={"italic mt-6"}>
+                        <p className={"italic mt-6 max-w-lg"}>
                             {deck.description || "No description"}
                         </p>
                     </div>
