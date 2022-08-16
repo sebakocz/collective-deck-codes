@@ -46,7 +46,7 @@ export default function FilterView({filter}: FilterViewProps) {
         unit_action_toggle: "Switch between searching for units or actions. Default is both.",
         more_options: "This will be resetting and adding more filters for more complex searching, imagine it being like logical operations. (AND, OR...)",
         reset: "Resets all filters.",
-        rarity: "The Rarity of the card. Default is excluding tokens.",
+        rarity: "The Rarity of the card. Default is excluding tokens. Right click to toggle all but one.",
         atk: "Attack value. You can use additional terms like > or < for more advanced filtering.",
         hp: "Health value. You can use additional terms like > or < for more advanced filtering.",
         mana_cost: "Mana cost value. You can use additional terms like > or < for more advanced filtering.",
@@ -57,7 +57,7 @@ export default function FilterView({filter}: FilterViewProps) {
         ability: 'Look for whole words, parts of words or keywords. Use double parentheses ("" "") if you want to be explicit.',
         name: "The name of the card.",
         exclusive: "Some cards are exclusive - they are only usable by heroes with the same affinity.",
-        affinity: "The affinity of the card."
+        affinity: "The affinity of the card. Default includes all affinities. Right click to toggle all but one."
 
     }
 
@@ -94,7 +94,7 @@ export default function FilterView({filter}: FilterViewProps) {
                     priority
                 />
 
-                {/* Card Cost / Rarity / Exclusivity */}
+                {/* Card Cost / Affinity / Exclusivity */}
                 <div className={"absolute top-4 right-4"}>
                     <Image src={manaCircle_Neutral}
                            alt={""}
@@ -117,6 +117,11 @@ export default function FilterView({filter}: FilterViewProps) {
                     >
                         <div
                             onClick={() => filter.toggleAffinityFilter(affinityNeutralFilter)}
+                            // Right click to toggle all but one
+                            onContextMenu={(e) => {
+                                e.preventDefault()
+                                filter.setAffinityFilters([affinityNeutralFilter])
+                            }}
                             className={`filter-input`}
                         >
                             <div className={`${filter.affinityFilterExists(affinityNeutralFilter) ? "opacity-100" : "opacity-50"}`}>
@@ -130,6 +135,11 @@ export default function FilterView({filter}: FilterViewProps) {
                         </div>
                         <div
                             onClick={() => filter.toggleAffinityFilter(affinityStrengthFilter)}
+                            // Right click to toggle all but one
+                            onContextMenu={(e) => {
+                                e.preventDefault()
+                                filter.setAffinityFilters([affinityStrengthFilter])
+                            }}
                             className={`filter-input`}
                         >
                             <div className={`${filter.affinityFilterExists(affinityStrengthFilter) ? "opacity-100" : "opacity-50"}`}>
@@ -143,6 +153,11 @@ export default function FilterView({filter}: FilterViewProps) {
                         </div>
                         <div
                             onClick={() => filter.toggleAffinityFilter(affinitySpiritFilter)}
+                            // Right click to toggle all but one
+                            onContextMenu={(e) => {
+                                e.preventDefault()
+                                filter.setAffinityFilters([affinitySpiritFilter])
+                            }}
                             className={`filter-input`}
                         >
                             <div className={`${filter.affinityFilterExists(affinitySpiritFilter) ? "opacity-100" : "opacity-50"}`}>
@@ -156,6 +171,11 @@ export default function FilterView({filter}: FilterViewProps) {
                         </div>
                         <div
                             onClick={() => filter.toggleAffinityFilter(affinityMindFilter)}
+                            // Right click to toggle all but one
+                            onContextMenu={(e) => {
+                                e.preventDefault()
+                                filter.setAffinityFilters([affinityMindFilter])
+                            }}
                             className={`filter-input`}
                         >
                             <div className={`${filter.affinityFilterExists(affinityMindFilter) ? "opacity-100" : "opacity-50"}`}>
@@ -265,6 +285,11 @@ export default function FilterView({filter}: FilterViewProps) {
                     <div
                         className={"filter-input"}
                         onClick={() => filter.toggleRarityFilter(rarityTokenFilter)}
+                        // Right click to toggle all but one
+                        onContextMenu={(e) => {
+                            e.preventDefault()
+                            filter.setRarityFilters([rarityTokenFilter])
+                        }}
                     >
                         <div className={`${filter.rarityFilterExists(rarityTokenFilter) ? "opacity-100" : "opacity-50"}`}>
                             <Image src={rarityToken} alt={"Rarity Token"} width={27} height={27} />
@@ -273,7 +298,26 @@ export default function FilterView({filter}: FilterViewProps) {
 
                     <div
                         className={"filter-input"}
+                        onClick={() => filter.toggleRarityFilter(rarityCommonFilter)}
+                        // Right click to toggle all but one
+                        onContextMenu={(e) => {
+                            e.preventDefault()
+                            filter.setRarityFilters([rarityCommonFilter])
+                        }}
+                    >
+                        <div className={`${filter.rarityFilterExists(rarityCommonFilter) ? "opacity-100" : "opacity-50"}`}>
+                            <Image src={rarityCommon} alt={"Rarity Common"} width={27} height={27}/>
+                        </div>
+                    </div>
+
+                    <div
+                        className={"filter-input"}
                         onClick={() => filter.toggleRarityFilter(rarityUncommonFilter)}
+                        // Right click to toggle all but one
+                        onContextMenu={(e) => {
+                            e.preventDefault()
+                            filter.setRarityFilters([rarityUncommonFilter])
+                        }}
                     >
                         <div className={`${filter.rarityFilterExists(rarityUncommonFilter) ? "opacity-100" : "opacity-50"}`}>
                             <Image src={rarityUncommon} alt={"Rarity Uncommon"} width={27} height={27}/>
@@ -282,17 +326,12 @@ export default function FilterView({filter}: FilterViewProps) {
 
                     <div
                         className={"filter-input"}
-                        onClick={() => filter.toggleRarityFilter(rarityCommonFilter)}
-                    >
-                        <div className={`${filter.rarityFilterExists(rarityCommonFilter) ? "opacity-100" : "opacity-50"}`}>
-                            <Image src={rarityCommon} alt={"Rarity Common"} width={27} height={27}/>
-                        </div>
-                    </div>
-
-
-                    <div
-                        className={"filter-input"}
                         onClick={() => filter.toggleRarityFilter(rarityRareFilter)}
+                        // Right click to toggle all but one
+                        onContextMenu={(e) => {
+                            e.preventDefault()
+                            filter.setRarityFilters([rarityRareFilter])
+                        }}
                     >
                         <div className={`${filter.rarityFilterExists(rarityRareFilter) ? "opacity-100" : "opacity-50"}`}>
                             <Image src={rarityRare} alt={"Rarity Rare"} width={27} height={27}/>
@@ -303,6 +342,11 @@ export default function FilterView({filter}: FilterViewProps) {
                     <div
                         className={"filter-input"}
                         onClick={() => filter.toggleRarityFilter(rarityLegendaryFilter)}
+                        // Right click to toggle all but one
+                        onContextMenu={(e) => {
+                            e.preventDefault()
+                            filter.setRarityFilters([rarityLegendaryFilter])
+                        }}
                     >
                         <div className={`${filter.rarityFilterExists(rarityLegendaryFilter) ? "opacity-100" : "opacity-50"}`}>
                             <Image src={rarityLegendary} alt={"Rarity Legendary"} width={27} height={27}/>

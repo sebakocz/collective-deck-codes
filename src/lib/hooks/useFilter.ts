@@ -235,6 +235,8 @@ export default function useFilter(hero: Hero){
         affinityFilterExists,
         rarityFilterExists,
         miscFilterExists,
-        resetFilter
+        resetFilter,
+        setAffinityFilters,
+        setRarityFilters
     }
 }

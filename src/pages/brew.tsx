@@ -121,7 +121,9 @@ const Brew: NextPage = () => {
         affinityFilterExists,
         rarityFilterExists,
         miscFilterExists,
-        resetFilter
+        resetFilter,
+        setAffinityFilters,
+        setRarityFilters
     } = useFilter(hero)
 
     const {deck, setDeck, addCardsToDeck, removeCardFromDeck} = useDeck()
@@ -268,7 +270,9 @@ const Brew: NextPage = () => {
                                 affinityFilterExists,
                                 rarityFilterExists,
                                 miscFilterExists,
-                                resetFilter
+                                resetFilter,
+                                setAffinityFilters,
+                                setRarityFilters
                             }}/>
                         :
                         <Analyse deck={deck}/>
