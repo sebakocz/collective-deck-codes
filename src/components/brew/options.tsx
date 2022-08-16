@@ -15,6 +15,8 @@ import {PulseLoader} from "react-spinners";
 import Button from "../common/button";
 import slugify from "slugify";
 import EditDeckModal from "../common/editDeckModal";
+import {Tooltip} from "react-tippy";
+import collectiveIcon from "../../../public/collective_icon.png";
 
 const getDeckCost = (deck: DeckCard[]) => {
     let amberSum = 0
@@ -85,7 +87,7 @@ export default function Options({heros, hero, userDeckCards, addCardsToDeck, rem
 
     return (
         <div className={"w-full md:w-60 h-screen bg-main-500 shadow-2xl"}>
-            <div className={"flex flex-col gap-3 m-3 h-[96%]"}>
+            <div className={"flex flex-col gap-3 m-3 h-[96%] relative"}>
 
                 {isEditDeckModalOpen &&
                     <EditDeckModal
@@ -138,7 +140,7 @@ export default function Options({heros, hero, userDeckCards, addCardsToDeck, rem
 
                 {/*  Deck List Section */}
                 <div
-                    className={"bg-main-300 grow p-1 rounded shadow max-h-full relative"}
+                    className={"bg-main-300 grow p-1 rounded h-[55%] shadow relative"}
                 >
                     {/* Call to Action on empty list */}
                     {userDeckCards.length <= 0 ?
@@ -156,8 +158,8 @@ export default function Options({heros, hero, userDeckCards, addCardsToDeck, rem
 
                     {/* List of cards */}
                     {userDeckCards.length > 0 &&
-                        <div className={"overflow-y-scroll no-scrollbar h-full will-change-transform"}>
-                            <div className={"mb-5 mt-3 w-full"}>
+                        <div className={"overflow-y-scroll overflow-hidden h-full no-scrollbar will-change-transform"}>
+                            <div className={"mb-5 mt-3 w-full h-full"}>
                                 {userDeckCards.map(dc => {
                                     return (
                                         <CardDisplayMini
@@ -228,12 +230,28 @@ export default function Options({heros, hero, userDeckCards, addCardsToDeck, rem
                 </Button>
 
                 {/* Export */}
-                <Button onClick={() => exportDeckToClipboard(deckName, userDeckCards, hero)}>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                    </svg>
-                    Export
-                </Button>
+                {/*@ts-ignore - https://github.com/tvkhoa/react-tippy/issues/169*/}
+                <Tooltip
+                    title={"Done!"}
+                    trigger={'click'}
+                    theme={'light'}
+                    distance={5}
+                    html={
+                        <div className={"text-center text-main-800 p-2 w-44"}>
+                            {userDeckCards.length > 0 ? "Decklist exported to clipboard!" : "You need to add cards to your deck!"}
+                        </div>
+                    }
+                >
+                    <Button
+                        onClick={() => exportDeckToClipboard(deckName, userDeckCards, hero)}
+                        moreClasses={"w-full"} // tippy workaround
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                        </svg>
+                        Export
+                    </Button>
+                </Tooltip>
             </div>
         </div>
     )
