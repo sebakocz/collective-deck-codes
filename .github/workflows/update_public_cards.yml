@@ -21,4 +21,4 @@ jobs:
       - name: Run a one-line script
         run: |
            curl -X POST https://collectivedeck.codes/api/admin/updatedb
-           --header 'Authorization: Bearer ${{ secrets.ACTION_KEY_DB_UPDATE }}'
+           -H 'Authorization: Bearer ${{ secrets.ACTION_KEY_DB_UPDATE }}'
