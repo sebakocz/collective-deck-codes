@@ -22,6 +22,7 @@ const clearcustompool = async (req: NextApiRequest, res: NextApiResponse) => {
 
             const cards = await prisma.card.findMany({
                 where: {
+                    //@ts-ignore
                     pools: {
                         hasSome: [8]
                     }
