@@ -68,6 +68,7 @@ const add = async (req: NextApiRequest, res: NextApiResponse) => {
                         },
                         update: {
                             ...card,
+                            //@ts-ignore
                             pools: {
                                 push: state
                             }
