@@ -22,7 +22,7 @@ const clearcustompool = async (req: NextApiRequest, res: NextApiResponse) => {
 
             const cards = await prisma.card.findMany({
                 where: {
-                    state: {
+                    pools: {
                         hasSome: [8]
                     }
                 }
@@ -34,8 +34,8 @@ const clearcustompool = async (req: NextApiRequest, res: NextApiResponse) => {
                         id: card.id
                     },
                     data: {
-                        state: {
-                           set: card.state.filter((state: number) => state !== 8)
+                        pools: {
+                           set: card.pools.filter((state: number) => state !== 8)
                         }
                     }
                 })

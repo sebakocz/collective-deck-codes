@@ -28,7 +28,7 @@ export const decksRouter = createRouter()
                         select: {
                             name: true
                         }
-                    },
+                    }
                 }
             });
         }

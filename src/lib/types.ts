@@ -18,6 +18,6 @@ export type Deck = Prisma.DeckGetPayload<{
             select: {
                 name: true
             }
-        },
+        }
     }
 }>

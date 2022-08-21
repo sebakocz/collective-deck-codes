@@ -8,7 +8,7 @@ export const cardsRouter = createRouter()
             return ctx.prisma.card.findMany({
                 where: {
                    state: {
-                       hasSome: [0,2]
+                       in: [0,2]
                    }
                 },
                 orderBy: [
@@ -33,9 +33,7 @@ export const cardsRouter = createRouter()
                     release: {
                         lt: x
                     },
-                    state: {
-                        hasEvery: [0]
-                    }
+                    state: 0
                 },
                 orderBy: [
                     {
@@ -53,7 +51,7 @@ export const cardsRouter = createRouter()
         resolve({ ctx}) {
             return ctx.prisma.card.findMany({
                 where: {
-                    state: {
+                    pools: {
                         hasSome: [8]
                     }
                 },
@@ -75,7 +73,7 @@ export const cardsRouter = createRouter()
             return ctx.prisma.card.findMany({
                 where: {
                     // custom state is 9
-                    state:
+                    pools:
                         {
                             hasEvery: [9]
                         }
@@ -111,7 +109,7 @@ export const cardsRouter = createRouter()
                 type: z.string(),
                 atk: z.number().nullish(),
                 hp: z.number().nullish(),
-                state: z.array(z.number()),
+                state: z.number(),
                 exclusive: z.boolean(),
                 link: z.string(),
                 image: z.string(),

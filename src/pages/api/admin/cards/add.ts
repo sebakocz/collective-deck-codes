@@ -67,7 +67,8 @@ const add = async (req: NextApiRequest, res: NextApiResponse) => {
                             id: card.id
                         },
                         update: {
-                            state: {
+                            ...card,
+                            pools: {
                                 push: state
                             }
                         },

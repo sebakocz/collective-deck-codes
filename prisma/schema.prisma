@@ -64,26 +64,27 @@ model VerificationToken {
 }
 
 model Card {
-  id        String         @id
-  name      String
-  type      Type
-  affinity  Affinity
-  exclusive Boolean
-  rarity    Rarity
-  cost      Int
-  atk       Int?
-  hp        Int?
-  ability   String?
-  creator   String?
-  artist    String?
-  tribe     String?
-  realm     String?
-  link      String         @unique
-  release   DateTime?
-  week      String?
-  image     String
-  state     Int[]
-  decks     CardsOnDecks[]
+  id            String         @id
+  name          String
+  type          Type
+  affinity      Affinity
+  exclusive     Boolean
+  rarity        Rarity
+  cost          Int
+  atk           Int?
+  hp            Int?
+  ability       String?
+  creator       String?
+  artist        String?
+  tribe         String?
+  realm         String?
+  link          String         @unique
+  release       DateTime?
+  week          String?
+  image         String
+  state         Int?
+  pools         Int[]
+  decks         CardsOnDecks[]
 }
 
 model Deck {
@@ -96,6 +97,8 @@ model Deck {
   cards       CardsOnDecks[]
   hero        Hero?
   updatedAt   DateTime       @default(now())
+  likes       Int            @default(0)
+  views       Int            @default(0)
 }
 
 model CardsOnDecks {

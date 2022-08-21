@@ -81,7 +81,7 @@ const updatedb = async (req: NextApiRequest, res: NextApiResponse) => {
                     release:    new Date(card_api.card.dtReleased).toISOString(),
                     week:       card_api.card.releaseGroup,
                     image:      findProperty(card_api.card.Text.Properties, 'PortraitUrl').Expression.Value,
-                    state:      [public_cards[public_index].approval_state ?? 9]
+                    state:      public_cards[public_index].approval_state ?? 9
                 }
 
                 new_card_list.push(new_card)

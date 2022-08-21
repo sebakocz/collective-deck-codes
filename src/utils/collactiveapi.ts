@@ -47,7 +47,8 @@ export async function getCustomCardById(card_id: string, card_state: number = 9)
         release:    new Date(card_api.card.dtReleased),
         week:       card_api.card.releaseGroup,
         image:      findProperty(card_api.card.Text.Properties, 'PortraitUrl').Expression.Value,
-        state:      [card_state]
+        state:      card_state,
+        pools:      [card_state]
     }
 
     return card
