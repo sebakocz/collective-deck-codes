@@ -109,7 +109,7 @@ export const cardsRouter = createRouter()
                 type: z.string(),
                 atk: z.number().nullish(),
                 hp: z.number().nullish(),
-                state: z.number(),
+                state: z.number().nullish(),
                 exclusive: z.boolean(),
                 link: z.string(),
                 image: z.string(),
@@ -129,6 +129,9 @@ export const cardsRouter = createRouter()
                     affinity: AffinityToPrismaConverter(input.card.affinity),
                     rarity: RarityToPrismaConverter(input.card.rarity),
                     release: new Date(),
+                    pools: {
+                        set: [input.card.state]
+                    }
                 }
             })
         }
