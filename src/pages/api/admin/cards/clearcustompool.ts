@@ -34,6 +34,7 @@ const clearcustompool = async (req: NextApiRequest, res: NextApiResponse) => {
                         id: card.id
                     },
                     data: {
+                        //@ts-ignore
                         pools: {
                            set: card.pools.filter((state: number) => state !== 8)
                         }
