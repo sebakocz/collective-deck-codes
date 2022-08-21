@@ -130,7 +130,7 @@ export const cardsRouter = createRouter()
                     rarity: RarityToPrismaConverter(input.card.rarity),
                     release: new Date(),
                     pools: {
-                        set: [input.card.state]
+                        set: [input.card.state || 9]
                     }
                 }
             })
