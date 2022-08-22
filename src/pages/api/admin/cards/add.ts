@@ -39,7 +39,7 @@ const add = async (req: NextApiRequest, res: NextApiResponse) => {
                     return
                 }
 
-                let new_card = public_cards.find((public_card: any) => public_card.name.trim() === card.id)
+                let new_card = public_cards.find((public_card: any) => public_card.rarity != 'Undraftable' && public_card.name.trim() === card.id)
 
                 let card_data
                 if(new_card) {
