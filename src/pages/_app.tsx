@@ -15,7 +15,7 @@ const MyApp: AppType = ({
   return (
     <SessionProvider session={session}>
       <Layout>
-        {/*<GCScript scriptSrc={"//gc.zgo.at/count.js"} siteUrl={"https://collectivedeckcodes.goatcounter.com/count"} />*/}
+        <GCScript scriptSrc={"//gc.zgo.at/count.js"} siteUrl={"https://collectivedeckcodes.goatcounter.com/count"} />
         <Component {...pageProps} />
       </Layout>
     </SessionProvider>
