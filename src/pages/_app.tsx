@@ -13,12 +13,14 @@ const MyApp: AppType = ({
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
-      <Layout>
+      <>
         <GCScript scriptSrc={"//gc.zgo.at/count.js"} siteUrl={"https://collectivedeckcodes.goatcounter.com/count"} />
-        <Component {...pageProps} />
-      </Layout>
-    </SessionProvider>
+        <SessionProvider session={session}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </SessionProvider>
+      </>
   );
 };
 
