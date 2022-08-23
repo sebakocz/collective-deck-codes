@@ -6,7 +6,6 @@ import superjson from "superjson";
 import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
 import Layout from "../components/layout/layout";
-import { GCScript } from "next-goatcounter";
 
 const MyApp: AppType = ({
   Component,
@@ -14,7 +13,6 @@ const MyApp: AppType = ({
 }) => {
   return (
       <>
-        <GCScript scriptSrc={"//gc.zgo.at/count.js"} siteUrl={"https://collectivedeckcodes.goatcounter.com/count"} />
         <SessionProvider session={session}>
           <Layout>
             <Component {...pageProps} />
