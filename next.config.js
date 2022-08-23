@@ -6,9 +6,9 @@ const nextConfig = {
   }
 }
 
-module.exports = nextConfig
+// module.exports = nextConfig
 
 // next.config.js
 const withTM = require('next-transpile-modules')(['next-goatcounter']); // pass the modules you would like to see transpiled
 
-module.exports = withTM({});
+module.exports = withTM(nextConfig);
