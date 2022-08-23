@@ -6,11 +6,24 @@ import superjson from "superjson";
 import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
 import Layout from "../components/layout/layout";
+import {useRouter} from "next/router";
+import {useEffect} from "react";
 
 const MyApp: AppType = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // @ts-ignore
+      window.goatcounter.count({
+        path: router.asPath
+      });
+    }
+  }, [router]);
+
   return (
       <>
         <SessionProvider session={session}>
