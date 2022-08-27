@@ -3,18 +3,16 @@ import React, {useState} from "react";
 import CardDisplayMini from "../../components/common/carddisplaymini";
 import {Deck, DeckCard} from "../../lib/types";
 import {prisma} from "../../server/db/client";
-import {GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType} from "next";
-import slugify from "slugify";
+import {InferGetStaticPropsType} from "next";
 import Button from "../../components/common/button";
 import {exportDeckToClipboard, get_rgb, getHeroIcon, noHero} from "../../lib/utils";
 import {Affinity, Type} from "@prisma/client";
-import {Tooltip} from "react-tippy";
 import Head from "next/head";
 import Link from "next/link";
 import EditDeckModal from "../../components/common/editDeckModal";
-import {session} from "next-auth/core/routes";
 import {useSession} from "next-auth/react";
-import {Session} from "next-auth";
+import {useViews} from "../../lib/hooks/useViews";
+import {trpc} from "../../utils/trpc";
 
 // // https://trpc.io/docs/ssg
 // export async function getStaticProps(
@@ -76,11 +74,13 @@ export async function getStaticPaths(){
     }
 }
 
-export async function getStaticProps({params}: any){
-    const deck = await prisma.deck.findUnique({
-        where: {
-            id: params.id
-        },
+export const getStaticProps = async ({params}:any) => {
+    const id = params?.id as string;
+
+    if (!id) throw new Error();
+
+    const deck = await prisma.deck.findUniqueOrThrow({
+        where: { id },
         include: {
             cards: {
                 include: {
@@ -98,13 +98,18 @@ export async function getStaticProps({params}: any){
                     email: true,
                 }
             },
-            hero: true
+            hero: true,
+            _count: {
+                select: {
+                    favouritedBy: true,
+                }
+            }
         }
     })
 
     return({
         props: {
-            deck: JSON.parse(JSON.stringify(deck)),
+            deck: JSON.parse(JSON.stringify(deck))
         },
         revalidate: 60
     })
@@ -125,15 +130,51 @@ const TypeList = ({deck, type}: {deck: Deck, type: Type}) => {
 const DeckProfile = ( props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
     const {deck}:{deck: Deck} = props
-
     const { data: session } = useSession()
+
+    const likeCountQuery = trpc.useQuery(
+        ["likes.count", { deckId: deck?.id! }],
+        { initialData: { count: deck?._count.favouritedBy! } }
+    );
+
+    const likedByMeQuery = trpc.useQuery(
+        ["likes.isMine", {deckId: deck?.id!}],
+        {
+            initialData: {isMine: false},
+            onSuccess: (data) => {
+                setIsLiked(data.isMine)
+            }
+        }
+    )
+
+    const likeToggleMutation = trpc.useMutation("likes.toggle");
+    const [isLiked, setIsLiked] = useState(likedByMeQuery.data?.isMine)
+    const toggleLike = () => {
+        if (typeof session == 'undefined') {
+            console.log("You need to log in.")
+        } else {
+            likeToggleMutation
+                .mutateAsync({
+                    isLiked: !isLiked,
+                    deckId: deck?.id!,
+                })
+                .then(() => {
+                    likeCountQuery.refetch();
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+            setIsLiked(!isLiked);
+        }
+    };
+
+    const {views} = useViews(deck)
 
     const [isEditDeckModalOpen, setIsEditDeckModalOpen] = useState(false)
     const toggleEditDeckModal = () => {
         setIsEditDeckModalOpen(!isEditDeckModalOpen)
     }
 
-    // @ts-ignore
     return(
         <>
             <Head>
@@ -224,6 +265,29 @@ const DeckProfile = ( props: InferGetStaticPropsType<typeof getStaticProps>) => 
                         Export
                     </Button>
 
+                    {/* Views */}
+                    <div className={"text-center text-main-800 font-bold"}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+
+                        {views}
+                    </div>
+
+                    {/* Likes */}
+                    <div className={`text-center text-main-800 font-bold cursor-pointer ${typeof session?.user !== 'undefined' ? "" : "pointer-events-none"}`}
+                         onClick={() => {
+                             toggleLike()
+                         }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill={isLiked ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+
+
+                        {likeCountQuery.data?.count}
+                    </div>
                 </div>
 
                 {/* Deck */}

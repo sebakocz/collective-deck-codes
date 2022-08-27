@@ -8,6 +8,7 @@ import {merge} from "next-auth/utils/merge";
 import {cardsRouter} from "./cards";
 import {herosRouter} from "./heros";
 import {decksRouter} from "./decks";
+import {likesRouter} from "./likes";
 
 export const appRouter = createRouter()
     .transformer(superjson)
@@ -16,6 +17,7 @@ export const appRouter = createRouter()
     .merge("cards.", cardsRouter)
     .merge("heros.", herosRouter)
     .merge("decks.", decksRouter)
+    .merge("likes.", likesRouter)
 
 // export type definition of API
 export type AppRouter = typeof appRouter;

@@ -94,7 +94,17 @@ export const authOptions: NextAuthOptions = {
         colorScheme: 'auto', // "auto" | "dark" | "light"
         brandColor: '#E4D6C1', // Hex color code #33FF5D
         logo: parrotImg.src, // Absolute URL to image
-    }
+    },
+    // created to modify the next-auth types to include the custom types: id
+    callbacks: {
+        // @ts-ignore
+        session: async ({session, user}) => {
+            if (session?.user) {
+                session.user.id = user.id;
+            }
+            return session;
+        }
+    },
 };
 
 export default NextAuth(authOptions);

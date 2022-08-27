@@ -8,6 +8,9 @@ import slugify from "slugify";
 import Button from "../components/common/button";
 import {BeatLoader} from "react-spinners";
 import {getHeroIcon} from "../lib/utils";
+import {useEffect, useState} from "react";
+import axios from "axios";
+import {useViews} from "../lib/hooks/useViews";
 
 type DeckSlotProps = {
     index: number,
@@ -16,6 +19,9 @@ type DeckSlotProps = {
 }
 
 const DeckSlot = ({deck, index, onDelete}: DeckSlotProps) => {
+
+    const {views} = useViews(deck)
+
     return (
         <div className={"fade-up group"} style={{animationDelay: `${(index*.3)}s`}}>
             <Link href={`/decks/${deck.id}`}>
@@ -64,7 +70,7 @@ const DeckSlot = ({deck, index, onDelete}: DeckSlotProps) => {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                             </svg>
 
-                            {deck.views}
+                            {views}
                         </div>
 
                         {/* Likes */}
@@ -73,7 +79,7 @@ const DeckSlot = ({deck, index, onDelete}: DeckSlotProps) => {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                             </svg>
 
-                            {deck.likes}
+                            {deck._count.favouritedBy}
                         </div>
                     </div>
                 </a>

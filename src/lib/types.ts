@@ -18,6 +18,22 @@ export type Deck = Prisma.DeckGetPayload<{
             select: {
                 name: true
             }
+        },
+        _count: {
+            select: {
+                favouritedBy: true,
+            }
         }
     }
 }>
+
+// created to modify the next-auth types to include the custom types: id
+declare module "next-auth" {
+    interface Session {
+        user: {
+            id: string;
+            username: string;
+            email: string;
+        };
+    }
+}

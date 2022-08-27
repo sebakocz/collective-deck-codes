@@ -13,8 +13,9 @@ const MyApp: AppType = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-  const router = useRouter();
 
+  // https://remybeumier.be/blog/get-web-analytics-in-nextjs-with-goatcounter
+  const router = useRouter();
   useEffect(() => {
     if (typeof window !== 'undefined') {
       // @ts-ignore

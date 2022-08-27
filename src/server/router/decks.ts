@@ -28,6 +28,11 @@ export const decksRouter = createRouter()
                         select: {
                             name: true
                         }
+                    },
+                    _count: {
+                        select: {
+                            favouritedBy: true,
+                        }
                     }
                 }
             });
@@ -216,6 +221,11 @@ export const decksRouter = createRouter()
                             name: true
                         }
                     },
+                    _count: {
+                        select: {
+                            favouritedBy: true,
+                        }
+                    }
                 }
             });
         }
