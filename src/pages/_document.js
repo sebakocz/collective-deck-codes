@@ -11,7 +11,7 @@ export default function Document() {
                 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
                 <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet"/>
                 <script data-goatcounter="https://collectivedeckcodes.goatcounter.com/count"
-                        data-goatcounter-settings='{"no_onload": true, "allow_local": true}'
+                        data-goatcounter-settings='{"no_onload": true, "allow_local": false}'
                         async src="//gc.zgo.at/count.js"></script>
             </Head>
             <body>
