@@ -199,7 +199,6 @@ const DeckProfile = ( props: InferGetStaticPropsType<typeof getStaticProps>) => 
                     deckName={deck.name}
                     toggleModal={toggleEditDeckModal}
                     description={deck.description || "No Description."}
-                    session={session}
                     id={deck.id}
                 />
             }

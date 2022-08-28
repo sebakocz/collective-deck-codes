@@ -96,7 +96,6 @@ export default function Options({heros, hero, userDeckCards, addCardsToDeck, rem
                         deckName={deckName}
                         toggleModal={toggleEditDeckModal}
                         description={deckDescription}
-                        session={session}
                         id={deckId}
                     />
                 }

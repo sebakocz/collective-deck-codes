@@ -11,7 +11,7 @@ export const decksRouter = createRouter()
             return ctx.prisma.deck.findMany({
                 where: {
                     user: {
-                        email: ctx.session.user.email,
+                        id: ctx.session.user.id,
                     },
                 },
                 include: {
@@ -62,7 +62,6 @@ export const decksRouter = createRouter()
     .mutation("update", {
         input: z
             .object({
-                userEmail: z.string(),
                 name: z.string().max(100),
                 heroId: z.number(),
                 description: z.string().max(1000),
@@ -81,7 +80,7 @@ export const decksRouter = createRouter()
                 where: {
                     id: input.id,
                     user: {
-                        email: input.userEmail,
+                        id: ctx.session?.user.id
                     }
                 }
             })
@@ -130,7 +129,6 @@ export const decksRouter = createRouter()
     .mutation("save", {
         input: z
             .object({
-                userEmail: z.string(),
                 name: z.string().max(100),
                 heroId: z.number(),
                 description: z.string().max(1000),
@@ -146,7 +144,7 @@ export const decksRouter = createRouter()
             // max 10 decks per user
             const user = await ctx.prisma.user.findUnique({
                     where: {
-                        email: input.userEmail,
+                        id: ctx.session?.user.id
                     },
                     include: {
                         decks: {
@@ -170,7 +168,7 @@ export const decksRouter = createRouter()
                 data: {
                     user: {
                         connect: {
-                            email: input.userEmail
+                            id: ctx.session?.user.id
                         }
                     },
                     name: input.name,

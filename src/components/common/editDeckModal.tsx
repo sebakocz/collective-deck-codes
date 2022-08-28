@@ -15,13 +15,12 @@ type EditDeckModalProps = {
     hero: Hero,
     deckName?: string,
     description?: string,
-    toggleModal: () => void,
-    session: Session | null,
+    toggleModal: () => void
     // type: "new" | "edit",
     id?: string,
 }
 
-const EditDeckModal = ({cards, hero, deckName, description, toggleModal, session, id}: EditDeckModalProps) => {
+const EditDeckModal = ({cards, hero, deckName, description, toggleModal, id}: EditDeckModalProps) => {
 
     const type = id ? "edit" : "new"
 
@@ -61,16 +60,12 @@ const EditDeckModal = ({cards, hero, deckName, description, toggleModal, session
         }})
 
 
-    const saveDeck = async (session: Session|null, hero: Hero, deckCards: DeckCard[], frontCardUrl: string, deckName: string, description: string, id: string | undefined) => {
-        if(!session?.user || session.user.email == null){
-            return
-        }
+    const saveDeck = async (hero: Hero, deckCards: DeckCard[], frontCardUrl: string, deckName: string, description: string, id: string | undefined) => {
 
         switch (type) {
             case "new":
                 await saveDeckMutation.mutateAsync({
                     frontCard: frontCardUrl,
-                    userEmail: session.user.email,
                     name: deckName,
                     heroId: hero.id,
                     description: description,
@@ -92,7 +87,6 @@ const EditDeckModal = ({cards, hero, deckName, description, toggleModal, session
                 await updateDeckMutation.mutateAsync({
                     id: id,
                     frontCard: frontCardUrl,
-                    userEmail: session.user.email,
                     name: deckName,
                     heroId: hero.id,
                     description: description,
@@ -198,7 +192,7 @@ const EditDeckModal = ({cards, hero, deckName, description, toggleModal, session
                         {type === "new" &&
                             <Button
                                 // TODO: figure out placeholder image for front card
-                                onClick={() => saveDeck(session, hero, cards, cards[frontCardIndex]?.card.image || "", deckNameValue, descriptionValue, id)}
+                                onClick={() => saveDeck(hero, cards, cards[frontCardIndex]?.card.image || "", deckNameValue, descriptionValue, id)}
                                 disabled={saveDeckMutation.isLoading}
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -213,7 +207,7 @@ const EditDeckModal = ({cards, hero, deckName, description, toggleModal, session
 
                         {type === "edit" &&
                             <Button
-                                onClick={() => saveDeck(session, hero, cards, cards[frontCardIndex]?.card.image || "", deckNameValue, descriptionValue, id)}
+                                onClick={() => saveDeck(hero, cards, cards[frontCardIndex]?.card.image || "", deckNameValue, descriptionValue, id)}
                                 disabled={updateDeckMutation.isLoading}
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
