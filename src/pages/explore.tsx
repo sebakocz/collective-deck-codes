@@ -1,54 +1,53 @@
 import {NextPage} from "next";
 import {trpc} from "../utils/trpc";
 import Head from "next/head";
+import {BeatLoader} from "react-spinners";
 import {Deck} from "../lib/types";
 import Link from "next/link";
 import Button from "../components/common/button";
-import {BeatLoader} from "react-spinners";
 import DeckSlot from "../components/common/deckslot";
 
-const Mydecks: NextPage = () => {
+const Explore: NextPage = () => {
 
-    const userDecksImport = trpc.useQuery(["decks.getAllBySession"])
-
-    const deckDeleteMutation = trpc.useMutation(["decks.deleteById"], {
-        async onSuccess() {
-            await userDecksImport.refetch()
-        }
+    const topDecksImport = trpc.useQuery(["decks.getTopX", {
+        count: 10
+    }], {
+        refetchOnReconnect: false,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
     })
+
 
     return (
         <>
             <Head>
-                <title>My Decks</title>
+                <title>Explore</title>
             </Head>
             <div className={"w-full p-8 flex justify-center flex-wrap h-screen overflow-hidden overflow-y-scroll will-change-transform"}>
-                {userDecksImport.isLoading ?
+                {topDecksImport.isLoading ?
                     <div className={"flex items-center text-lg"}>
                         <BeatLoader
                             size={50}
                             color={"#99816A"}
                         />
                     </div>
-                :
-                    userDecksImport?.data?.length || 0 > 0 ?
-                        userDecksImport.data?.map((deck, i: number) => {
+                    :
+                    topDecksImport?.data?.length || 0 > 0 ?
+                        topDecksImport.data?.map((deck, i: number) => {
                             return (
-                                <div key={i} className={`${deckDeleteMutation.isLoading ? "opacity-50 pointer-events-none" : ""}`}>
+                                <div key={i}>
                                     <DeckSlot
                                         key={i}
                                         deck={deck}
                                         index={i}
-                                        onDelete={(deck: Deck) => {
-                                            deckDeleteMutation.mutate({id: deck.id})
-                                        }}
+                                        publicView={true}
                                     />
                                 </div>
                             )
                         })
                         :
                         <span className={"flex gap-2 items-center text-lg"}>
-                        {"It seems like you didn't create any decks yet. Go and "}
+                        {"It seems like nobody created any decks yet. Go and "}
                             <Link href={"/brew"}>
                             <a>
                                 <Button>
@@ -67,4 +66,4 @@ const Mydecks: NextPage = () => {
     )
 }
 
-export default Mydecks
+export default Explore

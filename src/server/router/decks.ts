@@ -268,3 +268,40 @@ export const decksRouter = createRouter()
             return ctx.prisma.$transaction([deleteDeckCards, deleteFavourites, deleteDeck])
         }
     })
+
+    .query("getTopX", {
+        input: z.object({
+            count: z.number()
+        }),
+        resolve: async ({ ctx, input }) =>  {
+        return ctx.prisma.deck.findMany({
+            include: {
+                cards: {
+                    include: {
+                        card: true,
+                    },
+                    orderBy: {
+                        affinityBasedCost: "asc",
+                    }
+                },
+                hero: true,
+                user: {
+                    select: {
+                        name: true
+                    }
+                },
+                _count: {
+                    select: {
+                        favouritedBy: true,
+                    }
+                }
+            },
+            take: input.count,
+            orderBy: {
+                favouritedBy: {
+                    _count: "desc"
+                }
+            }
+        });
+        }
+    })
