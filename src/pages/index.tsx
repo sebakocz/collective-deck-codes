@@ -80,7 +80,7 @@ const Home: NextPage = () => {
 
             <div className={"w-full -mt-10 flex"}>
                 {topDecksImport.isLoading ?
-                    <div className={"flex items-center text-lg"}>
+                    <div className={"flex justify-center text-lg mt-16 w-full"}>
                         <BeatLoader
                             size={50}
                             color={"#99816A"}
