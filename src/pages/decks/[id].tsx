@@ -107,9 +107,13 @@ export const getStaticProps = async ({params}:any) => {
         }
     })
 
+    const viewsRes = await fetch(`https://collectivedeckcodes.goatcounter.com/counter//decks/${deck.id}.json`)
+    const views = await viewsRes.json()
+
     return({
         props: {
-            deck: JSON.parse(JSON.stringify(deck))
+            deck: JSON.parse(JSON.stringify(deck)),
+            views: views.count_unique
         },
         revalidate: 60
     })
@@ -130,6 +134,11 @@ const TypeList = ({deck, type}: {deck: Deck, type: Type}) => {
 const DeckProfile = ( props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
     const {deck}:{deck: Deck} = props
+    const {views} = props
+    //no longer used, now fetching serverside
+    // const {views} = useViews(deck)
+
+
     const { data: session } = useSession()
 
     const likeCountQuery = trpc.useQuery(
@@ -168,8 +177,6 @@ const DeckProfile = ( props: InferGetStaticPropsType<typeof getStaticProps>) => 
         }
     };
 
-    const {views} = useViews(deck)
-
     const [isEditDeckModalOpen, setIsEditDeckModalOpen] = useState(false)
     const toggleEditDeckModal = () => {
         setIsEditDeckModalOpen(!isEditDeckModalOpen)
@@ -179,11 +186,11 @@ const DeckProfile = ( props: InferGetStaticPropsType<typeof getStaticProps>) => 
         <>
             <Head>
                 <title>{deck.name}</title>
-                <meta name="description" content={(deck.description || "No Description.") + `\n~ by ${deck.user.name}` + `\n${views} 👁️ ${deck._count.favouritedBy} ❤️`} />
+                <meta name="description" content={(deck.description || "No Description.") + `\n~ by ${deck.user.name}` + `\n\n${views} 👁️ ${deck._count.favouritedBy} ❤️`} />
                 <meta name="theme-color" content={get_rgb(deck.hero?.affinity || Affinity.NEUTRAL)} />
                 <meta property="og:image" content={getHeroIcon(deck.hero?.name)}/>
                 <meta name="og:title" content={`${deck.name}`} />
-                <meta name="og:description" content={(deck.description || "No Description.") + `\n~ by ${deck.user.name}` + `\n${views} 👁️ ${deck._count.favouritedBy} ❤️`} />
+                <meta name="og:description" content={(deck.description || "No Description.") + `\n~ by ${deck.user.name}` + `\n\n${views} 👁️ ${deck._count.favouritedBy} ❤️`} />
                 <meta property="og:type" content="article" />
 
                 {/* TODO - this doesn't work */}

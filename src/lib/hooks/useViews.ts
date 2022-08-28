@@ -1,3 +1,4 @@
+//no longer used, now fetching serverside
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {Deck} from "../types";
