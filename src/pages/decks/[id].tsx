@@ -179,11 +179,11 @@ const DeckProfile = ( props: InferGetStaticPropsType<typeof getStaticProps>) => 
         <>
             <Head>
                 <title>{deck.name}</title>
-                <meta name="description" content={(deck.description || "No Description.") + `\n~ by ${deck.user.name}` + `\n${views} :eye: ${deck._count.favouritedBy} :heart:`} />
+                <meta name="description" content={(deck.description || "No Description.") + `\n~ by ${deck.user.name}` + `\n${views} 👁️ ${deck._count.favouritedBy} ❤️`} />
                 <meta name="theme-color" content={get_rgb(deck.hero?.affinity || Affinity.NEUTRAL)} />
                 <meta property="og:image" content={getHeroIcon(deck.hero?.name)}/>
                 <meta name="og:title" content={`${deck.name}`} />
-                <meta name="og:description" content={(deck.description || "No Description.") + `\n~ by ${deck.user.name}` + `\n${views} :eye: ${deck._count.favouritedBy} :heart:`} />
+                <meta name="og:description" content={(deck.description || "No Description.") + `\n~ by ${deck.user.name}` + `\n${views} 👁️ ${deck._count.favouritedBy} ❤️`} />
                 <meta property="og:type" content="article" />
 
                 {/* TODO - this doesn't work */}
