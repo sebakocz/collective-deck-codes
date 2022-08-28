@@ -235,8 +235,17 @@ export const decksRouter = createRouter()
         input: z.object({
             id: z.string()
         }),
-        resolve({ ctx, input }) {
-            if (!ctx.session?.user) {
+        resolve: async ({ ctx, input }) =>  {
+            const deck = await ctx.prisma.deck.findUnique({
+                where: {
+                    id: input.id
+                },
+                include: {
+                    user: true
+                }
+            })
+
+            if (!ctx.session?.user.id || !deck || deck.user.id !== ctx.session.user.id) {
                 throw new TRPCError({ code: "UNAUTHORIZED" });
             }
 
@@ -246,15 +255,18 @@ export const decksRouter = createRouter()
                 }
             })
 
-            const deleteDeck = ctx.prisma.deck.deleteMany({
+            const deleteFavourites = ctx.prisma.favouriteDecksOnUsers.deleteMany({
                 where: {
-                    id: input.id,
-                    user: {
-                        email: ctx.session.user.email,
-                    }
+                    deckId: input.id,
                 }
             })
 
-            return ctx.prisma.$transaction([deleteDeckCards, deleteDeck])
+            const deleteDeck = ctx.prisma.deck.delete({
+                where: {
+                    id: input.id
+                }
+            })
+
+            return ctx.prisma.$transaction([deleteDeckCards, deleteFavourites, deleteDeck])
         }
     })
