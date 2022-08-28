@@ -107,8 +107,14 @@ export const getStaticProps = async ({params}:any) => {
         }
     })
 
-    const viewsRes = await fetch(`https://collectivedeckcodes.goatcounter.com/counter//decks/${deck.id}.json`)
-    const views = await viewsRes.json()
+    let views: { count_unique: number }
+    try {
+        const viewsRes = await fetch(`https://collectivedeckcodes.goatcounter.com/counter//decks/${deck.id}.json`)
+        views = await viewsRes.json()
+    }
+    catch (e) {
+        views = { count_unique: 0 }
+    }
 
     return({
         props: {

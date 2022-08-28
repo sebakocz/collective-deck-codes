@@ -26,21 +26,21 @@ const Home: NextPage = () => {
         <div className={"w-full p-10 flex flex-col justify-start overflow-hidden overflow-y-scroll will-change-transform h-screen"}>
 
             <div>
-                <h1 className={"text-7xl font-acme text-main-800 drop-shadow-xl"}>
+                <h1 className={"text-4xl sm:text-7xl font-acme text-main-800 drop-shadow-xl"}>
                     You made your cards
                 </h1>
-                <h1 className={"text-7xl font-acme text-main-800 drop-shadow-xl"}>
+                <h1 className={"text-4xl sm:text-7xl font-acme text-main-800 drop-shadow-xl"}>
                     Now make your decks
                 </h1>
 
-                <h3 className={"italic text-lg text-main-700 mt-2"}>
+                <h3 className={"italic text-sm sm:text-lg text-main-700 mt-2"}>
                     The best place for creating, sharing and exploring decks of your Collective!
                 </h3>
             </div>
 
 
             {/* Call to action section */}
-            <div className={"flex text-center text-2xl mt-10 gap-3 items-center content-center"}>
+            <div className={"flex flex-wrap text-2xl mt-10 gap-3 items-center content-center"}>
 
                 <p>
                     Check out the player created cardpool and get ready to
@@ -60,7 +60,7 @@ const Home: NextPage = () => {
 
             {/* Top decks section */}
             {/* Call to action section */}
-            <div className={"flex text-center text-2xl mt-10 gap-3 items-center content-center"}>
+            <div className={"flex flex-wrap text-2xl mt-10 gap-3 items-center content-center"}>
 
                 <p>
                     Or see what the community has been brewing and go
@@ -78,7 +78,7 @@ const Home: NextPage = () => {
                 </Link>
             </div>
 
-            <div className={"w-full -mt-10 flex"}>
+            <div className={"w-full -mt-10 flex flex-wrap justify-center sm:justify-start"}>
                 {topDecksImport.isLoading ?
                     <div className={"flex justify-center text-lg mt-16 w-full"}>
                         <BeatLoader

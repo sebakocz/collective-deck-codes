@@ -36,7 +36,7 @@ const DeckSlot = ({deck, index, onDelete, publicView = false}: DeckSlotProps) =>
                         {/* Deck Owner */}
                         {publicView && (
                             <div className={"overflow-ellipsis whitespace-nowrap overflow-hidden w-full text-center text-lg font-bold text-main-700"}>
-                                {"~by " + deck.user.name || "Nobody"}
+                                {deck.user.name || "Nobody"}
                             </div>
                         )}
 
