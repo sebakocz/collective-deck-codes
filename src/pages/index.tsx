@@ -20,7 +20,7 @@ const Home: NextPage = () => {
     <>
       <Head>
         <title>Collective Deck Codes</title>
-        <meta name="description" content="The best place to view, build and analyse your Collective decks!" />
+        <meta name="description" content="The best place for creating, sharing and exploring decks of your Collective!" />
       </Head>
 
         <div className={"w-full p-10 flex flex-col justify-start overflow-hidden overflow-y-scroll will-change-transform h-screen"}>
