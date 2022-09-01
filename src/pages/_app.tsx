@@ -19,7 +19,7 @@ const MyApp: AppType = ({
   useEffect(() => {
     if (typeof window !== 'undefined') {
       // @ts-ignore
-      window.goatcounter.count({
+      window.goatcounter?.count({
         path: router.asPath
       });
     }
