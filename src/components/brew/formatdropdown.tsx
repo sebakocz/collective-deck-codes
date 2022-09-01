@@ -9,11 +9,12 @@ type FormatDropdownProps = {
 
 export default function FormatDropdown({changeFormat}: FormatDropdownProps){
 
-    // ?secretpool=true for testing purposes of the event set
-    const router = useRouter()
-    let {secretpool} = router.query
+    // // ?secretpool=true for testing purposes of the event set
+    // const router = useRouter()
+    // let {secretpool} = router.query
+    // const format_options = secretpool == "true" ? ["Standard", "Legacy", "Event"] : ["Standard", "Legacy"]
 
-    const format_options = secretpool == "true" ? ["Standard", "Legacy", "Event"] : ["Standard", "Legacy"]
+    const format_options = ["Standard", "Legacy", "Event"]
     const [format, setFormat] = useState(format_options[0])
     const menu = (
         <Menu
