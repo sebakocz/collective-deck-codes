@@ -100,8 +100,6 @@ const Brew: NextPage = () => {
         })
         setDeck(sortCards([...newDeckCards]))
 
-        console.log(hero.name)
-
         // when a non-non-hero is selected show exclusive cards
         // TODO: error: select hero -> refresh filters, you should change the default filter instead hacking like this
         if(hero.name.includes("No Hero") && miscFilterExists(exclusiveFilter)){
