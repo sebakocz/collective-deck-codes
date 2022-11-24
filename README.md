@@ -46,7 +46,7 @@ _Odious Studios LLC, Collective: The Community Created Card Game, and their logo
 
 ### 🤓 Info for nerds
 
-* This is an app bootstrapped according to the [init.tips](https://init.tips) stack, also known as the T3-Stack
+* This is an app bootstrapped according to the [create-t3-app stack](https://create.t3.gg/)
 * I didn't work on this project _alone_, my loyal friend [Copilot](https://github.com/features/copilot) was helping out too
 * I might start dev-blogging soon™
 
