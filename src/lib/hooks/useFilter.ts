@@ -214,7 +214,7 @@ export default function useFilter(hero: Hero){
 
         // only show exclusive cards when they match hero affinity
         new_cards4 = new_cards4.filter(card => {
-            if(card.card.exclusive){
+            if(card.card?.exclusive){
                 return card.card.affinity == hero.affinity || hero.affinity == null
             }
             return true

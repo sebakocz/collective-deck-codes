@@ -9,7 +9,7 @@ export function useDeck(){
     const addCardsToDeck = (cards: DeckCard[]) => {
         let new_deckCards: DeckCard[] = []
         for(let i=0; i < cards.length; i++) {
-            const deckSlot = deck.find(dc => dc.card.id == cards[i]?.card.id)
+            const deckSlot = deck.find(dc => dc.card?.id == cards[i]?.card?.id)
             if (typeof deckSlot !== "undefined"){
                 if(deckSlot.count + cards[i]?.count! > 3){
                     deckSlot.count = 3
@@ -30,7 +30,7 @@ export function useDeck(){
 
     const removeCardFromDeck = (card: DeckCard) => {
         const new_deck = deck.filter(c => {
-            if(c.card.id == card.card.id){
+            if(c.card?.id == card.card?.id){
                 c.count--
                 return c.count > 0
             }

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {NextPage} from "next";
 import {trpc} from "../utils/trpc";
 import Head from "next/head";

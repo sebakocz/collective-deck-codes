@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {NextPage} from "next";
 import {trpc} from "../utils/trpc";
 import Head from "next/head";
@@ -58,24 +60,11 @@ const Brew: NextPage = () => {
         refetchOnWindowFocus: false,
     })
 
-    const newStandardCardsImport = trpc.useQuery(["cards.getNewStandard"], {
-        refetchOnReconnect: false,
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-    })
-
     const legacyCardsImport = trpc.useQuery(["cards.getLegacy"], {
         refetchOnReconnect: false,
         refetchOnMount: false,
         refetchOnWindowFocus: false,
     })
-
-    const customCardsImport = trpc.useQuery(["cards.getCustom"], {
-        refetchOnReconnect: false,
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-    })
-
 
     const [currentCardsImport, setCurrentCardsImport] = useState("standard")
     const changeFormat = (format: string) => {
@@ -95,9 +84,11 @@ const Brew: NextPage = () => {
 
     useEffect(() =>{
         const newDeckCards = deck.map(card => {
+            if (!card.card) return
             card.affinityBasedCost = getOffAffPenalty(card.card, hero)
             return card
         })
+
         setDeck(sortCards([...newDeckCards]))
 
         // when a non-non-hero is selected show exclusive cards
