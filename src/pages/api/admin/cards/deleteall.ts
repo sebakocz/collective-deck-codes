@@ -1,15 +1,6 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 import {prisma} from "../../../../server/db/client";
-import {Prisma, Role, Affinity, Rarity, Type, Card} from "@prisma/client"
-import {
-    AffinityToPrismaConverter,
-    findProperty, getCustomCardById,
-    getPublicCards,
-    getSingleCard, RarityToPrismaConverter,
-    TypeToPrismaConverter
-} from "../../../../utils/collactiveapi";
-
 
 const deleteall = async (req: NextApiRequest, res: NextApiResponse) => {
 

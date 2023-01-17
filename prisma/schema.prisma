@@ -84,7 +84,7 @@ model Card {
   week          String?
   image         String
   state         Int?
-  pools         Int[]
+  pools         Pool[]
   decks         CardsOnDecks[]
 }
 
@@ -102,14 +102,14 @@ model Deck {
 }
 
 model CardsOnDecks {
+  id                String @id @default(cuid())
   deck              Deck   @relation(fields: [deckId], references: [id])
   deckId            String
-  card              Card   @relation(fields: [cardId], references: [id])
-  cardId            String
+  card              Card?   @relation(fields: [cardId], references: [id])
+  cardId            String?
+  cardIdHistory     String
   count             Int
   affinityBasedCost Int
-
-  @@id([deckId, cardId])
 }
 
 model FavouriteDecksOnUsers {
@@ -127,6 +127,13 @@ model Hero {
   affinity Affinity?
   deckId   String?   @unique
   deck     Deck?     @relation(fields: [deckId], references: [id])
+}
+
+model Pool {
+  id       Int    @id @default(autoincrement())
+  name     String @unique
+  custom   Boolean
+  cards    Card[]
 }
 
 enum Role {

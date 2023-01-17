@@ -1,9 +1,7 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
-import { unstable_getServerSession as getServerSession } from "next-auth";
-import { authOptions as nextAuthOptions } from "../auth/[...nextauth]";
 import {prisma} from "../../../server/db/client";
-import {Prisma, Role, Affinity, Rarity, Type} from "@prisma/client"
+import {Prisma} from "@prisma/client"
 import {
     AffinityToPrismaConverter,
     findProperty,
@@ -11,7 +9,16 @@ import {
     getSingleCard, RarityToPrismaConverter,
     TypeToPrismaConverter
 } from "../../../utils/collactiveapi";
+import Bottleneck from "bottleneck";
 
+const limiter = new Bottleneck({
+    maxConcurrent: 50,
+    minTime: 100
+});
+
+limiter.on("done", (info) => {
+    console.log(info.options.id, "finished");
+});
 
 const updatedb = async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -51,15 +58,21 @@ const updatedb = async (req: NextApiRequest, res: NextApiResponse) => {
             let new_card_list: any = []
             const public_cards = await getPublicCards()
 
-
+            const card_ids = public_cards.map((card: any) => card.uid)
+            const cards_data = await Promise.all(card_ids.map(async (card_id: string, index: number) => {
+                return await limiter.schedule({id: card_id+"---"+index+"/"+card_ids.length}, async () => {
+                    return await getSingleCard(card_id)
+                })
+            }))
 
             for (let public_index=0;public_index<public_cards.length;public_index++){
                 const card_id = public_cards[public_index].uid
-                const card_api: any = await getSingleCard(card_id)
+                // const card_api: any = await getSingleCard(card_id)
+                const card_api: any = cards_data[public_index]
                 console.log("Processing: "+card_api.card.name)
                 const atk = findProperty(card_api.card.Text.Properties, 'ATK').Expression.Value
                 const hp = findProperty(card_api.card.Text.Properties, 'HP').Expression.Value
-                const new_card: Prisma.CardCreateInput = {
+                const new_card: Prisma.CardCreateManyInput = {
                     id:         card_id,
                     name:       card_api.card.name,
                     type:       TypeToPrismaConverter(card_api.card.Text.ObjectType),
@@ -79,29 +92,49 @@ const updatedb = async (req: NextApiRequest, res: NextApiResponse) => {
                     // if you really need this consider converting to unix timestamps
                     // https://stackoverflow.com/questions/70449092/reason-object-object-date-cannot-be-serialized-as-json-please-only-ret
                     release:    new Date(card_api.card.dtReleased).toISOString(),
-                    week:       card_api.card.releaseGroup,
                     image:      findProperty(card_api.card.Text.Properties, 'PortraitUrl').Expression.Value,
-                    state:      public_cards[public_index].approval_state ?? 9
+                    state:      public_cards[public_index].approval_state ?? 9,
                 }
 
                 new_card_list.push(new_card)
             }
 
-            // await prisma.card.deleteMany()
-
-            // await prisma.card.createMany({
-            //     data: new_card_list
-            // })
-
-            await prisma.$transaction(
-                new_card_list.map((card: Prisma.CardCreateInput) => prisma.card.upsert({
+            await prisma.$transaction([
+                prisma.card.deleteMany({}),
+                prisma.card.createMany({
+                    data: new_card_list
+                }),
+                // update pools
+                prisma.pool.update({
                     where: {
-                        id: card.id
+                        name: "Standard"
                     },
-                    update: card,
-                    create: card
-                }
-            )))
+                    data: {
+                        cards: {
+                            connect: new_card_list.filter((card: Prisma.CardCreateInput) => card.state == 0).map((card: Prisma.CardCreateInput) => ({id: card.id}))
+                        }
+                    }
+                }),
+                prisma.pool.update({
+                    where: {
+                        name: "Legacy"
+                    },
+                    data: {
+                        cards: {
+                            connect: new_card_list.filter((card: Prisma.CardCreateInput) => card.state == 0 || card.state == 2).map((card: Prisma.CardCreateInput) => ({id: card.id}))
+                        }
+                    }
+                }),
+                // update decks using cardIdHistory, this is the longest part of the process, consider optimizing
+                ...new_card_list.map((card: Prisma.CardCreateInput) => prisma.cardsOnDecks.updateMany({
+                    where: {
+                        cardIdHistory: card.id
+                    },
+                    data: {
+                        cardId: card.id
+                    }
+                }))
+            ])
 
             console.log("FINISHED: Cards updated.")
 

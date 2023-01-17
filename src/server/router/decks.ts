@@ -111,6 +111,7 @@ export const decksRouter = createRouter()
                                     id: c.cardId
                                 }
                             },
+                            cardIdHistory: c.cardId,
                             count: c.count,
                             affinityBasedCost: c.affinityBasedCost
                         }))
@@ -181,6 +182,7 @@ export const decksRouter = createRouter()
                                         id: c.cardId
                                     }
                                 },
+                                cardIdHistory: c.cardId,
                                 count: c.count,
                                 affinityBasedCost: c.affinityBasedCost
                             }))
@@ -276,14 +278,6 @@ export const decksRouter = createRouter()
         resolve: async ({ ctx, input }) =>  {
         return ctx.prisma.deck.findMany({
             include: {
-                cards: {
-                    include: {
-                        card: true,
-                    },
-                    orderBy: {
-                        affinityBasedCost: "asc",
-                    }
-                },
                 hero: true,
                 user: {
                     select: {

@@ -1,6 +1,5 @@
 import {Affinity, Card, Rarity, Type} from "@prisma/client";
 
-
 export async function getPublicCards() {
     const public_cards =  await (await fetch('https://server.collective.gg/api/public-cards/')).json()
     return public_cards.cards
@@ -18,7 +17,7 @@ export async function getCustomCardById(card_id: string, card_state: number = 9)
     const atk = findProperty(card_api.card.Text.Properties, 'ATK').Expression.Value
     const hp = findProperty(card_api.card.Text.Properties, 'HP').Expression.Value
 
-    let externals_suffix = "";
+    let externals_suffix;
     if(Object.keys(card_api.externals).length > 0)
         externals_suffix = "-m"
     else{
@@ -48,7 +47,7 @@ export async function getCustomCardById(card_id: string, card_state: number = 9)
         week:       card_api.card.releaseGroup,
         image:      findProperty(card_api.card.Text.Properties, 'PortraitUrl').Expression.Value,
         state:      card_state,
-        pools:      [card_state]
+//     TODO: add pools, connect?
     }
 
     return card
@@ -131,5 +130,26 @@ export function TypeToPrismaConverter(type: string): Type{
             return Type.ACTION
         default:
             return Type.ACTION
+    }
+}
+
+export function StateToPrismaConverter(state: number): String[]{
+    switch (state) {
+        case 0:
+            try {
+                return ["Standard", "Legacy"]
+            }
+            catch (e) {
+                return []
+            }
+        case 2:
+            try {
+                return ["Legacy"]
+            }
+            catch (e) {
+                return []
+            }
+        default:
+            return []
     }
 }

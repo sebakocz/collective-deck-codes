@@ -1,13 +1,11 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 import {prisma} from "../../../../server/db/client";
-import {Prisma, Role, Affinity, Rarity, Type, Card} from "@prisma/client"
+import {Prisma, Card} from "@prisma/client"
 import {
-    AffinityToPrismaConverter,
-    findProperty, getCustomCardById,
+    getCustomCardById,
     getPublicCards,
-    getSingleCard, RarityToPrismaConverter,
-    TypeToPrismaConverter
+    StateToPrismaConverter,
 } from "../../../../utils/collactiveapi";
 
 
@@ -60,7 +58,7 @@ const add = async (req: NextApiRequest, res: NextApiResponse) => {
 
             console.log("New Card List:")
             console.log(new_card_list)
-
+            const pools = await StateToPrismaConverter(state)
             await prisma.$transaction(
                 new_card_list.map((card: Prisma.CardCreateInput) => prisma.card.upsert({
                         where: {
@@ -68,9 +66,10 @@ const add = async (req: NextApiRequest, res: NextApiResponse) => {
                         },
                         update: {
                             ...card,
-                            //@ts-ignore
                             pools: {
-                                push: state
+                                connect: pools.map((pool: any) => {
+                                    return {id: pool.id}
+                                })
                             }
                         },
                         create: card

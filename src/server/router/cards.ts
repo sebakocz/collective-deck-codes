@@ -1,14 +1,21 @@
 import { createRouter } from "./context";
 import { z } from "zod";
-import {AffinityToPrismaConverter, RarityToPrismaConverter, TypeToPrismaConverter} from "../../utils/collactiveapi";
+import {
+    AffinityToPrismaConverter,
+    RarityToPrismaConverter,
+    StateToPrismaConverter,
+    TypeToPrismaConverter
+} from "../../utils/collactiveapi";
 
 export const cardsRouter = createRouter()
     .query("getLegacy", {
         resolve({ ctx}) {
             return ctx.prisma.card.findMany({
                 where: {
-                   state: {
-                       in: [0,2]
+                   pools: {
+                          some: {
+                                name: "Legacy"
+                          }
                    }
                 },
                 orderBy: [
@@ -33,26 +40,10 @@ export const cardsRouter = createRouter()
                     release: {
                         lt: x
                     },
-                    state: 0
-                },
-                orderBy: [
-                    {
-                        cost: "asc",
-                    },
-                    {
-                        name: "asc",
-                    }
-                ]
-            })
-        }
-    })
-
-    .query("getNewStandard", {
-        resolve({ ctx}) {
-            return ctx.prisma.card.findMany({
-                where: {
                     pools: {
-                        hasSome: [8]
+                        some: {
+                            name: "Standard"
+                        }
                     }
                 },
                 orderBy: [
@@ -67,36 +58,25 @@ export const cardsRouter = createRouter()
         }
     })
 
-
-    .query("getCustom", {
-        resolve({ ctx}) {
-            return ctx.prisma.card.findMany({
-                where: {
-                    // custom state is 9
-                    pools:
-                        {
-                            hasEvery: [9]
-                        }
-                    },
-                orderBy: [
-                    {
-                        cost: "asc",
-                        },
-                    {
-                        name: "asc",
-                    }
-                        ]
-            })
-        }
-    })
-
-    .query("getFew", {
-        resolve({ ctx}) {
-            return ctx.prisma.card.findMany({
-                take: 40
-            })
-        }
-    })
+    // .query("getNewStandard", {
+    //     resolve({ ctx}) {
+    //         return ctx.prisma.card.findMany({
+    //             where: {
+    //                 pools: {
+    //                     hasSome: [8]
+    //                 }
+    //             },
+    //             orderBy: [
+    //                 {
+    //                     cost: "asc",
+    //                 },
+    //                 {
+    //                     name: "asc",
+    //                 }
+    //             ]
+    //         })
+    //     }
+    // })
 
     .mutation("create", {
         input: z.object({
@@ -121,7 +101,8 @@ export const cardsRouter = createRouter()
                 week: z.string().nullish(),
             })
         }),
-        resolve({ ctx, input }) {
+       async resolve ({ ctx, input }) {
+            const pools = await StateToPrismaConverter(input.card.state || 9)
             return ctx.prisma.card.create({
                 data: {
                     ...input.card,
@@ -130,7 +111,9 @@ export const cardsRouter = createRouter()
                     rarity: RarityToPrismaConverter(input.card.rarity),
                     release: new Date(),
                     pools: {
-                        set: [input.card.state || 9]
+                        connect: pools.map((pool: any) => {
+                            return {id: pool.id}
+                        })
                     }
                 }
             })
