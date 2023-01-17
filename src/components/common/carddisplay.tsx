@@ -2,7 +2,6 @@ import {DeckCard} from "../../lib/types"
 import Image from "next/image"
 
 import parrotImg from "../../../public/Parroting_Parrot.png"
-import collectiveIcon from "../../../public/collective_icon.png"
 
 import cardBackground_Unit from "../../../public/builder/cardbackground-unit-small.png"
 import cardBackground_Action from "../../../public/builder/cardbackground-small.png"
@@ -21,10 +20,6 @@ import rarityRare from "../../../public/builder/rare.png"
 import rarityLegendary from "../../../public/builder/legendary.png"
 import rarityToken from "../../../public/builder/undraftable.png"
 
-import eyeIcon from "../../../public/builder/visibility_FILL0_wght400_GRAD0_opsz48.svg"
-import ReactTooltip from "react-tooltip";
-import {effect} from "zod";
-import {Tooltip} from "react-tippy";
 import ToolTipProvider from "./toolTipProvider";
 
 type CardDisplayProps = {
@@ -33,6 +28,10 @@ type CardDisplayProps = {
 }
 
 export default function CardDisplay({dc, tooltipOffset}: CardDisplayProps) {
+
+    // recent fix due to database change, good enough for now
+    if (!dc.card) return null
+
     return(
         <div className={"relative text-white hover:scale-105 cursor-pointer duration-200 group"}>
 

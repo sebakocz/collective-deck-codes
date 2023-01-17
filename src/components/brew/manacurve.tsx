@@ -11,6 +11,10 @@ export default function ManaCurve({deck}: ManaCurveProps){
     const deckData: any = []
     const fillDeckData = () => {
         deck.forEach(dc => {
+            if(!dc.card){
+                return
+            }
+
             const offAff =  dc.affinityBasedCost
             deckData[offAff] = deckData[offAff] || {}
             deckData[offAff].cost = offAff

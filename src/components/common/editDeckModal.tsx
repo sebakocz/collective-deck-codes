@@ -70,6 +70,9 @@ const EditDeckModal = ({cards, hero, deckName, description, toggleModal, id}: Ed
                     heroId: hero.id,
                     description: description,
                     cards: deckCards.map(dc => {
+                        if (!dc.card) {
+                            throw new Error("Card not found")
+                        }
                         return {
                             cardId: dc.card.id,
                             count: dc.count,
@@ -91,6 +94,9 @@ const EditDeckModal = ({cards, hero, deckName, description, toggleModal, id}: Ed
                     heroId: hero.id,
                     description: description,
                     cards: deckCards.map(dc => {
+                        if (!dc.card) {
+                            throw new Error("Card not found")
+                        }
                         return {
                             cardId: dc.card.id,
                             count: dc.count,
@@ -130,7 +136,7 @@ const EditDeckModal = ({cards, hero, deckName, description, toggleModal, id}: Ed
                     <div className={"row-span-4 col-span-3 bg-main-400 rounded-2xl p-1 relative"}>
                         <div
                             className={"w-full h-full bg-cover bg-no-repeat bg-center drop-shadow-xl rounded-xl"}
-                            style={{backgroundImage: `url(${cards[frontCardIndex]?.card.image || "https://s3.us-east-2.amazonaws.com/files.collective.gg/p/canvas-images/a54332d0-3e5c-11eb-b033-73172d333e79.png"})`}}
+                            style={{backgroundImage: `url(${cards[frontCardIndex]?.card?.image || "https://s3.us-east-2.amazonaws.com/files.collective.gg/p/canvas-images/a54332d0-3e5c-11eb-b033-73172d333e79.png"})`}}
                         />
 
                         <div className={"absolute top-0 flex justify-between items-center h-full w-[105%] -left-1.5"}>
@@ -192,7 +198,7 @@ const EditDeckModal = ({cards, hero, deckName, description, toggleModal, id}: Ed
                         {type === "new" &&
                             <Button
                                 // TODO: figure out placeholder image for front card
-                                onClick={() => saveDeck(hero, cards, cards[frontCardIndex]?.card.image || "", deckNameValue, descriptionValue, id)}
+                                onClick={() => saveDeck(hero, cards, cards[frontCardIndex]?.card?.image || "", deckNameValue, descriptionValue, id)}
                                 disabled={saveDeckMutation.isLoading}
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -207,7 +213,7 @@ const EditDeckModal = ({cards, hero, deckName, description, toggleModal, id}: Ed
 
                         {type === "edit" &&
                             <Button
-                                onClick={() => saveDeck(hero, cards, cards[frontCardIndex]?.card.image || "", deckNameValue, descriptionValue, id)}
+                                onClick={() => saveDeck(hero, cards, cards[frontCardIndex]?.card?.image || "", deckNameValue, descriptionValue, id)}
                                 disabled={updateDeckMutation.isLoading}
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

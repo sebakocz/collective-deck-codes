@@ -1,17 +1,12 @@
 import {useEffect, useState} from "react";
 import FilterView from "./filterview";
-import CardpoolView from "./cardpoolview";
 
-import Dropdown from 'rc-dropdown';
-import Menu, { Item as MenuItem, Divider } from 'rc-menu';
 import 'rc-dropdown/assets/index.css';
-import FormatDropdown from "./formatdropdown";
 import {quickSearchFilter} from "../../lib/utils";
 
 import { useDebounce } from 'use-debounce';
 import {DeckCard} from "../../lib/types";
 import CardPoolView from "./cardpoolview";
-import {Hero} from "@prisma/client";
 import {FadeLoader} from "react-spinners";
 
 const QuickSearchBar = ({filter}: any) => {

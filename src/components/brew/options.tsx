@@ -21,7 +21,7 @@ import collectiveIcon from "../../../public/collective_icon.png";
 const getDeckCost = (deck: DeckCard[]) => {
     let amberSum = 0
     for(let i=0; i < deck.length; i++){
-        switch (deck[i]?.card.rarity) {
+        switch (deck[i]?.card?.rarity) {
             case Rarity.COMMON:
             case Rarity.UNCOMMON:
             case Rarity.RARE:

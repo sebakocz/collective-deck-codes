@@ -21,6 +21,8 @@ type CardDisplayMiniProps = {
 
 export default function CardDisplayMini({deckCard, onLeftClick, onRightClick, tooltipOffset}: CardDisplayMiniProps) {
 
+    if (!deckCard.card) return null
+
     return(
         <ToolTipProvider link={deckCard.card.link} tooltipOffset={tooltipOffset}>
             <div

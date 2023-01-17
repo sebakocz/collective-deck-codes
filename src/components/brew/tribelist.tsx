@@ -27,7 +27,7 @@ export default function TribeList({deck}: TribeListProps) {
     const tribesCountDict = () => {
         const dict: any = {}
         deck.forEach(dc => {
-            if(!dc.card.tribe){
+            if(!dc.card?.tribe){
                 dict['Tribeless'] = (dict['Tribeless'] || 0) + dc.count
                 return
             }
