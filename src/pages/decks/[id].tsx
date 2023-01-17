@@ -127,7 +127,7 @@ export const getStaticProps = async ({params}:any) => {
 
 const TypeList = ({deck, type}: {deck: Deck, type: Type}) => {
     return <div className={"w-[45%]"}>
-        {deck?.cards.filter(c => c.card.type == type).map((card, index) => (
+        {deck?.cards.filter(c => c.card?.type == type).map((card, index) => (
             <CardDisplayMini
                 key={index}
                 deckCard={card}
