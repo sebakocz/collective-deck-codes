@@ -2,7 +2,8 @@ import {Prisma} from "@prisma/client";
 
 export type DeckCard = Prisma.CardsOnDecksGetPayload<{
     include: {
-        card: true
+        card: true,
+        cardIdHistory: false,
     }
 }>
 

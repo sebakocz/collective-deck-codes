@@ -78,6 +78,25 @@ export const cardsRouter = createRouter()
     //     }
     // })
 
+    .query("getCustom", {
+        resolve({ ctx}) {
+            return ctx.prisma.card.findMany({
+                where: {
+                    // custom state is 9
+                    state: 9
+                },
+                orderBy: [
+                    {
+                        cost: "asc",
+                    },
+                    {
+                        name: "asc",
+                    }
+                ]
+            })
+        }
+    })
+
     .mutation("create", {
         input: z.object({
             card: z.object({

@@ -5,8 +5,6 @@ import {trpc} from "../utils/trpc";
 import Head from "next/head";
 import Options from "../components/brew/options";
 import Cardlibrary from "../components/brew/cardlibrary";
-import CardPoolView from "../components/brew/cardpoolview";
-import FilterView from "../components/brew/filterview";
 import {Card, CardsOnDecks, Prisma} from "@prisma/client";
 import {DeckCard} from "../lib/types";
 import FormatDropdown from "../components/brew/formatdropdown";
@@ -17,10 +15,6 @@ import {useDeck} from "../lib/hooks/useDeck";
 import useHero from "../lib/hooks/useHero";
 import Analyse from "../components/brew/analyse";
 import {useSession} from "next-auth/react";
-
-// const ToolTipProvider = React.lazy(() => import("../components/toolTipProvider"));
-import ToolTipProvider from "../components/common/toolTipProvider";
-import ReactTooltip from "react-tooltip";
 import {useRouter} from "next/router";
 import {getCustomCardById} from "../utils/collactiveapi";
 
@@ -66,6 +60,12 @@ const Brew: NextPage = () => {
         refetchOnWindowFocus: false,
     })
 
+    const customCardsImport = trpc.useQuery(["cards.getCustom"], {
+        refetchOnReconnect: false,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+    })
+
     const [currentCardsImport, setCurrentCardsImport] = useState("standard")
     const changeFormat = (format: string) => {
         setCurrentCardsImport(format)
@@ -73,23 +73,25 @@ const Brew: NextPage = () => {
 
     // transform to DeckCards
     const getPoolDeckCards = (cards: Card[]) => cards.map((card: Card) => ({
+        id: card.id,
         card: card,
         count: 1,
         affinityBasedCost: getOffAffPenalty(card, hero),
         cardId: card.id,
-        deckId: ""
+        deckId: "",
+        cardIdHistory: card.id
     }))
 
     const {hero, setHero, heros, setHeroByName} = useHero()
 
     useEffect(() =>{
         const newDeckCards = deck.map(card => {
-            if (!card.card) return
+            if (!card.card) return card
             card.affinityBasedCost = getOffAffPenalty(card.card, hero)
             return card
         })
 
-        setDeck(sortCards([...newDeckCards]))
+        setDeck(sortCards(newDeckCards))
 
         // when a non-non-hero is selected show exclusive cards
         // TODO: error: select hero -> refresh filters, you should change the default filter instead hacking like this
@@ -120,7 +122,7 @@ const Brew: NextPage = () => {
     const {deck, setDeck, addCardsToDeck, removeCardFromDeck} = useDeck()
 
     // TODO: doing this on each render is highly inefficient, maybe use memo or something
-    const poolDeckCards = sortCards(getPoolDeckCards((currentCardsImport == "standard" ? standardCardsImport.data : currentCardsImport == "legacy" ? legacyCardsImport.data : currentCardsImport == "event" ? newStandardCardsImport.data : [] ) || []))
+    const poolDeckCards = sortCards(getPoolDeckCards((currentCardsImport == "standard" ? standardCardsImport.data : currentCardsImport == "legacy" ? legacyCardsImport.data : [] ) || []))
 
     const [isBrewing, setIsBrewing] = useState(true)
     const toggleBrewing = () => {
@@ -134,7 +136,7 @@ const Brew: NextPage = () => {
         console.log("importing cards")
         console.log(cardsString)
 
-        let newCards: DeckCard[] = []
+        let newCards = []
         for(let i=0; i < cardsString.length; i++){
             const line = cardsString[i]
             if(line?.startsWith('#')){
