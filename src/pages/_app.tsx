@@ -1,70 +1,41 @@
 // src/pages/_app.tsx
-import { withTRPC } from "@trpc/next";
-import type { AppRouter } from "../server/router";
-import type { AppType } from "next/dist/shared/lib/utils";
-import superjson from "superjson";
-import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
-import Layout from "../components/layout/layout";
-import {useRouter} from "next/router";
-import {useEffect} from "react";
 
-const MyApp: AppType = ({
+import type { AppType } from "next/app";
+import { useRouter } from "next/router";
+import { type Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
+import { useEffect } from "react";
+
+import { api } from "@/utils/api";
+
+import Layout from "../components/layout/layout";
+
+const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-
   // https://remybeumier.be/blog/get-web-analytics-in-nextjs-with-goatcounter
   const router = useRouter();
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       window.goatcounter?.count({
-        path: router.asPath
+        path: router.asPath,
       });
     }
   }, [router]);
 
   return (
-      <>
-        <SessionProvider session={session}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </SessionProvider>
-      </>
+    <>
+      <SessionProvider session={session}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </SessionProvider>
+    </>
   );
 };
-
-const getBaseUrl = () => {
-  if (typeof window !== "undefined") {
-    return "";
-  }
-  if (process.browser) return ""; // Browser should use current path
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
-
-  return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
-};
-
-export default withTRPC<AppRouter>({
-  config({ ctx }) {
-    /**
-     * If you want to use SSR, you need to use the server's full URL
-     * @link https://trpc.io/docs/ssr
-     */
-    const url = `${getBaseUrl()}/api/trpc`;
-
-    return {
-      url,
-      transformer: superjson,
-      /**
-       * @link https://react-query.tanstack.com/reference/QueryClient
-       */
-      // queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
-    };
-  },
-  /**
-   * @link https://trpc.io/docs/ssr
-   */
-  ssr: false,
-})(MyApp);
+export default api.withTRPC(MyApp);

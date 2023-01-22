@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@public/*": ["public/*"]
+    },
     "target": "esnext",
     "lib": [
       "dom",
@@ -18,7 +23,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "suppressImplicitAnyIndexErrors": true,
   },
   "include": [
     "next-env.d.ts",

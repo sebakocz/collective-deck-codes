@@ -109,7 +109,7 @@ model CardsOnDecks {
   cardId            String?
   cardIdHistory     String
   count             Int
-  affinityBasedCost Int
+  affinityPenalty   Boolean
 }
 
 model FavouriteDecksOnUsers {

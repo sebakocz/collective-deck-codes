@@ -1,25 +1,36 @@
-import {useEffect, useState} from "react";
-import {Hero} from "@prisma/client";
-import {trpc} from "../../utils/trpc";
-import {noHero} from "../utils";
+import type { Hero } from "@prisma/client";
+import { useState } from "react";
 
-export default function useHero(){
-    const [hero, setHero] = useState<Hero>(noHero)
+import { api } from "@/utils/api";
 
-    const herosImport = trpc.useQuery(["heros.getAll"], {
-        refetchOnReconnect: false,
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-    })
+export const noHero: Hero = {
+  id: 0,
+  name: "No Hero",
+  affinity: null,
+  deckId: "",
+};
 
-    const setHeroByName = (name: string) => {
-        // console.log("setHeroByName", name)
-        let newHero = herosImport.data?.find((h: Hero) => h.name.toLowerCase() == name)
-        if(!newHero)
-            newHero = noHero
-        // console.log("newHero", newHero)
-        setHero(newHero)
-    }
+export default function useHero() {
+  const [hero, setHero] = useState<Hero>(noHero);
 
-    return {hero, setHero, heros: [noHero, ...(herosImport.data || [])], setHeroByName}
+  const herosImport = api.heros.getAll.useQuery(undefined, {
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+
+  const setHeroByName = (name: string) => {
+    let newHero = herosImport.data?.find(
+      (h: Hero) => h.name.toLowerCase() == name
+    );
+    if (!newHero) newHero = noHero;
+    setHero(newHero);
+  };
+
+  return {
+    hero,
+    setHero,
+    setHeroByName,
+    heroList: [noHero, ...(herosImport.data || [])],
+  };
 }

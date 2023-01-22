@@ -1,7 +1,7 @@
-import parrot_img from "../../../public/Parroting_Parrot.png"
+import parrot_img from "@public/Parroting_Parrot.png"
 import Image from "next/image";
-import {useSession, signOut, signIn} from "next-auth/react";
 import Link from "next/link";
+import {signIn,signOut, useSession} from "next-auth/react";
 import {useState} from "react";
 
 

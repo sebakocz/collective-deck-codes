@@ -1,43 +1,23 @@
-import {useState} from "react";
-import {Card} from "@prisma/client";
-import {sortCards} from "../utils";
-import {DeckCard} from "../types";
+import { useState } from "react";
 
-export function useDeck(){
-    const [deck, setDeck] = useState<DeckCard[]>([])
+import { useDeckCards } from "@/lib/hooks/useDeckCards";
+import useHero from "@/lib/hooks/useHero";
 
-    const addCardsToDeck = (cards: DeckCard[]) => {
-        let new_deckCards: DeckCard[] = []
-        for(let i=0; i < cards.length; i++) {
-            const deckSlot = deck.find(dc => dc.card?.id == cards[i]?.card?.id)
-            if (typeof deckSlot !== "undefined"){
-                if(deckSlot.count + cards[i]?.count! > 3){
-                    deckSlot.count = 3
-                    continue
-                }
-                deckSlot.count += cards[i]?.count!
-            }
-            else {
-                new_deckCards.push(cards[i]!)
-            }
-        }
+export function useDeck() {
+  const [deckDescription, setDeckDescription] = useState("");
 
-        setDeck(sortCards([
-            ...deck,
-            ...new_deckCards
-        ]))
-    }
+  const [deckName, setDeckName] = useState("");
 
-    const removeCardFromDeck = (card: DeckCard) => {
-        const new_deck = deck.filter(c => {
-            if(c.card?.id == card.card?.id){
-                c.count--
-                return c.count > 0
-            }
-            return true
-        })
-        setDeck(new_deck)
-    }
+  const [deckId, setDeckId] = useState("");
 
-    return {deck, setDeck, addCardsToDeck, removeCardFromDeck}
+  return {
+    ...useHero(),
+    ...useDeckCards(),
+    deckId,
+    setDeckId,
+    deckDescription,
+    setDeckDescription,
+    deckName,
+    setDeckName,
+  };
 }
