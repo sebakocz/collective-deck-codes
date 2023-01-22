@@ -18,7 +18,7 @@ const DeckSlot = ({
   onDelete,
   publicView = false,
 }: DeckSlotProps) => {
-  const { views } = useViews(deck);
+  const { views } = useViews(deck.id);
 
   return (
     <div
