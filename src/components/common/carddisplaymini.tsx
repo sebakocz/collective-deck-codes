@@ -14,19 +14,17 @@ type CardDisplayMiniProps = {
   deckCard: DeckCard;
   onRightClick?: () => void;
   onLeftClick?: () => void;
-  tooltipOffset?: number;
 };
 
 export default function CardDisplayMini({
   deckCard,
   onLeftClick,
   onRightClick,
-  tooltipOffset,
 }: CardDisplayMiniProps) {
   if (!deckCard.card) return null;
 
   return (
-    <ToolTipProvider link={deckCard.card.link} tooltipOffset={tooltipOffset}>
+    <ToolTipProvider link={deckCard.card.link}>
       <div
         className={
           "no-select rollout relative my-1 h-[35px] w-full cursor-pointer bg-main-400 hover:scale-y-110"

@@ -3,7 +3,6 @@ import amberImg from "@public/amber.png";
 import Image from "next/image";
 import type { Session } from "next-auth";
 import React, { useState } from "react";
-import { Tooltip } from "react-tippy";
 
 import type { useDeck } from "@/lib/hooks/useDeck";
 import useImporter from "@/lib/hooks/useImporter";
@@ -202,7 +201,6 @@ export default function OptionsSection({
                       deckCard={dc}
                       onLeftClick={() => removeCardFromDeck(dc)}
                       onRightClick={() => addCardsToDeck([dc])}
-                      tooltipOffset={-210}
                     />
                   );
                 })}
@@ -303,42 +301,26 @@ export default function OptionsSection({
         </Button>
 
         {/* Export */}
-        {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-        {/*@ts-ignore - https://github.com/tvkhoa/react-tippy/issues/169*/}
-        <Tooltip
-          title={"Done!"}
-          trigger={"click"}
-          theme={"light"}
-          distance={5}
-          html={
-            <div className={"w-44 p-2 text-center text-main-800"}>
-              {deckCards.length > 0
-                ? "Decklist exported to clipboard!"
-                : "You need to add cards to your deck!"}
-            </div>
-          }
+        <Button
+          onClick={() => exportDeckToClipboard(deckName, deckCards, hero)}
+          moreClasses={"w-full"} // tippy workaround
         >
-          <Button
-            onClick={() => exportDeckToClipboard(deckName, deckCards, hero)}
-            moreClasses={"w-full"} // tippy workaround
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-              />
-            </svg>
-            Export
-          </Button>
-        </Tooltip>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+            />
+          </svg>
+          Export
+        </Button>
       </div>
     </div>
   );

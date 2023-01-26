@@ -1,6 +1,6 @@
 import collectiveIcon from "@public/collective_icon.png";
+import Tippy from "@tippyjs/react";
 import Image from "next/image";
-import { Tooltip } from "react-tippy";
 
 type ToolTipProviderProps = {
   children: any;
@@ -8,36 +8,26 @@ type ToolTipProviderProps = {
   tooltipOffset?: number;
 };
 
-const ToolTipProvider = ({
-  children,
-  link,
-  tooltipOffset,
-}: ToolTipProviderProps) => {
+const ToolTipProvider = ({ children, link }: ToolTipProviderProps) => {
   return (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore - https://github.com/tvkhoa/react-tippy/issues/169
-    <Tooltip
-      arrow={false}
-      animateFill={false}
-      theme={"light"}
-      position={"right"}
-      distance={tooltipOffset || 10}
-      html={
-        <div className={"w-2/3 md:w-96"}>
+    <Tippy
+      content={
+        <div className={"bg-main-100 shadow-2xl"}>
           <Image
             src={link}
             alt={"Card Full Image"}
-            width={450}
-            height={450}
-            objectFit={"contain"}
+            width={300}
+            height={300}
             placeholder={"blur"}
             blurDataURL={collectiveIcon.src}
           />
         </div>
       }
+      placement={"right"}
+      delay={[300, 0]}
     >
       {children}
-    </Tooltip>
+    </Tippy>
   );
 };
 
