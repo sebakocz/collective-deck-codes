@@ -5,7 +5,6 @@ import Image from "next/image";
 type ToolTipProviderProps = {
   children: any;
   link: string;
-  tooltipOffset?: number;
 };
 
 const ToolTipProvider = ({ children, link }: ToolTipProviderProps) => {

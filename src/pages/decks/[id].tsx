@@ -89,11 +89,7 @@ const TypeList = ({ deck, type }: { deck: Deck; type: Type }) => {
       {deck?.cards
         .filter((c) => c.card?.type == type)
         .map((card, index) => (
-          <CardDisplayMini
-            key={index}
-            deckCard={card as DeckCard}
-            tooltipOffset={-40}
-          />
+          <CardDisplayMini key={index} deckCard={card as DeckCard} />
         ))}
     </div>
   );

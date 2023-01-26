@@ -73,7 +73,7 @@ export default function TestDraw({ deck }: TestDrawProps) {
                 className={"testDrawCardAnimationWrapper flex-none"}
                 onClick={() => removeCard(i)}
               >
-                <CardDisplay dc={card} tooltipOffset={-80} />
+                <CardDisplay dc={card} />
               </div>
             );
           })}

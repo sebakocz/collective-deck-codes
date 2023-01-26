@@ -21,10 +21,9 @@ import ToolTipProvider from "./toolTipProvider";
 
 type CardDisplayProps = {
   dc: DeckCard;
-  tooltipOffset?: number;
 };
 
-export default function CardDisplay({ dc, tooltipOffset }: CardDisplayProps) {
+export default function CardDisplay({ dc }: CardDisplayProps) {
   // recent fix due to database change, good enough for now
   if (!dc.card) return null;
 
@@ -59,7 +58,7 @@ export default function CardDisplay({ dc, tooltipOffset }: CardDisplayProps) {
       />
 
       {/* Card Full Info Link */}
-      <ToolTipProvider link={dc.card.link} tooltipOffset={tooltipOffset}>
+      <ToolTipProvider link={dc.card.link}>
         <div
           className={
             "z-100 absolute top-4 left-3 flex h-6 w-6 items-center justify-center rounded-2xl bg-main-400 text-main-600 opacity-0 duration-300 hover:bg-main-100 group-hover:opacity-100"

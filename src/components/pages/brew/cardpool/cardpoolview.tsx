@@ -59,7 +59,7 @@ export default function CardPoolView({
           {deckCards?.slice(startIndex, endIndex).map((dc) => {
             return (
               <div key={dc.card.id} onClick={() => addCardsToDeck([dc])}>
-                <CardDisplay key={dc.card.id} dc={dc} tooltipOffset={-100} />
+                <CardDisplay key={dc.card.id} dc={dc} />
               </div>
             );
           })}
