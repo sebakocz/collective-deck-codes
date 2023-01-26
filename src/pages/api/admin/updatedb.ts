@@ -4,6 +4,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/server/db";
 import { getPublicCardsAsCards } from "@/utils/collactiveapi";
 
+const isDev = process.env.NODE_ENV === "development";
+
 const updatedb = async (req: NextApiRequest, res: NextApiResponse) => {
   const { ACTION_KEY_DB_UPDATE } = process.env;
 
@@ -11,7 +13,7 @@ const updatedb = async (req: NextApiRequest, res: NextApiResponse) => {
     req.headers?.authorization?.split(" ")[1] || "";
 
   try {
-    if (ACTION_KEY_DB_UPDATE_INPUT === ACTION_KEY_DB_UPDATE) {
+    if (ACTION_KEY_DB_UPDATE_INPUT === ACTION_KEY_DB_UPDATE || isDev) {
       // Process the POST request
 
       // save a giant card list, then delete all table items and fill with new list

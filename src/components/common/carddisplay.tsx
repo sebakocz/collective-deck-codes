@@ -11,6 +11,7 @@ import rarityRare from "@public/builder/rare.png";
 import manaCircle_Strength from "@public/builder/redmanacircle.png";
 import rarityUncommon from "@public/builder/uncommon.png";
 import rarityToken from "@public/builder/undraftable.png";
+import collectiveIcon from "@public/collective_icon.png";
 import parrotImg from "@public/Parroting_Parrot.png";
 import Image from "next/image";
 
@@ -34,16 +35,17 @@ export default function CardDisplay({ dc, tooltipOffset }: CardDisplayProps) {
       }
     >
       {/* Card Art Image */}
-      <div className={"absolute left-7 top-7"}>
-        <Image
-          src={dc.card.image.includes("https") ? dc.card.image : parrotImg}
-          alt={""}
-          // layout={"fill"}
-          objectFit={"contain"}
-          width={150}
-          height={120}
-        />
-      </div>
+      <Image
+        src={dc.card.image.includes("https") ? dc.card.image : parrotImg}
+        alt={""}
+        width={150}
+        height={120}
+        className={
+          "absolute top-[29%] left-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 transform"
+        }
+        placeholder={"blur"}
+        blurDataURL={collectiveIcon.blurDataURL}
+      />
 
       {/* Card Background Image - Type */}
       <Image
@@ -138,7 +140,9 @@ export default function CardDisplay({ dc, tooltipOffset }: CardDisplayProps) {
 
       {/* Card Attack Value */}
       <div
-        className={"card-display-text-stats absolute bottom-3.5 left-[14%] w-2"}
+        className={
+          "card-display-text-stats absolute bottom-2.5 left-[14.5%] w-2"
+        }
       >
         {dc.card.atk}
       </div>
@@ -146,7 +150,7 @@ export default function CardDisplay({ dc, tooltipOffset }: CardDisplayProps) {
       {/* Card Health Value */}
       <div
         className={
-          "card-display-text-stats absolute bottom-3.5 right-[15.5%] w-2"
+          "card-display-text-stats absolute bottom-2.5 right-[15%] w-2"
         }
       >
         {dc.card.hp}
@@ -154,20 +158,20 @@ export default function CardDisplay({ dc, tooltipOffset }: CardDisplayProps) {
 
       {/* Card Ability */}
       <div
-        className={"card-display-text-ability absolute top-[58%] w-full"}
+        className={"card-display-text-ability absolute top-[60%] w-full"}
         style={{
           fontSize: (() => {
             switch (dc.card.rarity) {
               case Rarity.COMMON:
-                return 14;
+                return 11;
               case Rarity.UNCOMMON:
-                return 12;
-              case Rarity.RARE:
-                return 10;
-              case Rarity.LEGENDARY:
                 return 9;
+              case Rarity.RARE:
+                return 8;
+              case Rarity.LEGENDARY:
+                return 8;
               case Rarity.TOKEN:
-                return 12;
+                return 10;
             }
           })(),
         }}
@@ -177,16 +181,14 @@ export default function CardDisplay({ dc, tooltipOffset }: CardDisplayProps) {
 
       {/* Card Creator */}
       <div
-        className={
-          "card-display-text-normal absolute bottom-[10.8%] left-[30%]"
-        }
+        className={"card-display-text-normal absolute bottom-[9.3%] left-[30%]"}
       >
         {dc.card.creator}
       </div>
 
       {/* Card Artist */}
       <div
-        className={"card-display-text-normal absolute bottom-[7.8%] left-[30%]"}
+        className={"card-display-text-normal absolute bottom-[6.4%] left-[30%]"}
       >
         {dc.card.artist}
       </div>
@@ -194,16 +196,16 @@ export default function CardDisplay({ dc, tooltipOffset }: CardDisplayProps) {
       {/* Card Name */}
       <div
         className={
-          "card-display-text-normal absolute top-[46.5%] w-[100%] text-center"
+          "card-display-text-normal absolute top-[47.2%] w-[100%] text-center"
         }
       >
         <div className={"text-xs"}>{dc.card.name}</div>
       </div>
 
-      {/* Card Realm */}
+      {/* Card Tribe & Realm */}
       <div
         className={
-          "card-display-text-normal absolute top-[51%] w-[100%] text-center"
+          "card-display-text-normal absolute top-[51.8%] w-[100%] text-center "
         }
       >
         {dc.card.tribe}
@@ -211,7 +213,7 @@ export default function CardDisplay({ dc, tooltipOffset }: CardDisplayProps) {
       </div>
 
       {/* Card Rarity */}
-      <div className={"absolute top-[53%] left-[46.5%]"}>
+      <div className={"absolute top-[55%] left-[46.5%]"}>
         <Image
           src={
             dc.card.rarity == "COMMON"
