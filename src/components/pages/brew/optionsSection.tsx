@@ -261,7 +261,7 @@ export default function OptionsSection({
         </div>
 
         {/* Import */}
-        <Button onClick={() => async () => await importDeckFromClipboard()}>
+        <Button onClick={importDeckFromClipboard}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
