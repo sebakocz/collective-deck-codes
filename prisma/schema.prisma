@@ -100,7 +100,7 @@ model Deck {
   hero          Hero?
   updatedAt     DateTime       @default(now())
   favouritedBy  FavouriteDecksOnUsers[]
-  format        Format?
+  format        Format
 }
 
 model CardsOnDecks {

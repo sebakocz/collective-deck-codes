@@ -222,7 +222,7 @@ const DeckProfile = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
             </p>
 
             <div className={"mt-5"}>
-              <LabelChip label={deck.format || "custom"} />
+              <LabelChip label={deck.format} />
             </div>
           </div>
         </div>
