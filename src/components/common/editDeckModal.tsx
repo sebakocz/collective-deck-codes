@@ -5,6 +5,10 @@ import React, { useMemo, useState } from "react";
 import { PulseLoader } from "react-spinners";
 
 import LabelChip from "@/components/common/labelChip";
+import ArrowLeftIcon from "@/components/icons/arrowLeftIcon";
+import ArrowRightIcon from "@/components/icons/arrowRightIcon";
+import ExitIcon from "@/components/icons/exitIcon";
+import SaveIcon from "@/components/icons/saveIcon";
 import { useCardpool } from "@/lib/hooks/useCardpool";
 import type { useDeck } from "@/lib/hooks/useDeck";
 import type { DeckCard } from "@/lib/types";
@@ -201,20 +205,7 @@ const EditDeckModal = ({ userDeck, toggleModal }: EditDeckModalProps) => {
                 }
                 onClick={reduceFrontCardIndex}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-7 w-7"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M11 19l-7-7 7-7m8 14l-7-7 7-7"
-                  />
-                </svg>
+                <ArrowLeftIcon />
               </div>
 
               <div
@@ -223,20 +214,7 @@ const EditDeckModal = ({ userDeck, toggleModal }: EditDeckModalProps) => {
                 }
                 onClick={increaseFrontCardIndex}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-7 w-7"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13 5l7 7-7 7M5 5l7 7-7 7"
-                  />
-                </svg>
+                <ArrowRightIcon />
               </div>
             </div>
           </div>
@@ -287,20 +265,7 @@ const EditDeckModal = ({ userDeck, toggleModal }: EditDeckModalProps) => {
               }
               onClick={toggleModal}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+              <ExitIcon />
             </div>
 
             {type === "new" && (
@@ -318,20 +283,7 @@ const EditDeckModal = ({ userDeck, toggleModal }: EditDeckModalProps) => {
                 }
                 disabled={saveDeckMutation.isLoading}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
-                  />
-                </svg>
+                <SaveIcon />
                 Save
                 {saveDeckMutation.isLoading && (
                   <PulseLoader size={5} color={"#99816A"} />
@@ -353,20 +305,7 @@ const EditDeckModal = ({ userDeck, toggleModal }: EditDeckModalProps) => {
                 }
                 disabled={updateDeckMutation.isLoading}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
-                  />
-                </svg>
+                <SaveIcon />
                 Edit
                 {updateDeckMutation.isLoading && (
                   <PulseLoader size={5} color={"#99816A"} />

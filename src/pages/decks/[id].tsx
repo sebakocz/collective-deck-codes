@@ -10,6 +10,11 @@ import Button from "@/components/common/button";
 import CardDisplayMini from "@/components/common/carddisplaymini";
 import EditDeckModal from "@/components/common/editDeckModal";
 import LabelChip from "@/components/common/labelChip";
+import BrewIcon from "@/components/icons/brewIcon";
+import ExportIcon from "@/components/icons/exportIcon";
+import EyeIcon from "@/components/icons/eyeIcon";
+import LikeIcon from "@/components/icons/likeIcon";
+import SaveIcon from "@/components/icons/saveIcon";
 import { useDeck } from "@/lib/hooks/useDeck";
 import { noHero } from "@/lib/hooks/useHero";
 import type { Deck, DeckCard } from "@/lib/types";
@@ -231,20 +236,7 @@ const DeckProfile = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         <div className={"flex flex-wrap justify-center gap-6"}>
           <Link href={{ pathname: "/brew", query: { id: deck.id } }}>
             <Button>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
-                />
-              </svg>
+              <BrewIcon />
               Brew
             </Button>
           </Link>
@@ -256,20 +248,7 @@ const DeckProfile = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
               // disabled={!session || userDeckCards.length <= 0 }
               onClick={toggleEditDeckModal}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
-                />
-              </svg>
+              <SaveIcon />
               Edit
             </Button>
           )}
@@ -283,44 +262,13 @@ const DeckProfile = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
               )
             }
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-              />
-            </svg>
+            <ExportIcon />
             Export
           </Button>
 
           {/* Views */}
           <div className={"text-center font-bold text-main-800"}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-              />
-            </svg>
+            <EyeIcon />
 
             {views}
           </div>
@@ -334,20 +282,7 @@ const DeckProfile = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
               toggleLike();
             }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8"
-              fill={isLiked ? "currentColor" : "none"}
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-              />
-            </svg>
+            <LikeIcon isLiked={isLiked} />
 
             {likeCountQuery.data || 0}
           </div>
