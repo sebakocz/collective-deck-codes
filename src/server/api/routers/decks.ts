@@ -1,3 +1,4 @@
+import { Format } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
@@ -269,7 +270,8 @@ export const decksRouter = createTRPCRouter({
   getTopX: publicProcedure
     .input(
       z.object({
-        count: z.number().min(1).max(100),
+        count: z.number().min(1).max(100).optional(),
+        format: z.nativeEnum(Format).optional(),
       })
     )
     .query(({ ctx, input }) => {
@@ -286,6 +288,9 @@ export const decksRouter = createTRPCRouter({
               favouritedBy: true,
             },
           },
+        },
+        where: {
+          format: input.format,
         },
         take: input.count,
         orderBy: {

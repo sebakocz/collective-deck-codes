@@ -40,7 +40,7 @@ export default function CallToActionSection() {
       >
         <p>Or see what the community has been brewing and go</p>
 
-        <Link href={"/brew"}>
+        <Link href={"/explore"}>
           <Button>
             <svg
               xmlns="http://www.w3.org/2000/svg"

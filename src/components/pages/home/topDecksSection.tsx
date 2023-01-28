@@ -1,3 +1,4 @@
+import { Format } from "@prisma/client";
 import Link from "next/link";
 import { BeatLoader } from "react-spinners";
 
@@ -5,18 +6,29 @@ import Button from "@/components/common/button";
 import DeckSlot from "@/components/common/deckslot";
 import { api } from "@/utils/api";
 
-export default function TopDecksSection({ count }: { count: number }) {
-  const topDecksImport = api.decks.getTopX.useQuery({ count: count });
+type TopDecksSectionProps = {
+  count?: number;
+  format?: Format;
+};
+
+export default function TopDecksSection({
+  count,
+  format = Format.STANDARD,
+}: TopDecksSectionProps) {
+  const topDecksImport = api.decks.getTopX.useQuery(
+    { count: count, format: format },
+    {
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 
   return (
     <>
-      <div
-        className={
-          "-mt-10 flex w-full flex-wrap justify-center sm:justify-start"
-        }
-      >
+      <div className={"flex flex-wrap justify-center"}>
         {topDecksImport.isLoading ? (
-          <div className={"mt-16 flex w-full justify-center text-lg"}>
+          <div className={"flex w-full justify-center text-lg"}>
             <BeatLoader size={50} color={"#99816A"} />
           </div>
         ) : topDecksImport?.data?.length || 0 > 0 ? (
