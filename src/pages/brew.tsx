@@ -44,6 +44,7 @@ const Brew: NextPage = () => {
         userDeck.setDeckDescription(data?.description || "");
         userDeck.setHero(data?.hero || noHero);
         userDeck.setDeckName(data?.name || "");
+        userDeck.setDeckId(data?.id || "");
       },
     }
   );

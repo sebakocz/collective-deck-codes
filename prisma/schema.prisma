@@ -100,6 +100,7 @@ model Deck {
   hero          Hero?
   updatedAt     DateTime       @default(now())
   favouritedBy  FavouriteDecksOnUsers[]
+  format        Format?
 }
 
 model CardsOnDecks {
@@ -160,4 +161,10 @@ enum Rarity {
   RARE
   LEGENDARY
   TOKEN
+}
+
+enum Format {
+  STANDARD
+  LEGACY
+  CUSTOM
 }

@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import Button from "@/components/common/button";
 import CardDisplayMini from "@/components/common/carddisplaymini";
 import EditDeckModal from "@/components/common/editDeckModal";
+import LabelChip from "@/components/common/labelChip";
 import { useDeck } from "@/lib/hooks/useDeck";
 import { noHero } from "@/lib/hooks/useHero";
 import type { Deck, DeckCard } from "@/lib/types";
@@ -219,6 +220,10 @@ const DeckProfile = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
             <p className={"mt-6 max-w-lg italic"}>
               {deck.description || "No description"}
             </p>
+
+            <div className={"mt-5"}>
+              <LabelChip label={deck.format || "custom"} />
+            </div>
           </div>
         </div>
 

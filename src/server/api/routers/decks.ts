@@ -1,6 +1,8 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
+import { FormatToPrismaConverter } from "@/utils/prismaConverter";
+
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const decksRouter = createTRPCRouter({
@@ -56,6 +58,9 @@ export const decksRouter = createTRPCRouter({
         name: z.string().max(100),
         heroId: z.number(),
         description: z.string().max(1000),
+        // TODO: how about this implementation?
+        // format: z.enum(FormatToPrismaConverter).optional(),
+        format: z.string().max(100),
         cards: z
           .array(
             z.object({
@@ -114,6 +119,7 @@ export const decksRouter = createTRPCRouter({
           },
           frontCard: input.frontCard || "",
           description: input.description || "",
+          format: FormatToPrismaConverter(input.format),
         },
       });
 
@@ -126,6 +132,7 @@ export const decksRouter = createTRPCRouter({
         name: z.string().max(100),
         heroId: z.number(),
         description: z.string().max(1000),
+        format: z.string().max(100),
         cards: z
           .array(
             z.object({
@@ -176,6 +183,7 @@ export const decksRouter = createTRPCRouter({
           },
           frontCard: input.frontCard || "",
           description: input.description || "",
+          format: FormatToPrismaConverter(input.format),
         },
       });
     }),

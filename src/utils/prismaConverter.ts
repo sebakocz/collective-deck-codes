@@ -1,4 +1,4 @@
-import { Affinity, Rarity, Type } from "@prisma/client";
+import { Affinity, Format, Rarity, Type } from "@prisma/client";
 
 export function AffinityToPrismaConverter(affinity: string): Affinity {
   switch (affinity) {
@@ -59,5 +59,18 @@ export function StateToPrismaConverter(state: number): string[] {
       }
     default:
       return [];
+  }
+}
+
+export function FormatToPrismaConverter(format: string): Format {
+  switch (format.toLowerCase()) {
+    case "standard":
+      return Format.STANDARD;
+    case "legacy":
+      return Format.LEGACY;
+    case "custom":
+      return Format.CUSTOM;
+    default:
+      return Format.CUSTOM;
   }
 }

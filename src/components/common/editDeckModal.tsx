@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import React, { useMemo, useState } from "react";
 import { PulseLoader } from "react-spinners";
 
+import LabelChip from "@/components/common/labelChip";
+import { useCardpool } from "@/lib/hooks/useCardpool";
 import type { useDeck } from "@/lib/hooks/useDeck";
 import type { DeckCard } from "@/lib/types";
 import { getHeroIcon } from "@/lib/utils";
@@ -61,6 +63,29 @@ const EditDeckModal = ({ userDeck, toggleModal }: EditDeckModalProps) => {
     },
   });
 
+  const { whichCardPoolIsCardIn } = useCardpool();
+
+  const whichFormatIsDeck = () => {
+    const cardPools = deckCards.map((dc) => {
+      if (!dc.card) {
+        return "none";
+      }
+      return whichCardPoolIsCardIn(dc.card);
+    });
+
+    if (cardPools.every((cp) => cp === "standard")) {
+      return "standard";
+    }
+
+    if (cardPools.some((cp) => cp === "legacy")) {
+      return "legacy";
+    }
+
+    return "custom";
+  };
+
+  const format = useMemo(() => whichFormatIsDeck(), [deckCards]);
+
   const saveDeck = async (
     hero: Hero,
     deckCards: DeckCard[],
@@ -76,6 +101,7 @@ const EditDeckModal = ({ userDeck, toggleModal }: EditDeckModalProps) => {
           name: deckName,
           heroId: hero.id,
           description: description,
+          format: format,
           cards: deckCards.map((dc) => {
             if (!dc.card) {
               throw new Error("Card not found");
@@ -100,6 +126,7 @@ const EditDeckModal = ({ userDeck, toggleModal }: EditDeckModalProps) => {
           name: deckName,
           heroId: hero.id,
           description: description,
+          format: format,
           cards: deckCards.map((dc) => {
             if (!dc.card) {
               throw new Error("Card not found");
@@ -250,6 +277,8 @@ const EditDeckModal = ({ userDeck, toggleModal }: EditDeckModalProps) => {
               />
             </div>
           </div>
+
+          <LabelChip label={format} />
 
           <div className={"col-span-6 flex w-full justify-between"}>
             <div

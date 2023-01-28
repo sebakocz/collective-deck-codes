@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import LabelChip from "@/components/common/labelChip";
 import { useViews } from "@/lib/hooks/useViews";
 import { DeckSlot } from "@/lib/types";
 import { getHeroIcon } from "@/lib/utils";
@@ -76,11 +77,16 @@ const DeckSlot = ({
                 width={180}
                 height={180}
                 alt={deck.hero?.name || "No Hero"}
-                // objectFit={"fill"}
-                // layout={"fill"}
               />
             </div>
           </div>
+
+          {/* Format Label */}
+          {deck.format && (
+            <div className={"absolute -top-4"}>
+              <LabelChip label={deck.format} />
+            </div>
+          )}
 
           {/* Views */}
           <div

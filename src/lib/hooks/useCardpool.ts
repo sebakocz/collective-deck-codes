@@ -49,10 +49,21 @@ export const useCardpool = () => {
     setCardPool(cardPoolList.standard);
   }, [standardDeckCards]);
 
+  const whichCardPoolIsCardIn = (card: Card) => {
+    if (standardCardsImport.data?.some((c) => c.id === card.id)) {
+      return "standard";
+    } else if (legacyCardsImport.data?.some((c) => c.id === card.id)) {
+      return "legacy";
+    } else {
+      return "custom";
+    }
+  };
+
   return {
     cardPool,
     setCardPool,
     cardPoolList,
     isFetching,
+    whichCardPoolIsCardIn,
   };
 };
