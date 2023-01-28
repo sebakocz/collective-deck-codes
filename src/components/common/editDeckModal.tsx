@@ -1,4 +1,5 @@
 import type { Hero } from "@prisma/client";
+import parrot_img from "@public/Parroting_Parrot.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useMemo, useState } from "react";
@@ -36,6 +37,7 @@ const EditDeckModal = ({ userDeck, toggleModal }: EditDeckModalProps) => {
     deckDescription || ""
   );
 
+  // TODO: refactor this into a component together with template, extend userDeck with setFrontCard
   const [frontCardIndex, setFrontCardIndex] = useState(0);
   const reduceFrontCardIndex = () => {
     if (frontCardIndex > 0) {
@@ -170,8 +172,6 @@ const EditDeckModal = ({ userDeck, toggleModal }: EditDeckModalProps) => {
                 width={150}
                 height={150}
                 alt={hero.name}
-                objectFit={"contain"}
-                // layout={"fill"}
               />
             </div>
           </div>
@@ -188,8 +188,7 @@ const EditDeckModal = ({ userDeck, toggleModal }: EditDeckModalProps) => {
               }
               style={{
                 backgroundImage: `url(${
-                  deckCards[frontCardIndex]?.card?.image ||
-                  "https://s3.us-east-2.amazonaws.com/files.collective.gg/p/canvas-images/a54332d0-3e5c-11eb-b033-73172d333e79.png"
+                  deckCards[frontCardIndex]?.card?.image || parrot_img.src
                 })`,
               }}
             />

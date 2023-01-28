@@ -1,3 +1,4 @@
+import parrot_img from "@public/Parroting_Parrot.png";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -41,10 +42,7 @@ const DeckSlot = ({
               "h-[206px] w-[235px] rounded-xl bg-cover bg-center bg-no-repeat drop-shadow-xl"
             }
             style={{
-              backgroundImage: `url(${
-                deck.frontCard ||
-                "https://s3.us-east-2.amazonaws.com/files.collective.gg/p/canvas-images/a54332d0-3e5c-11eb-b033-73172d333e79.png"
-              })`,
+              backgroundImage: `url(${deck.frontCard || parrot_img.src})`,
             }}
           />
 
