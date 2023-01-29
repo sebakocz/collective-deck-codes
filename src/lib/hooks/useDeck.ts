@@ -13,8 +13,13 @@ export function useDeck() {
   const [deckId, setDeckId] = useState("");
   const [format, setFormat] = useState<Format>(Format.STANDARD);
   const { hero, setHero, setHeroByName, heroList } = useHero();
-  const { deckCards, setDeckCards, addCardsToDeck, removeCardFromDeck } =
-    useDeckCards();
+  const {
+    deckCards,
+    setDeckCards,
+    addCardsToDeck,
+    removeCardFromDeck,
+    adjustAffinityPenalty,
+  } = useDeckCards();
   const [frontCardUrl, setFrontCardUrl] = useState("");
   const router = useRouter();
 
@@ -54,6 +59,10 @@ export function useDeck() {
   useEffect(() => {
     setFormat(whichFormatIsDeck() as Format);
   }, [deckCards]);
+
+  useEffect(() => {
+    adjustAffinityPenalty(hero.affinity);
+  }, [hero.affinity]);
 
   const saveDeck = async () => {
     await saveDeckMutation.mutateAsync({

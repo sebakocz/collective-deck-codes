@@ -1,4 +1,7 @@
+import { Affinity } from "@prisma/client";
 import { useEffect, useState } from "react";
+
+import { hasAffinityPenalty } from "@/lib/utils";
 
 import type { DeckCard } from "../types";
 
@@ -63,10 +66,20 @@ export function useDeckCards() {
     setDeckCards(new_deck);
   };
 
+  const adjustAffinityPenalty = (heroAffinity: Affinity | null) => {
+    const newCardPool = deckCards.map((card) => ({
+      ...card,
+      affinityPenalty: hasAffinityPenalty(card.card.affinity, heroAffinity),
+    }));
+
+    setDeckCards(sortCards(newCardPool));
+  };
+
   return {
     deckCards,
     setDeckCards,
     addCardsToDeck,
     removeCardFromDeck,
+    adjustAffinityPenalty,
   };
 }
