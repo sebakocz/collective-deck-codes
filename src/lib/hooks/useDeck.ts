@@ -1,23 +1,123 @@
-import { useState } from "react";
+import { Format } from "@prisma/client";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
+import { useCardpool } from "@/lib/hooks/useCardpool";
 import { useDeckCards } from "@/lib/hooks/useDeckCards";
 import useHero from "@/lib/hooks/useHero";
+import { api } from "@/utils/api";
 
 export function useDeck() {
   const [deckDescription, setDeckDescription] = useState("");
-
   const [deckName, setDeckName] = useState("");
-
   const [deckId, setDeckId] = useState("");
+  const [format, setFormat] = useState<Format>(Format.STANDARD);
+  const { hero, setHero, setHeroByName, heroList } = useHero();
+  const { deckCards, setDeckCards, addCardsToDeck, removeCardFromDeck } =
+    useDeckCards();
+  const [frontCardUrl, setFrontCardUrl] = useState("");
+  const router = useRouter();
+
+  const saveDeckMutation = api.decks.save.useMutation({
+    onSuccess: async (deckReponse) => {
+      await router.push("/decks/" + deckReponse.id);
+    },
+  });
+
+  const updateDeckMutation = api.decks.update.useMutation({
+    onSuccess: async () => {
+      await router.push("/decks/" + deckId);
+    },
+  });
+
+  const { whichCardPoolIsCardIn } = useCardpool();
+
+  const whichFormatIsDeck = () => {
+    const cardPools = deckCards.map((dc) => {
+      if (!dc.card) {
+        return "custom";
+      }
+      return whichCardPoolIsCardIn(dc.card);
+    });
+
+    if (cardPools.every((cp) => cp === "standard")) {
+      return "standard";
+    }
+
+    if (cardPools.some((cp) => cp === "legacy")) {
+      return "legacy";
+    }
+
+    return "custom";
+  };
+
+  useEffect(() => {
+    setFormat(whichFormatIsDeck() as Format);
+  }, [deckCards]);
+
+  const saveDeck = async () => {
+    await saveDeckMutation.mutateAsync({
+      frontCard: frontCardUrl,
+      name: deckName,
+      heroId: hero.id,
+      description: deckDescription,
+      format: format,
+      cards: deckCards.map((dc) => {
+        if (!dc.card) {
+          throw new Error("Card not found");
+        }
+        return {
+          cardId: dc.card.id,
+          count: dc.count,
+          affinityPenalty: dc.affinityPenalty,
+        };
+      }),
+    });
+  };
+
+  const updateDeck = async () => {
+    await updateDeckMutation.mutateAsync({
+      id: deckId,
+      frontCard: frontCardUrl,
+      name: deckName,
+      heroId: hero.id,
+      description: deckDescription,
+      format: format,
+      cards: deckCards.map((dc) => {
+        if (!dc.card) {
+          throw new Error("Card not found");
+        }
+        return {
+          cardId: dc.card.id,
+          count: dc.count,
+          affinityPenalty: dc.affinityPenalty,
+        };
+      }),
+    });
+  };
 
   return {
-    ...useHero(),
-    ...useDeckCards(),
+    hero,
+    setHero,
+    setHeroByName,
+    heroList,
+    deckCards,
+    setDeckCards,
+    addCardsToDeck,
+    removeCardFromDeck,
     deckId,
     setDeckId,
     deckDescription,
     setDeckDescription,
     deckName,
     setDeckName,
+    saveDeck,
+    updateDeck,
+    frontCardUrl,
+    setFrontCardUrl,
+    saveIsLoading: saveDeckMutation.isLoading,
+    updateIsLoading: updateDeckMutation.isLoading,
+    format,
+    setFormat,
   };
 }

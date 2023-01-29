@@ -8,8 +8,8 @@ import { useEffect, useState } from "react";
 
 import Button from "@/components/common/button";
 import CardDisplayMini from "@/components/common/carddisplaymini";
-import EditDeckModal from "@/components/common/editDeckModal";
 import LabelChip from "@/components/common/labelChip";
+import SaveDeckModal from "@/components/common/saveDeckModal";
 import BrewIcon from "@/components/icons/brewIcon";
 import ExportIcon from "@/components/icons/exportIcon";
 import EyeIcon from "@/components/icons/eyeIcon";
@@ -155,11 +155,12 @@ const DeckProfile = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
     userDeck.setHero(deck.hero || noHero);
     userDeck.setDeckName(deck.name || "");
     userDeck.setDeckId(deck.id || "");
+    userDeck.setFrontCardUrl(deck.frontCard || "");
   }, [deck]);
 
-  const [isEditDeckModalOpen, setIsEditDeckModalOpen] = useState(false);
+  const [isSaveDeckModalOpen, setIsSaveDeckModalOpen] = useState(false);
   const toggleEditDeckModal = () => {
-    setIsEditDeckModalOpen(!isEditDeckModalOpen);
+    setIsSaveDeckModalOpen(!isSaveDeckModalOpen);
   };
 
   return (
@@ -196,8 +197,8 @@ const DeckProfile = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {isEditDeckModalOpen && (
-        <EditDeckModal userDeck={userDeck} toggleModal={toggleEditDeckModal} />
+      {isSaveDeckModalOpen && (
+        <SaveDeckModal userDeck={userDeck} toggleModal={toggleEditDeckModal} />
       )}
 
       <div

@@ -4,6 +4,7 @@ import Image from "next/image";
 import type { Session } from "next-auth";
 import React, { useState } from "react";
 
+import LabelChip from "@/components/common/labelChip";
 import AnalyseIcon from "@/components/icons/analyseIcon";
 import BrewIcon from "@/components/icons/brewIcon";
 import ExportIcon from "@/components/icons/exportIcon";
@@ -17,7 +18,7 @@ import { exportDeckToClipboard } from "@/lib/utils";
 
 import Button from "../../common/button";
 import CardDisplayMini from "../../common/carddisplaymini";
-import EditDeckModal from "../../common/editDeckModal";
+import SaveDeckModal from "../../common/saveDeckModal";
 import HeroDropdown from "./options/herodropdown";
 
 const getDeckCost = (deck: DeckCard[]) => {
@@ -64,6 +65,7 @@ export default function OptionsSection({
     setHeroByName,
     addCardsToDeck,
     removeCardFromDeck,
+    format,
   } = userDeck;
 
   const importDeckFromClipboard = async () => {
@@ -95,16 +97,16 @@ export default function OptionsSection({
     userDeck.addCardsToDeck(cards);
   };
 
-  const [isEditDeckModalOpen, setIsEditDeckModalOpen] = useState(false);
+  const [isSaveDeckModalOpen, setIsSaveDeckModalOpen] = useState(false);
   const toggleEditDeckModal = () => {
-    setIsEditDeckModalOpen(!isEditDeckModalOpen);
+    setIsSaveDeckModalOpen(!isSaveDeckModalOpen);
   };
 
   return (
     <div className={"h-screen w-full bg-main-500 shadow-2xl md:w-60"}>
       <div className={"relative m-3 flex h-[96%] flex-col gap-3"}>
-        {isEditDeckModalOpen && (
-          <EditDeckModal
+        {isSaveDeckModalOpen && (
+          <SaveDeckModal
             userDeck={userDeck}
             toggleModal={toggleEditDeckModal}
           />
@@ -211,6 +213,11 @@ export default function OptionsSection({
                   <Image src={amberImg} alt={"Amber"} width={18} height={18} />
                 </div>
                 {getDeckCost(deckCards)}
+              </div>
+
+              {/* Format */}
+              <div className={"absolute -top-2 -right-2"}>
+                <LabelChip label={format} />
               </div>
 
               {/* Deck Size */}

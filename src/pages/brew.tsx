@@ -45,12 +45,10 @@ const Brew: NextPage = () => {
         userDeck.setHero(data?.hero || noHero);
         userDeck.setDeckName(data?.name || "");
         userDeck.setDeckId(data?.id || "");
+        userDeck.setFrontCardUrl(data?.frontCard || "");
       },
     }
   );
-
-  // TODO: move into CardpoolSection
-  // const filters = useFilter(hero);
 
   // toggle to switch between brew and analyse
   const [isBrewing, setIsBrewing] = useState(true);
@@ -69,8 +67,6 @@ const Brew: NextPage = () => {
         userDeck.hero.affinity
       ),
     }));
-
-    console.log("newCardPool", newCardPool);
 
     return sortCards(newCardPool);
   }, [cardPool.cardPool, userDeck.hero.affinity]);
@@ -106,8 +102,6 @@ const Brew: NextPage = () => {
               useCardPool={cardPool}
               sortedCardpool={filteredCardPool}
               filter={filter}
-              // deckCards={applyFilters(poolDeckCards)}
-              // formatDropdown={<FormatDropdown changeFormat={changeFormat} />}
             />
           ) : (
             <AnalyseSection deck={userDeck.deckCards} />
