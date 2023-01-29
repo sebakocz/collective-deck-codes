@@ -89,13 +89,19 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   };
 };
 
-const TypeList = ({ deck, type }: { deck: Deck; type: Type }) => {
+const TypeList = ({
+  deckCards,
+  type,
+}: {
+  deckCards: DeckCard[];
+  type: Type;
+}) => {
   return (
     <div className={"w-[45%]"}>
-      {deck?.cards
+      {deckCards
         .filter((c) => c.card?.type == type)
         .map((card, index) => (
-          <CardDisplayMini key={index} deckCard={card as DeckCard} />
+          <CardDisplayMini key={index} deckCard={card} />
         ))}
     </div>
   );
@@ -213,8 +219,6 @@ const DeckProfile = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
               width={250}
               height={250}
               alt={deck.hero?.name || "No Hero"}
-              // objectFit={"contain"}
-              // layout={"fill"}
             />
           </div>
 
@@ -245,10 +249,7 @@ const DeckProfile = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
           {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
           {/* @ts-ignore */}
           {session?.user?.email == deck.user.email && (
-            <Button
-              // disabled={!session || userDeckCards.length <= 0 }
-              onClick={toggleEditDeckModal}
-            >
+            <Button onClick={toggleEditDeckModal}>
               <SaveIcon />
               Edit
             </Button>
@@ -292,10 +293,10 @@ const DeckProfile = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         {/* Deck */}
         <div className={"flex w-2/5 min-w-[300px] justify-between"}>
           {/* Units */}
-          <TypeList deck={deck} type={Type.UNIT} />
+          <TypeList deckCards={userDeck.deckCards} type={Type.UNIT} />
 
           {/* Action */}
-          <TypeList deck={deck} type={Type.ACTION} />
+          <TypeList deckCards={userDeck.deckCards} type={Type.ACTION} />
         </div>
       </div>
     </>
