@@ -1,4 +1,4 @@
-import { Affinity } from "@prisma/client";
+import type { Affinity } from "@prisma/client";
 import { useEffect, useState } from "react";
 
 import { hasAffinityPenalty } from "@/lib/utils";

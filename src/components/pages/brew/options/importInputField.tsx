@@ -48,7 +48,7 @@ export default function ImportInputField({ userDeck }: ImportInputFieldProps) {
 
     const cards = await importer.importCardsFromString(lines);
     if (!cards) return;
-    userDeck.addCardsToDeck(cards);
+    userDeck.addCardsToDeck([...cards]);
   };
 
   return (

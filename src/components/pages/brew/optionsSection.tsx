@@ -151,7 +151,7 @@ export default function OptionsSection({
                       key={dc.card.id}
                       deckCard={dc}
                       onLeftClick={() => removeCardFromDeck(dc)}
-                      onRightClick={() => addCardsToDeck([dc])}
+                      onRightClick={() => addCardsToDeck([{ ...dc }])}
                     />
                   );
                 })}

@@ -83,7 +83,7 @@ export const exportDeckToClipboard = (
   hero: Hero
 ) => {
   let deckExportText = `# ${
-    deckName != "" ? deckName : "Some pog deck"
+    deckName != "" ? deckName : "Imported Deck"
   }\n# Hero: ${hero.name}`;
   deck.forEach((dc) => {
     deckExportText += `\n${dc.count} ${
