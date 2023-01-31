@@ -7,14 +7,12 @@ import React, { useState } from "react";
 import LabelChip from "@/components/common/labelChip";
 import AnalyseIcon from "@/components/icons/analyseIcon";
 import BrewIcon from "@/components/icons/brewIcon";
-import ExportIcon from "@/components/icons/exportIcon";
-import ImportIcon from "@/components/icons/importIcon";
 import SaveIcon from "@/components/icons/saveIcon";
 import TrashIcon from "@/components/icons/trashIcon";
+import ExportButton from "@/components/pages/brew/options/exportButton";
+import ImportInputField from "@/components/pages/brew/options/importInputField";
 import type { useDeck } from "@/lib/hooks/useDeck";
-import useImporter from "@/lib/hooks/useImporter";
 import type { DeckCard } from "@/lib/types";
-import { exportDeckToClipboard } from "@/lib/utils";
 
 import Button from "../../common/button";
 import CardDisplayMini from "../../common/carddisplaymini";
@@ -51,8 +49,6 @@ export default function OptionsSection({
   session,
   isLoading,
 }: OptionProps) {
-  const importer = useImporter(userDeck.hero);
-
   const { isBrewing, toggleBrewing } = brewing;
 
   const {
@@ -68,35 +64,6 @@ export default function OptionsSection({
     format,
   } = userDeck;
 
-  const importDeckFromClipboard = async () => {
-    const clipboard = await navigator.clipboard.readText();
-    const lines: string[] = clipboard.split(/\r?\n/);
-
-    // set default values
-    let heroName = "No Hero";
-    let deckName = "";
-
-    if (!lines[0]) return;
-
-    // get the deck name from the first line
-    if (lines[0].startsWith("#")) {
-      deckName = lines[0].slice(1).trim();
-      userDeck.setDeckName(deckName);
-      lines.splice(0, 1);
-    }
-
-    // get the hero from the second line
-    if (lines[0].startsWith("#")) {
-      heroName = lines[0].slice(8).trim().toLowerCase();
-      userDeck.setHeroByName(heroName);
-      lines.splice(0, 1);
-    }
-
-    const cards = await importer.importCardsFromString(lines);
-    if (!cards) return;
-    userDeck.addCardsToDeck(cards);
-  };
-
   const [isSaveDeckModalOpen, setIsSaveDeckModalOpen] = useState(false);
   const toggleEditDeckModal = () => {
     setIsSaveDeckModalOpen(!isSaveDeckModalOpen);
@@ -104,7 +71,9 @@ export default function OptionsSection({
 
   return (
     <div className={"h-screen w-full bg-main-500 shadow-2xl md:w-60"}>
-      <div className={"relative m-3 flex h-[96%] flex-col gap-3"}>
+      <div
+        className={"relative m-3 flex h-[96%] flex-col justify-evenly gap-2"}
+      >
         {isSaveDeckModalOpen && (
           <SaveDeckModal
             userDeck={userDeck}
@@ -175,7 +144,7 @@ export default function OptionsSection({
                 "no-scrollbar h-full overflow-hidden overflow-y-scroll will-change-transform"
               }
             >
-              <div className={"mb-5 mt-3 h-full w-full"}>
+              <div className={"h-full w-full"}>
                 {deckCards.map((dc) => {
                   return (
                     <CardDisplayMini
@@ -233,15 +202,11 @@ export default function OptionsSection({
         </div>
 
         {/* Import */}
-        <Button onClick={importDeckFromClipboard}>
-          <ImportIcon />
-          Import
-        </Button>
+        <ImportInputField userDeck={userDeck} />
 
         {/* Save */}
         <Button
           disabled={!session || deckCards.length <= 0}
-          // onClick={saveDeck}
           onClick={toggleEditDeckModal}
         >
           <SaveIcon />
@@ -249,13 +214,7 @@ export default function OptionsSection({
         </Button>
 
         {/* Export */}
-        <Button
-          onClick={() => exportDeckToClipboard(deckName, deckCards, hero)}
-          moreClasses={"w-full"} // tippy workaround
-        >
-          <ExportIcon />
-          Export
-        </Button>
+        <ExportButton hero={hero} deckCards={deckCards} deckName={deckName} />
       </div>
     </div>
   );
