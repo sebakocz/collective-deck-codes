@@ -44,7 +44,7 @@ export default function CardPoolView({
     <>
       <div
         className={
-          "h-full overflow-x-hidden overflow-y-scroll will-change-transform"
+          "h-full overflow-x-hidden overflow-y-scroll will-change-transform scrollbar-thin scrollbar-thumb-main-400"
         }
         onScroll={handleScroll}
         ref={containerRef}

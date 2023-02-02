@@ -1,4 +1,4 @@
-import parrot_img from "@public/Parroting_Parrot.png";
+import collective_icon from "@public/collective_icon.png";
 import Image from "next/image";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
@@ -68,8 +68,8 @@ export default function Sidenav() {
       >
         <Image
           className={"circle"}
-          src={parrot_img}
-          alt={"Parrot Logo"}
+          src={collective_icon}
+          alt={"Yellow Collective Logo"}
           width={200}
           height={200}
         />

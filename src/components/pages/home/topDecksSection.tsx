@@ -30,7 +30,7 @@ export default function TopDecksSection({
       <div className={"flex flex-wrap justify-center"}>
         {topDecksImport.isLoading ? (
           <div className={"flex w-full justify-center text-lg"}>
-            <BeatLoader size={50} color={"#99816A"} />
+            <BeatLoader size={50} color={"#99816A"} className={"mt-20"} />
           </div>
         ) : topDecksImport?.data?.length || 0 > 0 ? (
           topDecksImport.data?.map((deck, i: number) => {
