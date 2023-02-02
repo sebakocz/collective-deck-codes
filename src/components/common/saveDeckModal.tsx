@@ -76,7 +76,9 @@ const SaveDeckModal = ({ userDeck, toggleModal }: SaveDeckModalProps) => {
 
           {/* Front Card */}
           <DeckFrontCard
-            deckCardImages={deckCards.map((dc: DeckCard) => dc.card?.image)}
+            deckCardImages={deckCards.map(
+              (dc: DeckCard) => dc.card?.image || parrot_img.src
+            )}
             frontCardUrl={frontCardUrl}
             setFrontCardUrl={setFrontCardUrl}
           />

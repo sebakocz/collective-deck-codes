@@ -13,57 +13,27 @@ const convertCardToDeckCard = (card: Card) => {
 };
 
 export const useCardpool = () => {
-  const [standardDeckCards, setStandardDeckCards] = useState<DeckCard[]>([]);
-  const [legacyDeckCards, setLegacyDeckCards] = useState<DeckCard[]>([]);
+  const [currentDeckCards, setCurrentDeckCards] = useState<DeckCard[]>([]);
+  const [poolName, setPoolName] = useState("Standard");
 
-  const standardCardsImport = api.cards.getStandard.useQuery(undefined, {
-    refetchOnReconnect: false,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    onSuccess: (data) => {
-      setStandardDeckCards(data.map(convertCardToDeckCard));
-    },
-  });
-
-  const legacyCardsImport = api.cards.getLegacy.useQuery(undefined, {
-    refetchOnReconnect: false,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    onSuccess: (data) => {
-      setLegacyDeckCards(data.map(convertCardToDeckCard));
-    },
-  });
-
-  const isFetching =
-    standardCardsImport.isLoading || legacyCardsImport.isLoading;
-
-  const cardPoolList = {
-    standard: standardDeckCards,
-    legacy: legacyDeckCards,
-  };
-
-  const [cardPool, setCardPool] = useState(cardPoolList.standard);
-
-  // using this to re-render when cards are fetched
-  useEffect(() => {
-    setCardPool(cardPoolList.standard);
-  }, [standardDeckCards]);
-
-  const whichCardPoolIsCardIn = (card: Card) => {
-    if (standardCardsImport.data?.some((c) => c.id === card.id)) {
-      return "standard";
-    } else if (legacyCardsImport.data?.some((c) => c.id === card.id)) {
-      return "legacy";
-    } else {
-      return "custom";
+  const cardPoolQuery = api.cards.getPool.useQuery(
+    { name: poolName },
+    {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      onSuccess: (data) => {
+        setCurrentDeckCards(data.map(convertCardToDeckCard));
+      },
     }
-  };
+  );
+
+  useEffect(() => {
+    setCurrentDeckCards([]);
+  }, [poolName]);
 
   return {
-    cardPool,
-    setCardPool,
-    cardPoolList,
-    isFetching,
-    whichCardPoolIsCardIn,
+    cardPoolQuery,
+    currentDeckCards,
+    setPoolName,
   };
 };

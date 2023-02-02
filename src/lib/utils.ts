@@ -7,7 +7,7 @@ import type { DeckCard } from "./types";
 
 // TODO: replace DeckCard with Card for better performance
 export const nameFilter = (f: DeckCard, input: string) =>
-  f.card?.name.toLowerCase().includes(input);
+  f.card?.name.toLowerCase().includes(input) || false;
 export const tribeFilter = (f: DeckCard, input: string) =>
   f.card?.tribe?.toLowerCase().includes(input) || false;
 export const realmFilter = (f: DeckCard, input: string) =>
@@ -18,10 +18,10 @@ export const artistFilter = (f: DeckCard, input: string) =>
   f.card?.artist?.toLowerCase().includes(input) || false;
 export const creatorFilter = (f: DeckCard, input: string) =>
   f.card?.creator?.toLowerCase().includes(input) || false;
-export const exclusiveFilter = (f: DeckCard) => f.card?.exclusive;
+export const exclusiveFilter = (f: DeckCard) => f.card?.exclusive || false;
 export const costFilter = (f: DeckCard, input: string) =>
   f.affinityPenalty
-    ? f.card?.cost + 1 === Number(input)
+    ? (f.card?.cost || 0) + 1 === Number(input)
     : f.card?.cost === Number(input);
 export const atkFilter = (f: DeckCard, input: string) =>
   f.card?.atk === Number(input);
@@ -87,6 +87,7 @@ export const exportDeckToClipboard = (
   }\n# Hero: ${hero.name}`;
   deck.forEach((dc) => {
     deckExportText += `\n${dc.count} ${
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       [0, 2].includes(Number(dc.card?.state)) ? dc.card?.name : dc.card?.link
     }`;
   });

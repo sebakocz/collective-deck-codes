@@ -3,7 +3,6 @@ import type { Hero } from "@prisma/client";
 import type { DeckCard } from "@/lib/types";
 import { hasAffinityPenalty } from "@/lib/utils";
 import { api } from "@/utils/api";
-import { getCustomCardById } from "@/utils/collactiveapi";
 
 export default function useImporter(hero: Hero) {
   const allCardsImport = api.cards.getAll.useQuery(undefined, {
@@ -14,10 +13,7 @@ export default function useImporter(hero: Hero) {
 
   const allCards = allCardsImport.data || [];
 
-  const importCardsFromString = async (cardsString: string[]) => {
-    console.log("importing cards");
-    console.log(cardsString);
-
+  const importCardsFromString = (cardsString: string[]) => {
     const newCards: DeckCard[] = [];
     for (let i = 0; i < cardsString.length; i++) {
       const line = cardsString[i];
@@ -49,23 +45,23 @@ export default function useImporter(hero: Hero) {
       }
 
       // if not found in db but a valid card id, fetch and push to decklist
-      if (card_uid) {
-        // get Card via fetching from Collective API
-        const customCard = await getCustomCardById(card_uid);
-
-        if (customCard) {
-          // TODO: setting correct affinityBasedCost should not be the responsibility of the importer
-          // push to newCards
-          newCards.push({
-            card: customCard,
-            count: Number(count),
-            affinityPenalty: hasAffinityPenalty(
-              customCard.affinity as string,
-              hero.affinity
-            ),
-          });
-        }
-      }
+      // if (card_uid) {
+      //   // get Card via fetching from Collective API
+      //   const customCard = await getCustomCardById(card_uid);
+      //
+      //   if (customCard) {
+      //     // TODO: setting correct affinityBasedCost should not be the responsibility of the importer
+      //     // push to newCards
+      //     newCards.push({
+      //       card: customCard,
+      //       count: Number(count),
+      //       affinityPenalty: hasAffinityPenalty(
+      //         customCard.affinity as string,
+      //         hero.affinity
+      //       ),
+      //     });
+      //   }
+      // }
     }
 
     return newCards || [];

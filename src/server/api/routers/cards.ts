@@ -9,52 +9,73 @@ import {
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const cardsRouter = createTRPCRouter({
-  getLegacy: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.card.findMany({
-      where: {
-        pools: {
-          some: {
-            name: "Legacy",
-          },
-        },
-      },
-      orderBy: [
-        {
-          cost: "asc",
-        },
-        {
-          name: "asc",
-        },
-      ],
-    });
-  }),
+  getPool: publicProcedure
+    .input(
+      z.object({
+        name: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      switch (input.name) {
+        case "Standard":
+          const x = new Date();
+          x.setDate(27);
+          x.setMonth(x.getMonth() - 1);
 
-  getStandard: publicProcedure.query(({ ctx }) => {
-    const x = new Date();
-    x.setDate(27);
-    x.setMonth(x.getMonth() - 1);
-
-    return ctx.prisma.card.findMany({
-      where: {
-        release: {
-          lt: x,
-        },
-        pools: {
-          some: {
-            name: "Standard",
-          },
-        },
-      },
-      orderBy: [
-        {
-          cost: "asc",
-        },
-        {
-          name: "asc",
-        },
-      ],
-    });
-  }),
+          return ctx.prisma.card.findMany({
+            where: {
+              release: {
+                lt: x,
+              },
+              pools: {
+                some: {
+                  name: "Standard",
+                },
+              },
+            },
+            include: {
+              pools: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+            orderBy: [
+              {
+                cost: "asc",
+              },
+              {
+                name: "asc",
+              },
+            ],
+          });
+        default:
+          return ctx.prisma.card.findMany({
+            where: {
+              pools: {
+                some: {
+                  name: input.name,
+                },
+              },
+            },
+            include: {
+              pools: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+            orderBy: [
+              {
+                cost: "asc",
+              },
+              {
+                name: "asc",
+              },
+            ],
+          });
+      }
+    }),
 
   create: publicProcedure
     .input(
@@ -100,6 +121,13 @@ export const cardsRouter = createTRPCRouter({
 
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.card.findMany({
+      include: {
+        pools: {
+          select: {
+            name: true,
+          },
+        },
+      },
       orderBy: [
         {
           cost: "asc",

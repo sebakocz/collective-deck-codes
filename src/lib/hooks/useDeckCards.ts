@@ -13,12 +13,16 @@ export const sortCards = (cards: DeckCard[]) => {
           numeric: true,
         }) || 0
     )
-    .sort(
-      (a, b) =>
+    .sort((a, b) => {
+      if (!a.card) return 1;
+      if (!b.card) return -1;
+
+      return (
         a.card.cost +
         (a.affinityPenalty ? 1 : 0) -
         (b.card.cost + (b.affinityPenalty ? 1 : 0))
-    );
+      );
+    });
 };
 
 export function useDeckCards() {
@@ -69,7 +73,10 @@ export function useDeckCards() {
   const adjustAffinityPenalty = (heroAffinity: Affinity | null) => {
     const newCardPool = deckCards.map((card) => ({
       ...card,
-      affinityPenalty: hasAffinityPenalty(card.card.affinity, heroAffinity),
+      affinityPenalty: hasAffinityPenalty(
+        card.card?.affinity || "",
+        heroAffinity
+      ),
     }));
 
     setDeckCards(sortCards(newCardPool));

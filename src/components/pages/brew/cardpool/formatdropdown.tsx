@@ -11,10 +11,10 @@ type FormatDropdownProps = {
 
 export default function FormatDropdown({ useCardpool }: FormatDropdownProps) {
   // TODO: this should be dependant on cardPool
-  const { setCardPool, cardPoolList } = useCardpool;
+  const { setPoolName } = useCardpool;
 
   const changeFormat = (format: string) => {
-    setCardPool(cardPoolList[format] as DeckCard[]);
+    setPoolName(format);
   };
 
   const format_options = ["Standard", "Legacy"];
@@ -43,7 +43,7 @@ export default function FormatDropdown({ useCardpool }: FormatDropdownProps) {
 
   function onSelect({ key }: { key: string }) {
     setFormat(format_options[key] as string);
-    changeFormat((format_options[key] as string).toLowerCase());
+    changeFormat(format_options[key] as string);
   }
 
   return (

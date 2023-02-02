@@ -60,16 +60,16 @@ const Brew: NextPage = () => {
 
   const sortedCardPool = useMemo(() => {
     // apply affinity changes on hero change
-    const newCardPool = cardPool.cardPool.map((card) => ({
+    const newCardPool = cardPool.currentDeckCards.map((card) => ({
       ...card,
       affinityPenalty: hasAffinityPenalty(
-        card.card.affinity,
+        card.card?.affinity || "",
         userDeck.hero.affinity
       ),
     }));
 
     return sortCards(newCardPool);
-  }, [cardPool.cardPool, userDeck.hero.affinity]);
+  }, [cardPool.currentDeckCards, userDeck.hero.affinity]);
 
   const filter = useFilter(userDeck.hero);
 

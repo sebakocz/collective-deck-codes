@@ -203,7 +203,15 @@ export const decksRouter = createTRPCRouter({
         include: {
           cards: {
             include: {
-              card: true,
+              card: {
+                include: {
+                  pools: {
+                    select: {
+                      name: true,
+                    },
+                  },
+                },
+              },
             },
           },
           hero: true,

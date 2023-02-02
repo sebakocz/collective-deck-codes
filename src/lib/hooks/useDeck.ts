@@ -35,14 +35,18 @@ export function useDeck() {
     },
   });
 
-  const { whichCardPoolIsCardIn } = useCardpool();
-
   const whichFormatIsDeck = () => {
     const cardPools = deckCards.map((dc) => {
       if (!dc.card) {
         return "custom";
       }
-      return whichCardPoolIsCardIn(dc.card);
+      // if one of the pools is standard, the deck is standard, else it's legacy
+      if (dc.card.pools.some((pool) => pool.name === "Standard")) {
+        return "standard";
+      } else if (dc.card.pools.some((pool) => pool.name === "Legacy")) {
+        return "legacy";
+      }
+      return "custom";
     });
 
     if (cardPools.every((cp) => cp === "standard")) {

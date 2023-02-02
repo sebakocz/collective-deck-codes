@@ -50,7 +50,15 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     include: {
       cards: {
         include: {
-          card: true,
+          card: {
+            include: {
+              pools: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
         },
       },
       user: {
@@ -108,7 +116,7 @@ const TypeList = ({
 };
 
 const DeckProfile = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const { deck }: { deck: Deck } = props;
+  const { deck } = props;
   const { views } = props;
   //no longer used, now fetching serverside
   // const {views} = useViews(deck)

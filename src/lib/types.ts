@@ -1,8 +1,17 @@
 import type { Prisma } from "@prisma/client";
-import type { Card } from "@prisma/client";
+
+type Card = Prisma.CardGetPayload<{
+  include: {
+    pools: {
+      select: {
+        name: true;
+      };
+    };
+  };
+}>;
 
 export type DeckCard = {
-  card: Card;
+  card: Card | null;
   count: number;
   affinityPenalty: boolean;
 };

@@ -63,6 +63,7 @@ export default function CardpoolSection({
   filter,
 }: CardLibraryProps) {
   // const { cardPool, setCardPool, cardPoolList } = useCardPool;
+  const { cardPoolQuery, currentDeckCards } = useCardPool;
 
   const [cardpoolTab, setCardpoolTab] = useState(true);
 
@@ -88,8 +89,7 @@ export default function CardpoolSection({
             <div className={"flex gap-1 text-lg"}>
               <BookIcon />
               <span className={"hidden xl:block"}>Cardpool</span> (
-              {sortedCardpool.length || "~"}/
-              {useCardPool.cardPool.length || "~"})
+              {sortedCardpool.length || "~"}/{currentDeckCards.length || "~"})
             </div>
 
             <FormatDropdown useCardpool={useCardPool} />
@@ -115,7 +115,7 @@ export default function CardpoolSection({
       >
         {cardpoolTab ? (
           <>
-            {useCardPool.isFetching ? (
+            {cardPoolQuery.isFetching ? (
               <div className={"mt-20 flex w-full justify-center"}>
                 <FadeLoader
                   color={"#99816A"}

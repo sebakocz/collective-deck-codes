@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PulseLoader } from "react-spinners";
 
 import ImportIcon from "@/components/icons/importIcon";
@@ -11,19 +11,28 @@ type ImportInputFieldProps = {
 
 export default function ImportInputField({ userDeck }: ImportInputFieldProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [deckText, setDeckText] = useState("");
   const importer = useImporter(userDeck.hero);
 
-  const handleInput = async () => {
+  const handleInput = (event: React.FormEvent<HTMLTextAreaElement>) => {
     setIsLoading(true);
-    if (inputRef.current) inputRef.current.value = "";
-
-    await importDeckFromClipboard();
-    setIsLoading(false);
+    setDeckText(event.currentTarget.value);
   };
 
-  const importDeckFromClipboard = async () => {
-    const clipboard = await navigator.clipboard.readText();
+  useEffect(() => {
+    if (isLoading) {
+      importDeckFromClipboard();
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 400);
+    }
+  }, [isLoading]);
+
+  const importDeckFromClipboard = () => {
+    const clipboard = deckText;
+    console.log(clipboard);
+    setDeckText("");
+    console.log(clipboard);
     const lines: string[] = clipboard.split(/\r?\n/);
 
     // set default values
@@ -46,21 +55,22 @@ export default function ImportInputField({ userDeck }: ImportInputFieldProps) {
       lines.splice(0, 1);
     }
 
-    const cards = await importer.importCardsFromString(lines);
+    const cards = importer.importCardsFromString(lines);
     if (!cards) return;
     userDeck.addCardsToDeck([...cards]);
   };
 
   return (
     <div className={"relative"}>
-      <input
-        type="text"
+      <textarea
         disabled={isLoading}
+        rows={1}
+        style={{ resize: "none" }}
         placeholder={isLoading ? "" : "Import via text..."}
         onInput={handleInput}
-        ref={inputRef}
+        value={deckText}
         className={
-          "w-full rounded bg-main-300 p-2 shadow focus:outline-main-300 enabled:hover:bg-main-200"
+          "no-scrollbar w-full rounded bg-main-300 p-2 shadow focus:outline-main-300 enabled:hover:bg-main-200"
         }
       />
       <div className={"absolute top-0 right-0 p-2"}>

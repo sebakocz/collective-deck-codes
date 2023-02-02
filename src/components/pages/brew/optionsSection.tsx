@@ -121,7 +121,11 @@ export default function OptionsSection({
         </div>
 
         {/*  Deck List Section */}
-        <div className={"relative h-[55%] grow rounded bg-main-300 p-1 shadow"}>
+        <div
+          className={
+            "relative my-1 h-[55%] grow rounded bg-main-300 p-1  shadow"
+          }
+        >
           {/* Call to Action on empty list */}
           {deckCards.length <= 0 ? (
             isLoading ? (
@@ -148,7 +152,7 @@ export default function OptionsSection({
                 {deckCards.map((dc) => {
                   return (
                     <CardDisplayMini
-                      key={dc.card.id}
+                      key={dc.card?.id}
                       deckCard={dc}
                       onLeftClick={() => removeCardFromDeck(dc)}
                       onRightClick={() => addCardsToDeck([{ ...dc }])}
