@@ -57,3 +57,16 @@ To ensure that I can keep devoting my sweat, blood and tears into projects like 
 <a href="https://www.buymeacoffee.com/sevas" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
 [![Support via PayPal](https://cdn.rawgit.com/twolfson/paypal-github-button/1.0.0/dist/button.svg)](https://www.paypal.me/sebascripts/)
+
+---
+
+## More Page Screens:
+
+![image](https://user-images.githubusercontent.com/44639352/223850801-030f5a0d-aac2-4a30-9b66-f27fac5ab4e1.png)
+
+![image](https://user-images.githubusercontent.com/44639352/223850893-1f747240-5e77-4a1b-8e38-8d66801d717f.png)
+
+![image](https://user-images.githubusercontent.com/44639352/223851205-ab9db9ab-ef35-4812-8825-c50b4c85b440.png)
+
+
+
