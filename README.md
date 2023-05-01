@@ -2,6 +2,10 @@
 
 >_The best place to view, build and analyse your [Collective](https://www.collective.gg/) decks!_
 
+## :no_entry_sign: Deprecated
+
+Project discontinued - an lts version purerly run on Github Pages can be found [here](https://github.com/sebakocz/collective-cards).
+
 ## :gear: Features
 
 ### 🥇 Core
